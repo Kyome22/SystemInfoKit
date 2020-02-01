@@ -1,5 +1,8 @@
 # ActivityKit
 
+ActivityKit provides macOS system information (CPU usage, Memory performance, Disk capacity, and Network connection). 5
+This framework is written in Swift 5.
+
 ## Installation
 
 ### CocoaPods
@@ -17,7 +20,8 @@ ActivityKit is also available through [Carthage](https://github.com/Carthage/Car
 github "Kyome22/ActivityKit"
 ```
 
-## License
+## Copyright and License
 
-ActivityKit is available under the Apache license, Version 2.0.  
-See the LICENSE file for more info.
+Copyright 2020 Takuto Nakamura
+
+Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
