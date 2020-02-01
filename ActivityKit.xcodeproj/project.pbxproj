@@ -12,7 +12,7 @@
 		1C0E191123E552360070CDB5 /* AKMemory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E191023E552360070CDB5 /* AKMemory.swift */; };
 		1C0E191323E552420070CDB5 /* AKDisk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E191223E552420070CDB5 /* AKDisk.swift */; };
 		1C0E191523E5524D0070CDB5 /* AKNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E191423E5524D0070CDB5 /* AKNetwork.swift */; };
-		1C0E191723E552B40070CDB5 /* ActivityObserver..swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E191623E552B40070CDB5 /* ActivityObserver..swift */; };
+		1C0E191723E552B40070CDB5 /* ActivityObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E191623E552B40070CDB5 /* ActivityObserver.swift */; };
 		1C0E191F23E5614A0070CDB5 /* ActivityKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E191E23E5614A0070CDB5 /* ActivityKitTests.swift */; };
 		1C0E192123E5614A0070CDB5 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C0E190323E550F60070CDB5 /* ActivityKit.framework */; };
 /* End PBXBuildFile section */
@@ -35,7 +35,7 @@
 		1C0E191023E552360070CDB5 /* AKMemory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKMemory.swift; sourceTree = "<group>"; };
 		1C0E191223E552420070CDB5 /* AKDisk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKDisk.swift; sourceTree = "<group>"; };
 		1C0E191423E5524D0070CDB5 /* AKNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKNetwork.swift; sourceTree = "<group>"; };
-		1C0E191623E552B40070CDB5 /* ActivityObserver..swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityObserver..swift; sourceTree = "<group>"; };
+		1C0E191623E552B40070CDB5 /* ActivityObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityObserver.swift; sourceTree = "<group>"; };
 		1C0E191C23E5614A0070CDB5 /* ActivityKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ActivityKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C0E191E23E5614A0070CDB5 /* ActivityKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityKitTests.swift; sourceTree = "<group>"; };
 		1C0E192023E5614A0070CDB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -85,7 +85,7 @@
 			children = (
 				1C0E190623E550F60070CDB5 /* ActivityKit.h */,
 				1C0E190723E550F60070CDB5 /* Info.plist */,
-				1C0E191623E552B40070CDB5 /* ActivityObserver..swift */,
+				1C0E191623E552B40070CDB5 /* ActivityObserver.swift */,
 				1C0E190E23E552290070CDB5 /* AKCPU.swift */,
 				1C0E191023E552360070CDB5 /* AKMemory.swift */,
 				1C0E191223E552420070CDB5 /* AKDisk.swift */,
@@ -223,7 +223,7 @@
 			files = (
 				1C0E191523E5524D0070CDB5 /* AKNetwork.swift in Sources */,
 				1C0E191123E552360070CDB5 /* AKMemory.swift in Sources */,
-				1C0E191723E552B40070CDB5 /* ActivityObserver..swift in Sources */,
+				1C0E191723E552B40070CDB5 /* ActivityObserver.swift in Sources */,
 				1C0E191323E552420070CDB5 /* AKDisk.swift in Sources */,
 				1C0E190F23E552290070CDB5 /* AKCPU.swift in Sources */,
 			);
