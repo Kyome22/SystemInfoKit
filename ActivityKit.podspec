@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
   spec.platform = :osx
   spec.osx.deployment_target = "10.14"
   spec.source   = { :git => "https://github.com/Kyome22/ActivityKit.git", :tag => "#{spec.version}" }
-  spec.source_files  = "ActivityKit/*.{h,swift}"
+  spec.source_files  = "ActivityKit/*.swift"
   spec.swift_version = "5"
   spec.frameworks = "Darwin", "SystemConfiguration"
   spec.requires_arc = true
