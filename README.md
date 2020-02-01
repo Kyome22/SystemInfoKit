@@ -1,6 +1,6 @@
 # ActivityKit
 
-ActivityKit provides macOS system information (CPU usage, Memory performance, Disk capacity, and Network connection). 5
+ActivityKit provides macOS system information (CPU usage, Memory performance, Disk capacity, and Network connection).  
 This framework is written in Swift 5.
 
 ## Installation
