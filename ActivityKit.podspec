@@ -19,6 +19,5 @@ Pod::Spec.new do |spec|
   spec.source   = { :git => "https://github.com/Kyome22/ActivityKit.git", :tag => "#{spec.version}" }
   spec.source_files  = "ActivityKit/*.swift"
   spec.swift_version = "5"
-  spec.frameworks = "Darwin", "SystemConfiguration"
   spec.requires_arc = true
 end
