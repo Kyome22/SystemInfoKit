@@ -91,13 +91,14 @@ final public class AKMemory {
         let maxMem = maxMemory
         let load = vmStatistics64
 
-        let active      = Double(load.active_count) * Double(PAGE_SIZE) / gigaByte
-        let speculative = Double(load.speculative_count) * Double(PAGE_SIZE) / gigaByte
-        let inactive    = Double(load.inactive_count) * Double(PAGE_SIZE) / gigaByte
-        let wired       = Double(load.wire_count) * Double(PAGE_SIZE) / gigaByte
-        let compressed  = Double(load.compressor_page_count) * Double(PAGE_SIZE) / gigaByte
-        let purgeable   = Double(load.purgeable_count) * Double(PAGE_SIZE) / gigaByte
-        let external    = Double(load.external_page_count) * Double(PAGE_SIZE) / gigaByte
+        let unit        = Double(vm_kernel_page_size) / gigaByte
+        let active      = Double(load.active_count) * unit
+        let speculative = Double(load.speculative_count) * unit
+        let inactive    = Double(load.inactive_count) * unit
+        let wired       = Double(load.wire_count) * unit
+        let compressed  = Double(load.compressor_page_count) * unit
+        let purgeable   = Double(load.purgeable_count) * unit
+        let external    = Double(load.external_page_count) * unit
         
         let using       = active + inactive + speculative + wired + compressed - purgeable - external
         let percentage  = min(99.9, round(1000.0 * using / maxMem) / 10.0)
