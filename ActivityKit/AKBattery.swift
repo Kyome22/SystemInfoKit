@@ -27,16 +27,16 @@ public struct AKBatteryInfo {
     public var powerSource: String = "Unknown"
     public var health: Double = 0.0
     public var cycle: Int = 0
-    public var tempreture: Double = 0.0
+    public var temperature: Double = 0.0
 
     init() {}
 
-    init(percentage: Double, powerSource: String, health: Double, cycle: Int, tempreture: Double) {
+    init(percentage: Double, powerSource: String, health: Double, cycle: Int, temperature: Double) {
         self.percentage = percentage
         self.powerSource = powerSource
         self.health = health
         self.cycle = cycle
-        self.tempreture = tempreture
+        self.temperature = temperature
     }
 
     public var description: String {
@@ -46,9 +46,9 @@ public struct AKBatteryInfo {
             Power Source: %@
             Health: %.1f%%
             Cycle: %d
-            Tempreture: %.1f℃
+            Temperature: %.1f°C
         """
-        return String(format: format, percentage, powerSource, health, cycle, tempreture)
+        return String(format: format, percentage, powerSource, health, cycle, temperature)
     }
 
 }
@@ -104,7 +104,7 @@ final public class AKBattery {
             result.cycle = cycleCount
         }
         if let temperature = dict["Temperature"] as? Double {
-            result.tempreture = temperature / 100.0
+            result.temperature = temperature / 100.0
         }
     }
 
