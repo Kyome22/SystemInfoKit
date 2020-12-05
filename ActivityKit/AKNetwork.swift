@@ -20,44 +20,79 @@
 
 import SystemConfiguration
 
-typealias LoadData = (ip: String, up: Double, upUnit: String, down: Double, downUnit: String)
+public struct LoadData {
+    public var ip: String
+    public var up: Double
+    public var down: Double
+}
+
+public struct PacketData {
+    public var value: Double
+    public var unit: String
+}
 
 public struct AKNetworkInfo {
     
     public var name: String = "no connection"
     public var localIP: String = "xx.x.x.xx"
-    public var upload: Double = 0.0
-    public var uploadUnit: String = "KB/s"
-    public var download: Double = 0.0
-    public var downloadUnit: String = "KB/s"
+    public var upload = PacketData(value: 0.0, unit: "KB/s")
+    public var download = PacketData(value: 0.0, unit: "KB/s")
     
     public var description: String {
-        return String(format: "Network: %@, Local IP: %@, upload: %.1f %@, download: %.1f %@",
-                      name, localIP, upload, uploadUnit, download, downloadUnit)
+        let format = """
+        Network
+            Name %@
+            Local IP: %@
+            Upload: %.1f %@
+            Download: %.1f %@
+        """
+        return String(format: format, name, localIP,
+                      upload.value, upload.unit,
+                      download.value, download.unit)
     }
     
     init() {}
     
-    init(_ name: String, _ load: LoadData) {
+    init(name: String, load: LoadData) {
         self.name = name
         self.localIP = load.ip
-        self.upload = load.up
-        self.uploadUnit = load.upUnit
-        self.download = load.down
-        self.downloadUnit = load.downUnit
+        self.upload = convert(byte: load.up)
+        self.download = convert(byte: load.down)
+    }
+
+    private func convert(byte: Double) -> PacketData {
+        let KB: Double = 1024
+        let MB: Double = pow(KB, 2)
+        let GB: Double = pow(KB, 3)
+        let TB: Double = pow(KB, 4)
+        if TB <= byte {
+            return PacketData(value: (10 * byte / TB).rounded() / 10, unit: "TB/s")
+        } else if GB <= byte {
+            return PacketData(value: (10 * byte / GB).rounded() / 10, unit: "GB/s")
+        } else if MB <= byte {
+            return PacketData(value: (10 * byte / MB).rounded() / 10, unit: "MB/s")
+        } else {
+            return PacketData(value: (10 * byte / KB).rounded() / 10, unit: "KB/s")
+        }
     }
     
 }
 
 final public class AKNetwork {
+
+    public internal(set) var current = AKNetworkInfo()
     
     private var interval: Double = 1.0
     private var previousIP: String = "xx.x.x.xx"
     private var previousUpload: Int64 = 0
     private var previousDownload: Int64 = 0
-    
-    init(interval: Double) {
+
+    public func update(interval: Double) {
         self.interval = max(interval, 1.0)
+        guard let id = getDefaultID else { return }
+        let name = getHardwareName(id)
+        let load = getUpDown(id)
+        current = AKNetworkInfo(name: name, load: load)
     }
     
     private var getDefaultID: String? {
@@ -80,7 +115,7 @@ final public class AKNetwork {
     }
     
     private func getUpDown(_ id: String) -> LoadData {
-        var result: LoadData = ("xx.x.x.xx", 0.0, "KB/s", 0.0, "KB/s")
+        var result = LoadData(ip: "xx.x.x.xx", up: 0.0, down: 0.0)
         var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
         guard getifaddrs(&ifaddr) == 0 else { return result }
 
@@ -104,12 +139,8 @@ final public class AKNetwork {
         result.ip = previousIP
         freeifaddrs(ifaddr)
         if previousUpload != 0 && previousDownload != 0 {
-            let up = convert(byte: Double(upload - previousUpload) / interval)
-            let down = convert(byte: Double(download - previousDownload) / interval)
-            result.up = up.value
-            result.upUnit = up.unit
-            result.down = down.value
-            result.downUnit = down.unit
+            result.up = Double(upload - previousUpload) / interval
+            result.down = Double(download - previousDownload) / interval
         }
         previousUpload = upload
         previousDownload = download
@@ -141,26 +172,6 @@ final public class AKNetwork {
             return String(cString: ip)
         }
         return nil
-    }
-    
-    private func convert(byte: Double) -> (value: Double, unit: String) {
-        let KB: Double = 1024
-        let MB: Double = pow(KB, 2)
-        let GB: Double = pow(KB, 3)
-        let TB: Double = pow(KB, 4)
-        if TB <= byte {
-            return ((10 * byte / TB).rounded() / 10, "TB/s")
-        } else if GB <= byte {
-            return ((10 * byte / GB).rounded() / 10, "GB/s")
-        } else if MB <= byte {
-            return ((10 * byte / MB).rounded() / 10, "MB/s")
-        }
-        return ((10 * byte / KB).rounded() / 10, "KB/s")
-    }
-    
-    public var info: AKNetworkInfo {
-        guard let id = getDefaultID else { return AKNetworkInfo() }
-        return AKNetworkInfo(getHardwareName(id), getUpDown(id))
     }
     
 }

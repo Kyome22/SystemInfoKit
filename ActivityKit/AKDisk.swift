@@ -18,46 +18,51 @@
 //  limitations under the License.
 //
 
+public struct ByteData {
+    public var value: Double
+    public var unit: String
+}
+
 public struct AKDiskInfo {
 
     public var percentage: Double = 0.0
-    public var total: Double = 0.0
-    public var totalUnit: String = "GB"
-    public var free: Double = 0.0
-    public var freeUnit: String = "GB"
-    public var used: Double = 0.0
-    public var usedUnit: String = "GB"
-    
-    public var description: String {
-        return String(format: "Disk capacity: %.1f%%, total: %.0f %@, free: %.0f %@, used: %.0f %@",
-                      percentage, total, totalUnit, free, freeUnit, used, usedUnit)
-    }
+    public var total = ByteData(value: 0.0, unit: "GB")
+    public var free = ByteData(value: 0.0, unit: "GB")
+    public var used = ByteData(value: 0.0, unit: "GB")
     
     init() {}
     
-    init(_ percentage: Double,
-         _ total: Double, _ totalUnit: String,
-         _ free: Double, _ freeUnit: String,
-         _ used: Double, _ usedUnit: String) {
+    init(percentage: Double, total: ByteData, free: ByteData, used: ByteData) {
         self.percentage = percentage
         self.total = total
-        self.totalUnit = totalUnit
         self.free = free
-        self.freeUnit = freeUnit
         self.used = used
-        self.usedUnit = usedUnit
+    }
+
+    public var description: String {
+        let format = """
+        Disk
+            Capacity: %.1f%%
+            Total: %.1f %@
+            Free: %.1f %@
+            Used: %.1f %@
+        """
+        return String(format: format, percentage,
+                      total.value, total.unit,
+                      free.value, free.unit,
+                      used.value, used.unit)
     }
     
 }
 
 final public class AKDisk {
+
+    public internal(set) var current = AKDiskInfo()
     
-    public var info: AKDiskInfo {
+    public func update() {
         let url = NSURL(fileURLWithPath: "/")
         let keys: [URLResourceKey] = [.volumeTotalCapacityKey, .volumeAvailableCapacityForImportantUsageKey]
-        guard let dict = try? url.resourceValues(forKeys: keys) else {
-            return AKDiskInfo()
-        }
+        guard let dict = try? url.resourceValues(forKeys: keys) else { return }
         let total = (dict[URLResourceKey.volumeTotalCapacityKey] as! NSNumber).int64Value
         let free = (dict[URLResourceKey.volumeAvailableCapacityForImportantUsageKey] as! NSNumber).int64Value
         let used: Int64 = total - free
@@ -76,10 +81,10 @@ final public class AKDisk {
             .replacingOccurrences(of: ",", with: ".")
             .components(separatedBy: .whitespaces)
         
-        return AKDiskInfo(percentage,
-                          Double(totalArray[0]) ?? 0.0, totalArray[1],
-                          Double(freeArray[0]) ?? 0.0, freeArray[1],
-                          Double(usedArray[0]) ?? 0.0, usedArray[1])
+        current = AKDiskInfo(percentage: percentage,
+                             total: ByteData(value: Double(totalArray[0]) ?? 0.0, unit: totalArray[1]),
+                             free: ByteData(value: Double(freeArray[0]) ?? 0.0, unit: freeArray[1]),
+                             used: ByteData(value: Double(usedArray[0]) ?? 0.0, unit: usedArray[1]))
     }
     
 }

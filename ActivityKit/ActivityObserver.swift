@@ -19,58 +19,82 @@
 //
 
 final public class ActivityObserver {
-    
-    public let cpu: AKCPU
-    public let memory: AKMemory
-    public let disk: AKDisk
-    public let network: AKNetwork
-    
-    public init(interval: Double) {
-        cpu = AKCPU()
-        memory = AKMemory()
-        disk = AKDisk()
-        network = AKNetwork(interval: interval)
+
+    private let cpu = AKCPU()
+    private let memory = AKMemory()
+    private let disk = AKDisk()
+    private let network = AKNetwork()
+    private var timer: Timer?
+
+    public var updatedStatisticsHandler: ((_ observer: ActivityObserver) -> Void)?
+
+    public init() {}
+
+    deinit {
+        timer?.invalidate()
+    }
+
+    public func update(interval: Double) {
+        cpu.update()
+        memory.update()
+        disk.update()
+        network.update(interval: interval)
+        updatedStatisticsHandler?(self)
+    }
+
+    public func start(interval: Double) {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true, block: { [weak self] _ in
+            self?.update(interval: interval)
+        })
+        RunLoop.main.add(timer!, forMode: RunLoop.Mode.common)
+    }
+
+    public func pause() {
+        timer?.invalidate()
+        timer = nil
     }
     
     public var statistics: String {
-        var info = [String]()
-        info.append(cpu.info.description)
-        info.append(memory.info.description)
-        info.append(disk.info.description)
-        info.append(network.info.description)
+        let info: [String] = [
+            cpu.current.description,
+            memory.current.description,
+            disk.current.description,
+            network.current.description
+        ]
         return info.joined(separator: "\n")
     }
     
     public var cpuUsage: AKCPUInfo {
-        return cpu.info
+        return cpu.current
     }
     
     public var cpuDescription: String {
-        return cpu.info.description
+        return cpu.current.description
     }
     
     public var memoryPerformance: AKMemoryInfo {
-        return memory.info
+        return memory.current
     }
     
     public var memoryDescription: String {
-        return memory.info.description
+        return memory.current.description
     }
     
     public var diskCapacity: AKDiskInfo {
-        return disk.info
+        return disk.current
     }
 
     public var diskDescription: String {
-        return disk.info.description
+        return disk.current.description
     }
 
     public var networkConnection: AKNetworkInfo {
-        return network.info
+        return network.current
     }
     
     public var networkDescription: String {
-        return network.info.description
+        return network.current.description
     }
     
 }

@@ -28,25 +28,34 @@ public struct AKMemoryInfo {
     public var wired: Double = 0.0
     public var compressed: Double = 0.0
     
-    public var description: String {
-        return String(format: "Memory performance: %.1f%%, pressure: %.1f%%, app: %.1f GB, wired: %.1f GB, compressed: %.1f GB",
-                      percentage, pressure, app, wired, compressed)
-    }
-    
     init() {}
     
-    init(_ percentage: Double, _ pressure: Double, _ app: Double, _ wired: Double, _ compressed: Double) {
+    init(percentage: Double, pressure: Double, app: Double, wired: Double, compressed: Double) {
         self.percentage = percentage
         self.pressure = pressure
         self.app = app
         self.wired = wired
         self.compressed = compressed
     }
+
+    public var description: String {
+        let format = """
+        Memory
+            Performance: %.1f%%
+            Pressure: %.1f%%
+            App: %.1f GB
+            Wired: %.1f GB
+            Compressed: %.1f GB
+        """
+        return String(format: format, percentage, pressure, app, wired, compressed)
+    }
     
 }
 
 final public class AKMemory {
-    
+
+    public internal(set) var current = AKMemoryInfo()
+
     private let gigaByte: Double = 1073741824
     private let hostVmInfo64Count: mach_msg_type_number_t!
     private let hostBasicInfoCount: mach_msg_type_number_t!
@@ -78,7 +87,7 @@ final public class AKMemory {
         return data
     }
     
-    public var info: AKMemoryInfo {
+    public func update() {
         let maxMem = maxMemory
         let load = vmStatistics64
 
@@ -95,11 +104,11 @@ final public class AKMemory {
         let pressure    = 100.0 * (wired + compressed) / maxMem
         let app         = using - wired - compressed
         
-        return AKMemoryInfo(percentage,
-                            round(10.0 * pressure) / 10.0,
-                            round(10.0 * app) / 10.0,
-                            round(10.0 * wired) / 10.0,
-                            round(10.0 * compressed) / 10.0)
+        current = AKMemoryInfo(percentage: percentage,
+                               pressure: round(10.0 * pressure) / 10.0,
+                               app: round(10.0 * app) / 10.0,
+                               wired: round(10.0 * wired) / 10.0,
+                               compressed: round(10.0 * compressed) / 10.0)
     }
     
 }

@@ -23,40 +23,34 @@ import ActivityKit
 
 class ActivityKitTests: XCTestCase {
     
-    var observer: ActivityObserver!
+    let observer = ActivityObserver()
 
     override func setUp() {
-        observer = ActivityObserver(interval: 5.0)
+        super.setUp()
     }
 
     override func tearDown() {
-
+        super.tearDown()
+        observer.pause()
     }
     
-    func testAll() {
+    func testStatistics() {
         Swift.print(observer.statistics)
-    }
 
-    func testCPU() {
-        Swift.print(observer.cpuDescription)
-    }
-    
-    func testMemory() {
-        Swift.print(observer.memoryDescription)
-    }
-    
-    func testDisk() {
-        Swift.print(observer.diskDescription)
-    }
-    
-    func testNetwork() {
-        Swift.print(observer.networkDescription)
-        sleep(5)
-        Swift.print(observer.networkDescription)
-    }
+        let expect = expectation(description: "called update()")
+        observer.updatedStatisticsHandler = { _ in
+            expect.fulfill()
+        }
+        observer.start(interval: 3.0)
 
-    func testPerformanceExample() {
-        measure {
+        waitForExpectations(timeout: 5.0) { [weak self] (error) in
+            if let error = error {
+                XCTFail("Did not call update(), \(error.localizedDescription)")
+            }
+            if let self = self {
+                Swift.print()
+                Swift.print(self.observer.statistics)
+            }
         }
     }
 

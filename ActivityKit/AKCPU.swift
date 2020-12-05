@@ -26,24 +26,32 @@ public struct AKCPUInfo {
     public var system: Double = 0.0
     public var user: Double = 0.0
     public var idle: Double = 0.0
-    
-    public var description: String {
-        return String(format: "CPU usage: %.1f%%, system: %.1f%%, user: %.1f%%, idle: %.1f%%",
-                      percentage, system, user, idle)
-    }
         
     init() {}
     
-    init(_ percentage: Double, _ system: Double, _ user: Double, _ idle: Double) {
+    init(percentage: Double, system: Double, user: Double, idle: Double) {
         self.percentage = percentage
         self.system = system
         self.user = user
         self.idle = idle
     }
+
+    public var description: String {
+        let format = """
+        CPU
+            Usage: %.1f%%
+            System: %.1f%%
+            User: %.1f%%
+            Idle: %.1f%%
+        """
+        return String(format: format, percentage, system, user, idle)
+    }
     
 }
 
 final public class AKCPU {
+
+    public internal(set) var current = AKCPUInfo()
     
     private let loadInfoCount: mach_msg_type_number_t!
     private var loadPrevious = host_cpu_load_info()
@@ -63,7 +71,7 @@ final public class AKCPU {
         return data
     }
     
-    public var info: AKCPUInfo {
+    public func update() {
         let load = hostCPULoadInfo()
         
         let userDiff    = Double(load.cpu_ticks.0 - loadPrevious.cpu_ticks.0)
@@ -77,7 +85,11 @@ final public class AKCPU {
         let user       = 100.0 * userDiff / totalTicks
         let idle       = 100.0 * idleDiff / totalTicks
         let percentage = min(99.9, round((system + user) * 10.0) / 10.0)
-        return AKCPUInfo(percentage, system, user, idle)
+
+        current = AKCPUInfo(percentage: percentage,
+                            system: system,
+                            user: user,
+                            idle: idle)
     }
     
 }
