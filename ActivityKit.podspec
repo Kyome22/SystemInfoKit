@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name      = "ActivityKit"
-  spec.version   = "1.0"
+  spec.version   = "2.0"
   spec.summary   = "ActivityKit provides macOS system information."
   spec.description  = <<-DESC
     ActivityKit provides macOS system information.

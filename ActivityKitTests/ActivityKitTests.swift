@@ -31,19 +31,21 @@ class ActivityKitTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        observer.pause()
+        observer.stop()
     }
     
     func testStatistics() {
         Swift.print(observer.statistics)
-
+        var cnt = 0
         let expect = expectation(description: "called update()")
         observer.updatedStatisticsHandler = { _ in
-            expect.fulfill()
+            cnt += 1
+            if cnt == 2 {
+                expect.fulfill()
+            }
         }
         observer.start(interval: 3.0)
-
-        waitForExpectations(timeout: 5.0) { [weak self] (error) in
+        waitForExpectations(timeout: 7.0) { [weak self] (error) in
             if let error = error {
                 XCTFail("Did not call update(), \(error.localizedDescription)")
             }

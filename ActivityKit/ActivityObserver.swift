@@ -24,6 +24,7 @@ final public class ActivityObserver {
     private let memory = AKMemory()
     private let disk = AKDisk()
     private let network = AKNetwork()
+    private let battery = AKBattery()
     private var timer: Timer?
 
     public var updatedStatisticsHandler: ((_ observer: ActivityObserver) -> Void)?
@@ -39,6 +40,7 @@ final public class ActivityObserver {
         memory.update()
         disk.update()
         network.update(interval: interval)
+        battery.update()
         updatedStatisticsHandler?(self)
     }
 
@@ -50,7 +52,7 @@ final public class ActivityObserver {
         RunLoop.main.add(timer!, forMode: RunLoop.Mode.common)
     }
 
-    public func pause() {
+    public func stop() {
         timer?.invalidate()
         timer = nil
     }
@@ -59,6 +61,7 @@ final public class ActivityObserver {
         let info: [String] = [
             cpu.current.description,
             memory.current.description,
+            battery.current.description,
             disk.current.description,
             network.current.description
         ]
@@ -79,6 +82,14 @@ final public class ActivityObserver {
     
     public var memoryDescription: String {
         return memory.current.description
+    }
+
+    public var batteryStatus: AKBatteryInfo {
+        return battery.current
+    }
+
+    public var batteryDescription: String {
+        return battery.current.description
     }
     
     public var diskCapacity: AKDiskInfo {
