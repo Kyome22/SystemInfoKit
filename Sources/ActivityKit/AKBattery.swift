@@ -90,6 +90,7 @@ final public class AKBattery {
         guard IORegistryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, 0) == kIOReturnSuccess,
               let dict = props?.takeUnretainedValue() as? [String: AnyObject]
         else { return }
+        props?.release()
         if let designCapacity = dict["DesignCapacity"] as? Double,
            let maxCapacity = dict["MaxCapacity"] as? Double,
            let currentCapacity = dict["CurrentCapacity"] as? Double {

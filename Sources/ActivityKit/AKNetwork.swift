@@ -97,12 +97,6 @@ final public class AKNetwork {
     }
     
     private var getDefaultID: String? {
-//        let key = "State:/Network/Global/IPv4" as CFString
-//        guard let plist = SCDynamicStoreCopyValue(nil, key) as? [String: AnyObject] else {
-//            return nil
-//        }
-//        return plist[kSCDynamicStorePropNetPrimaryInterface as String] as? String
-
         let processName = ProcessInfo.processInfo.processName as CFString
         let dynamicStore = SCDynamicStoreCreate(kCFAllocatorDefault, processName, nil, nil)
         let ipv4Key = SCDynamicStoreKeyCreateNetworkGlobalEntity(kCFAllocatorDefault,
