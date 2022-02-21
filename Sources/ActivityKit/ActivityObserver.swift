@@ -61,11 +61,13 @@ final public class ActivityObserver {
     
     public var statistics: String {
         let info: [String] = [
+            "☆☆☆☆☆☆☆☆☆☆ ActivityKit Stats ☆☆☆☆☆☆☆☆☆☆",
             cpu.current.description,
             memory.current.description,
             battery.current.description,
             disk.current.description,
-            network.current.description
+            network.current.description,
+            "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆",
         ]
         return info.joined(separator: "\n")
     }
