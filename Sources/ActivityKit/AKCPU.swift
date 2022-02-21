@@ -91,9 +91,9 @@ final public class AKCPU {
         let idle       = 100.0 * idleDiff / totalTicks
         
         result.percentage = min(99.9, (system + user).round2dp)
-        result.system = system.round2dp
-        result.user = user.round2dp
-        result.idle = idle.round2dp
+        result.system     = system.round2dp
+        result.user       = user.round2dp
+        result.idle       = idle.round2dp
     }
     
 }

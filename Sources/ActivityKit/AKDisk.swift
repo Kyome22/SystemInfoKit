@@ -88,8 +88,8 @@ final public class AKDisk {
         
         // support french style 3,14 → 3.14
         result.total = convertByteData(byteCount: total)
-        result.free = convertByteData(byteCount: free)
-        result.used = convertByteData(byteCount: used)
+        result.free  = convertByteData(byteCount: free)
+        result.used  = convertByteData(byteCount: used)
     }
     
 }
