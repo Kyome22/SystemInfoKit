@@ -62,7 +62,7 @@ final public class AKMemory {
 
     public internal(set) var current = AKMemoryInfo()
 
-    private let gigaByte: Double = 1073741824
+    private let gigaByte: Double = 1_073_741_824 // 2^30
     private let hostVmInfo64Count: mach_msg_type_number_t!
     private let hostBasicInfoCount: mach_msg_type_number_t!
     

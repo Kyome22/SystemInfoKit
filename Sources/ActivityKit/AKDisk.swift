@@ -23,6 +23,10 @@ import Foundation
 public struct ByteData {
     public var value: Double
     public var unit: String
+    
+    public var description: String {
+        return String(format: "%.2f %@", value, unit)
+    }
 }
 
 public struct AKDiskInfo {

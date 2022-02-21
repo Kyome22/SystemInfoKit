@@ -67,13 +67,13 @@ public struct AKNetworkInfo {
         let GB: Double = pow(KB, 3)
         let TB: Double = pow(KB, 4)
         if TB <= byte {
-            return PacketData(value: (10 * byte / TB).rounded() / 10, unit: "TB/s")
+            return PacketData(value: (byte / TB).round2dp, unit: "TB/s")
         } else if GB <= byte {
-            return PacketData(value: (10 * byte / GB).rounded() / 10, unit: "GB/s")
+            return PacketData(value: (byte / GB).round2dp, unit: "GB/s")
         } else if MB <= byte {
-            return PacketData(value: (10 * byte / MB).rounded() / 10, unit: "MB/s")
+            return PacketData(value: (byte / MB).round2dp, unit: "MB/s")
         } else {
-            return PacketData(value: (10 * byte / KB).rounded() / 10, unit: "KB/s")
+            return PacketData(value: (byte / KB).round2dp, unit: "KB/s")
         }
     }
     
@@ -112,39 +112,6 @@ final public class AKNetwork {
         return "Unknown"
     }
     
-    private func getUpDown(_ id: String) -> LoadData {
-        var result = LoadData(ip: "xx.x.x.xx", up: 0.0, down: 0.0)
-        var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
-        guard getifaddrs(&ifaddr) == 0 else { return result }
-
-        var pointer = ifaddr
-        var upload: Int64 = 0
-        var download: Int64 = 0
-        while pointer != nil {
-            defer { pointer = pointer?.pointee.ifa_next }
-            if let info = getBytesInfo(id, pointer!) {
-                upload += info.up
-                download += info.down
-            }
-            if let ip = getIPAddress(id, pointer!) {
-                if previousIP != ip {
-                    previousUpload = 0
-                    previousDownload = 0
-                }
-                previousIP = ip
-            }
-        }
-        result.ip = previousIP
-        freeifaddrs(ifaddr)
-        if previousUpload != 0 && previousDownload != 0 {
-            result.up = Double(upload - previousUpload) / interval
-            result.down = Double(download - previousDownload) / interval
-        }
-        previousUpload = upload
-        previousDownload = download
-        return result
-    }
-    
     private func getBytesInfo(
         _ id: String,
         _ pointer: UnsafeMutablePointer<ifaddrs>
@@ -176,6 +143,39 @@ final public class AKNetwork {
             return String(cString: ip)
         }
         return nil
+    }
+    
+    private func getUpDown(_ id: String) -> LoadData {
+        var result = LoadData(ip: "xx.x.x.xx", up: 0.0, down: 0.0)
+        var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
+        guard getifaddrs(&ifaddr) == 0 else { return result }
+
+        var pointer = ifaddr
+        var upload: Int64 = 0
+        var download: Int64 = 0
+        while pointer != nil {
+            defer { pointer = pointer?.pointee.ifa_next }
+            if let info = getBytesInfo(id, pointer!) {
+                upload += info.up
+                download += info.down
+            }
+            if let ip = getIPAddress(id, pointer!) {
+                if previousIP != ip {
+                    previousUpload = 0
+                    previousDownload = 0
+                }
+                previousIP = ip
+            }
+        }
+        result.ip = previousIP
+        freeifaddrs(ifaddr)
+        if previousUpload != 0 && previousDownload != 0 {
+            result.up = Double(upload - previousUpload) / interval
+            result.down = Double(download - previousDownload) / interval
+        }
+        previousUpload = upload
+        previousDownload = download
+        return result
     }
     
     public func update(interval: Double) {
