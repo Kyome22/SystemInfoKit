@@ -30,7 +30,13 @@ public struct AKMemoryInfo {
     
     init() {}
     
-    init(percentage: Double, pressure: Double, app: Double, wired: Double, compressed: Double) {
+    init(
+        percentage: Double,
+        pressure: Double,
+        app: Double,
+        wired: Double,
+        compressed: Double
+    ) {
         self.percentage = percentage
         self.pressure = pressure
         self.app = app
