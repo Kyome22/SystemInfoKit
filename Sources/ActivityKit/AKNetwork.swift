@@ -87,14 +87,6 @@ final public class AKNetwork {
     private var previousIP: String = "xx.x.x.xx"
     private var previousUpload: Int64 = 0
     private var previousDownload: Int64 = 0
-
-    public func update(interval: Double) {
-        self.interval = max(interval, 1.0)
-        guard let id = getDefaultID else { return }
-        let name = getHardwareName(id)
-        let load = getUpDown(id)
-        current = AKNetworkInfo(name: name, load: load)
-    }
     
     private var getDefaultID: String? {
         let processName = ProcessInfo.processInfo.processName as CFString
@@ -153,7 +145,10 @@ final public class AKNetwork {
         return result
     }
     
-    private func getBytesInfo(_ id: String, _ pointer: UnsafeMutablePointer<ifaddrs>) -> (up: Int64, down: Int64)? {
+    private func getBytesInfo(
+        _ id: String,
+        _ pointer: UnsafeMutablePointer<ifaddrs>
+    ) -> (up: Int64, down: Int64)? {
         let name = String(cString: pointer.pointee.ifa_name)
         if name == id {
             let addr = pointer.pointee.ifa_addr.pointee
@@ -167,7 +162,10 @@ final public class AKNetwork {
         return nil
     }
     
-    private func getIPAddress(_ id: String, _ pointer: UnsafeMutablePointer<ifaddrs>) -> String? {
+    private func getIPAddress(
+        _ id: String,
+        _ pointer: UnsafeMutablePointer<ifaddrs>
+    ) -> String? {
         let name = String(cString: pointer.pointee.ifa_name)
         if name == id {
             var addr = pointer.pointee.ifa_addr.pointee
@@ -178,6 +176,14 @@ final public class AKNetwork {
             return String(cString: ip)
         }
         return nil
+    }
+    
+    public func update(interval: Double) {
+        self.interval = max(interval, 1.0)
+        guard let id = getDefaultID else { return }
+        let name = getHardwareName(id)
+        let load = getUpDown(id)
+        current = AKNetworkInfo(name: name, load: load)
     }
     
 }
