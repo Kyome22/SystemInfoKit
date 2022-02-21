@@ -19,7 +19,6 @@
 //
 
 import IOKit
-import IOKit.ps
 
 public struct AKBatteryInfo {
     
