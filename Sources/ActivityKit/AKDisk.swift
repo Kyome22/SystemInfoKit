@@ -61,32 +61,35 @@ final public class AKDisk {
 
     public internal(set) var current = AKDiskInfo()
     
+    private func convertByteData(byteCount: Int64) -> ByteData {
+        let fmt = ByteCountFormatter()
+        fmt.countStyle = .decimal
+        let array = fmt.string(fromByteCount: byteCount)
+            .replacingOccurrences(of: ",", with: ".")
+            .components(separatedBy: .whitespaces)
+        return ByteData(value: Double(array[0]) ?? 0.0, unit: array[1])
+    }
+    
     public func update() {
+        var result = AKDiskInfo()
+        
+        defer {
+            current = result
+        }
+        
         let url = NSURL(fileURLWithPath: "/")
         let keys: [URLResourceKey] = [.volumeTotalCapacityKey, .volumeAvailableCapacityForImportantUsageKey]
         guard let dict = try? url.resourceValues(forKeys: keys) else { return }
         let total = (dict[URLResourceKey.volumeTotalCapacityKey] as! NSNumber).int64Value
         let free = (dict[URLResourceKey.volumeAvailableCapacityForImportantUsageKey] as! NSNumber).int64Value
         let used: Int64 = total - free
-        let percentage: Double = min(99.9, round(1000.0 * Double(used) / Double(total)) / 10.0)
         
-        let fmt = ByteCountFormatter()
-        fmt.countStyle = .decimal
+        result.percentage = min(99.9, (100.0 * Double(used) / Double(total)).round2dp)
+        
         // support french style 3,14 → 3.14
-        let totalArray = fmt.string(fromByteCount: total)
-            .replacingOccurrences(of: ",", with: ".")
-            .components(separatedBy: .whitespaces)
-        let freeArray = fmt.string(fromByteCount: free)
-            .replacingOccurrences(of: ",", with: ".")
-            .components(separatedBy: .whitespaces)
-        let usedArray = fmt.string(fromByteCount: used)
-            .replacingOccurrences(of: ",", with: ".")
-            .components(separatedBy: .whitespaces)
-        
-        current = AKDiskInfo(percentage: percentage,
-                             total: ByteData(value: Double(totalArray[0]) ?? 0.0, unit: totalArray[1]),
-                             free: ByteData(value: Double(freeArray[0]) ?? 0.0, unit: freeArray[1]),
-                             used: ByteData(value: Double(usedArray[0]) ?? 0.0, unit: usedArray[1]))
+        result.total = convertByteData(byteCount: total)
+        result.free = convertByteData(byteCount: free)
+        result.used = convertByteData(byteCount: used)
     }
     
 }
