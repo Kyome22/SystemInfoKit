@@ -33,33 +33,35 @@ observer.stop()
 ## Sample Output
 
 ```console
+☆☆☆☆☆☆☆☆☆☆ ActivityKit Stats ☆☆☆☆☆☆☆☆☆☆
 CPU
-    Usage: 16.1%
-    System: 5.9%
-    User: 10.2%
-    Idle: 83.9%
+    Usage: 17.7%
+    System: 4.3%
+    User: 13.4%
+    Idle: 82.3%
 Memory
-    Performance: 79.0%
-    Pressure: 45.6%
-    App: 5.3 GB
-    Wired: 4.3 GB
-    Compressed: 3.0 GB
+    Performance: 61.1%
+    Pressure: 15.3%
+    App: 14.7 GB
+    Wired: 2.5 GB
+    Compressed: 2.4 GB
 Battery
-    Charged: 99.6%
+    Charged: 100.0%
     Power Source: Unknown
-    Health: 89.9%
-    Cycle: 31
-    Tempreture: 31.1℃
+    Max Capacity: 100.0%
+    Cycle: 3
+    Temperature: 30.3°C
 Disk
-    Capacity: 43.2%
-    Total: 950.2 GB
-    Free: 539.9 GB
-    Used: 410.4 GB
+    Capacity: 27.3%
+    Total: 494.4 GB
+    Free: 359.4 GB
+    Used: 135.0 GB
 Network
     Name Wi-Fi
     Local IP: xx.x.x.xx
-    Upload: 4.0 KB/s
+    Upload: 10.3 KB/s
     Download: 6.3 KB/s
+☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆
 ```
 
 ## Copyright and License
