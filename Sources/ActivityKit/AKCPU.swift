@@ -72,8 +72,13 @@ final public class AKCPU {
     }
     
     public func update() {
-        let load = hostCPULoadInfo()
+        var result = AKCPUInfo()
         
+        defer {
+            current = result
+        }
+
+        let load = hostCPULoadInfo()
         let userDiff    = Double(load.cpu_ticks.0 - loadPrevious.cpu_ticks.0)
         let systemDiff  = Double(load.cpu_ticks.1 - loadPrevious.cpu_ticks.1)
         let idleDiff    = Double(load.cpu_ticks.2 - loadPrevious.cpu_ticks.2)
@@ -84,12 +89,11 @@ final public class AKCPU {
         let system     = 100.0 * systemDiff / totalTicks
         let user       = 100.0 * userDiff / totalTicks
         let idle       = 100.0 * idleDiff / totalTicks
-        let percentage = min(99.9, round((system + user) * 10.0) / 10.0)
-
-        current = AKCPUInfo(percentage: percentage,
-                            system: system,
-                            user: user,
-                            idle: idle)
+        
+        result.percentage = min(99.9, (system + user).round2dp)
+        result.system = system.round2dp
+        result.user = user.round2dp
+        result.idle = idle.round2dp
     }
     
 }
