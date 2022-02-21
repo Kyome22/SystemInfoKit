@@ -19,83 +19,100 @@
 //
 
 import IOKit
-import IOKit.ps
 
 public struct AKBatteryInfo {
-
+    
+    public var installed: Bool = false
     public var percentage: Double = 0.0
     public var powerSource: String = "Unknown"
-    public var health: Double = 0.0
+    public var maxCapacity: Double = 0.0
     public var cycle: Int = 0
     public var temperature: Double = 0.0
-
+    
     init() {}
-
-    init(percentage: Double, powerSource: String, health: Double, cycle: Int, temperature: Double) {
+    
+    init(
+        installed: Bool,
+        percentage: Double,
+        powerSource: String,
+        maxCapacity: Double,
+        cycle: Int,
+        temperature: Double
+    ) {
+        self.installed = installed
         self.percentage = percentage
         self.powerSource = powerSource
-        self.health = health
+        self.maxCapacity = maxCapacity
         self.cycle = cycle
         self.temperature = temperature
     }
-
+    
     public var description: String {
-        let format = """
-        Battery
-            Charged: %.1f%%
-            Power Source: %@
-            Health: %.1f%%
-            Cycle: %d
-            Temperature: %.1f°C
-        """
-        return String(format: format, percentage, powerSource, health, cycle, temperature)
+        if installed {
+#if arch(x86_64) // Intel Chip
+            let format = """
+            Battery
+                Charged: %.1f%%
+                Power Source: %@
+                Cycle: %d
+                Temperature: %.1f°C
+            """
+            return String(format: format, percentage, powerSource, cycle, temperature)
+#elseif arch(arm64) // Apple Silicon Chip
+            let format = """
+            Battery
+                Charged: %.1f%%
+                Power Source: %@
+                Max Capacity: %.1f%%
+                Cycle: %d
+                Temperature: %.1f°C
+            """
+            return String(format: format, percentage, powerSource, maxCapacity, cycle, temperature)
+#endif
+        } else {
+            return "Battery is not installed"
+        }
     }
-
+    
 }
 
 final public class AKBattery {
-
+    
     public internal(set) var current = AKBatteryInfo()
-
-    var service: io_service_t = 0
-
-    private func open() -> kern_return_t {
-        if service != 0 {
-            return kIOReturnStillOpen
-        }
-        service = IOServiceGetMatchingService(
-            kIOMasterPortDefault,
-            IOServiceNameMatching("AppleSmartBattery")
-        )
-        if service == 0 {
-            return kIOReturnNotFound
-        }
-        return kIOReturnSuccess
-    }
-
-    private func close() {
-        IOServiceClose(service)
-        IOObjectRelease(service)
-        service = 0
-    }
-
+    
     public func update() {
         var result = AKBatteryInfo()
+        var service: io_service_t = 0
+        
         defer {
-            close()
+            IOServiceClose(service)
+            IOObjectRelease(service)
             current = result
         }
-        if open() != kIOReturnSuccess { return }
+        
+        // Open Connection
+        service = IOServiceGetMatchingService(kIOMasterPortDefault,
+                                              IOServiceNameMatching("AppleSmartBattery"))
+        if service == MACH_PORT_NULL { return }
+        
+        // Read Dictionary Data
         var props: Unmanaged<CFMutableDictionary>? = nil
         guard IORegistryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, 0) == kIOReturnSuccess,
               let dict = props?.takeUnretainedValue() as? [String: AnyObject]
         else { return }
         props?.release()
-        if let designCapacity = dict["DesignCapacity"] as? Double,
-           let maxCapacity = dict["MaxCapacity"] as? Double,
+        
+        guard let installed = dict["BatteryInstalled"] as? Int else { return }
+        result.installed = (installed == 1)
+                
+        if let maxCapacity = dict["MaxCapacity"] as? Double,
            let currentCapacity = dict["CurrentCapacity"] as? Double {
+#if arch(x86_64) // Intel Chip
             result.percentage = 100.0 * currentCapacity / maxCapacity
-            result.health = 100.0 * maxCapacity / designCapacity
+#elseif arch(arm64) // Apple Silicon Chip
+            result.percentage = currentCapacity
+            result.maxCapacity = maxCapacity
+#endif
         }
         if let adapter = dict["AdapterDetails"] as? [String: AnyObject],
            let name = adapter["Name"] as? String {
@@ -108,5 +125,5 @@ final public class AKBattery {
             result.temperature = temperature / 100.0
         }
     }
-
+    
 }

@@ -30,7 +30,13 @@ public struct AKMemoryInfo {
     
     init() {}
     
-    init(percentage: Double, pressure: Double, app: Double, wired: Double, compressed: Double) {
+    init(
+        percentage: Double,
+        pressure: Double,
+        app: Double,
+        wired: Double,
+        compressed: Double
+    ) {
         self.percentage = percentage
         self.pressure = pressure
         self.app = app
@@ -88,6 +94,12 @@ final public class AKMemory {
     }
     
     public func update() {
+        var result = AKMemoryInfo()
+        
+        defer {
+            current = result
+        }
+        
         let maxMem = maxMemory
         let load = vmStatistics64
 
@@ -99,17 +111,13 @@ final public class AKMemory {
         let compressed  = Double(load.compressor_page_count) * unit
         let purgeable   = Double(load.purgeable_count) * unit
         let external    = Double(load.external_page_count) * unit
-        
         let using       = active + inactive + speculative + wired + compressed - purgeable - external
-        let percentage  = min(99.9, round(1000.0 * using / maxMem) / 10.0)
-        let pressure    = 100.0 * (wired + compressed) / maxMem
-        let app         = using - wired - compressed
         
-        current = AKMemoryInfo(percentage: percentage,
-                               pressure: round(10.0 * pressure) / 10.0,
-                               app: round(10.0 * app) / 10.0,
-                               wired: round(10.0 * wired) / 10.0,
-                               compressed: round(10.0 * compressed) / 10.0)
+        result.percentage = min(99.9, (100.0 * using / maxMem).round2dp)
+        result.pressure   = (100.0 * (wired + compressed) / maxMem).round2dp
+        result.app        = (using - wired - compressed).round2dp
+        result.wired      = wired.round2dp
+        result.compressed = compressed.round2dp
     }
     
 }
