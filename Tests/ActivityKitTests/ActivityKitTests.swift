@@ -1,9 +1,7 @@
-import XCTest
 @testable import ActivityKit
-
+import XCTest
 
 final class ActivityKitTests: XCTestCase {
-
     let observer = ActivityObserver()
 
     override func tearDown() {
@@ -29,9 +27,4 @@ final class ActivityKitTests: XCTestCase {
             }
         }
     }
-
-    static var allTests = [
-        ("testStatistics", testStatistics),
-    ]
-
 }

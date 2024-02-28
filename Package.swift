@@ -1,5 +1,4 @@
-// swift-tools-version:5.3
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version:5.8
 
 import PackageDescription
 
@@ -11,14 +10,16 @@ let package = Package(
     products: [
         .library(
             name: "ActivityKit",
-            targets: ["ActivityKit"]),
+            targets: ["ActivityKit"]
+        )
     ],
     targets: [
         .target(
             name: "ActivityKit",
-            dependencies: []),
+        ),
         .testTarget(
             name: "ActivityKitTests",
-            dependencies: ["ActivityKit"]),
+            dependencies: ["ActivityKit"]
+        )
     ]
 )

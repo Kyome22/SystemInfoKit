@@ -12,7 +12,7 @@ This framework is written in Swift 5.
 
 ## Installation
 
-ActivityKit supports CocoaPods and Swift Package Manager.
+ActivityKit supports Swift Package Manager.
 
 ## Usage
 
