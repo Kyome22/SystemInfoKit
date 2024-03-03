@@ -13,7 +13,7 @@ protocol NetworkRepository: AnyObject {
 final class NetworkRepositoryImpl: NetworkRepository {
     var current = NetworkInfo()
     private var interval: Double = 1.0
-    private var previousIP: String = "xx.x.x.xx"
+    private var previousIP: String = "-"
     private var previousUpload: Int64 = .zero
     private var previousDownload: Int64 = .zero
 

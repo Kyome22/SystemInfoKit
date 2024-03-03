@@ -2,7 +2,7 @@
 import XCTest
 import Combine
 
-final class ActivityKitTests: XCTestCase {
+final class SystemInfoKitTests: XCTestCase {
     var cancellables = Set<AnyCancellable>()
 
     override func tearDown() {
@@ -13,7 +13,7 @@ final class ActivityKitTests: XCTestCase {
     func testStatistics() {
         let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
         var cnt = 0
-        let expect = expectation(description: "called update()")
+        let expect = expectation(description: "systemInfo")
 
         observer.systemInfoPublisher
             .sink { systemInfoBundle in
@@ -30,7 +30,7 @@ final class ActivityKitTests: XCTestCase {
         waitForExpectations(timeout: 7.0) { [observer] (error) in
             observer.stopMonitoring()
             if let error = error {
-                XCTFail("Did not call update(), \(error.localizedDescription)")
+                XCTFail("Did not get systemInfo, \(error.localizedDescription)")
             }
         }
     }
