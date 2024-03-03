@@ -4,6 +4,8 @@ public struct SystemInfoBundle {
     public var batteryInfo: BatteryInfo?
     public var storageInfo: StorageInfo?
     public var networkInfo: NetworkInfo?
+
+    public init() {}
 }
 
 extension SystemInfoBundle: CustomStringConvertible {
