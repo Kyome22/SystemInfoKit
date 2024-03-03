@@ -5,7 +5,7 @@ struct LoadData {
     var up: Double
     var down: Double
 
-    init(ip: String = "012.345.67.89", up: Double = .zero, down: Double = .zero) {
+    init(ip: String = "0.0.0.0", up: Double = .zero, down: Double = .zero) {
         self.ip = ip
         self.up = up
         self.down = down
