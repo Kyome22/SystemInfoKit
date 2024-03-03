@@ -1,0 +1,39 @@
+/*
+ Localizable.strings
+ Created by Takuto Nakamura on 2024/03/03.
+ */
+
+// CPU
+"cpu%lf" = "CPU: %4.1f%%";
+"cpuSystem%lf" = "システム: %4.1f%%";
+"cpuUser%lf" = "ユーザ: %4.1f%%";
+"cpuIdle%lf" = "アイドル状態: %4.1f%%";
+
+// Memory
+"memory%lf" = "メモリ: %4.1f%%";
+"memoryPressure%lf" = "プレッシャー: %4.1f%%";
+"memoryApp%lf" = "アプリ: %4.1f GB";
+"memoryWired%lf" = "確保: %4.1f GB";
+"memoryCompressed%lf" = "圧縮: %4.1f GB";
+
+// Battery
+"battery%lf" = "バッテリー: %5.1f%%";
+"batteryIsNotInstalled" = "バッテリー: 非搭載";
+"batteryHealth%lf" = "ヘルス: %5.1f%%";
+"batteryMaxCapacity%lf" = "最大容量: %5.1f%%";
+"batteryPowerSource%@" = "供給源: %@";
+"batteryCycle%lld" = "充放電回数: %lld";
+"batteryTemperature%lf" = "温度: %4.1f℃";
+"batteryUnknown" = "不明";
+
+// Storage
+"storage%lf" = "ストレージ: %4.1f%% used";
+
+// Network
+"network%@" = "ネットワーク: %@";
+"networkLocalIP%@" = "ローカル IP: %@";
+"networkUpload%@" = "アップロード: %@";
+"networkDownload%@" = "ダウンロード: %@";
+"networkNoConnection" = "接続なし";
+"networkUnknown" = "不明";
+

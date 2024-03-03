@@ -1,6 +1,6 @@
-# ActivityKit
+# SystemInfoKit
 
-ActivityKit provides macOS system information.
+SystemInfoKit provides macOS system information.
 
 - CPU usage
 - Memory performance
@@ -8,60 +8,62 @@ ActivityKit provides macOS system information.
 - Disk capacity
 - Network connection
 
-This framework is written in Swift 5.
+## Requirements
+
+- Development with Xcode 15.2+
+- Written in Swift 5.9
+- swift-tools-version: 5.9
+- Compatible with macOS 12.0+
 
 ## Installation
 
-ActivityKit supports Swift Package Manager.
+SystemInfoKit supports Swift Package Manager.
 
 ## Usage
 
 ```swift
-import ActivityKit
+import SystemInfoKit
+import Combine
 
-// get all statistics per 3 seconds
-let observer = ActivityObserver()
-observer.updatedStatisticsHandler = { observer in
-    Swift.print(observer.statistics)
-}
-observer.start(interval: 3.0)
+// Get all system info per 3 seconds
+let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
+var cancellables = Set<AnyCancellable>()
 
-// finish to get statistics
-observer.stop()
+observer.systemInfoPublisher
+    .sink { systemInfo in
+        Swift.print(systemInfo)
+    }
+    .store(in: &cancellables)
+
+observer.startMonitoring()
+
+// Finish to get system info
+observer.stopMonitoring()
 ```
 
 ## Sample Output
 
 ```console
-☆☆☆☆☆☆☆☆☆☆ ActivityKit Stats ☆☆☆☆☆☆☆☆☆☆
-CPU
-    Usage: 17.7%
-    System: 4.3%
-    User: 13.4%
-    Idle: 82.3%
-Memory
-    Performance: 61.1%
-    Pressure: 15.3%
-    App: 14.7 GB
-    Wired: 2.5 GB
-    Compressed: 2.4 GB
-Battery
-    Charged: 100.0%
+CPU:  7.5%
+    System:  2.9%
+    User:  4.6%
+    Idle: 92.5%
+Memory: 72.9%
+    Pressure: 33.1%
+    App:  6.4 GB
+    Wired:  1.8 GB
+    Compressed:  3.5 GB
+Battery: not installed
     Power Source: Unknown
-    Max Capacity: 100.0%
-    Cycle: 3
-    Temperature: 30.3°C
-Disk
-    Capacity: 27.3%
-    Total: 494.4 GB
-    Free: 359.4 GB
-    Used: 135.0 GB
-Network
-    Name Wi-Fi
-    Local IP: xx.x.x.xx
-    Upload: 10.3 KB/s
-    Download: 6.3 KB/s
-☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆
+    Max Capacity:   0.0%
+    Cycle Count: 0
+    Temperature:  0.0℃
+Storage: 58.7% used
+    584.13 GB / 994.66 GB
+Network: Ethernet
+    Local IP: xxx.xx.x.xxx
+    Upload:  50.7 KB/s
+    Download:   1.7 KB/s
 ```
 
 ## Copyright and License

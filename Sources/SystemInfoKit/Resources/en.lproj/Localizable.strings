@@ -1,0 +1,38 @@
+/* 
+  Localizable.strings
+  Created by Takuto Nakamura on 2024/03/03.
+*/
+
+// CPU
+"cpu%lf" = "CPU: %4.1f%%";
+"cpuSystem%lf" = "System: %4.1f%%";
+"cpuUser%lf" = "User: %4.1f%%";
+"cpuIdle%lf" = "Idle: %4.1f%%";
+
+// Memory
+"memory%lf" = "Memory: %4.1f%%";
+"memoryPressure%lf" = "Pressure: %4.1f%%";
+"memoryApp%lf" = "App: %4.1f GB";
+"memoryWired%lf" = "Wired: %4.1f GB";
+"memoryCompressed%lf" = "Compressed: %4.1f GB";
+
+// Battery
+"battery%lf" = "Battery: %5.1f%%";
+"batteryIsNotInstalled" = "Battery: not installed";
+"batteryHealth%lf" = "Health: %5.1f%%";
+"batteryMaxCapacity%lf" = "Max Capacity: %5.1f%%";
+"batteryPowerSource%@" = "Power Source: %@";
+"batteryCycle%lld" = "Cycle Count: %lld";
+"batteryTemperature%lf" = "Temperature: %4.1f℃";
+"batteryUnknown" = "Unknown";
+
+// Storage
+"storage%lf" = "Storage: %4.1f%% used";
+
+// Network
+"network%@" = "Network: %@";
+"networkLocalIP%@" = "Local IP: %@";
+"networkUpload%@" = "Upload: %@";
+"networkDownload%@" = "Download: %@";
+"networkNoConnection" = "No Connection";
+"networkUnknown" = "Unknown";

@@ -1,25 +1,27 @@
-// swift-tools-version:5.8
+// swift-tools-version:5.9
 
 import PackageDescription
 
 let package = Package(
-    name: "ActivityKit",
+    name: "SystemInfoKit",
+    defaultLocalization: "en",
     platforms: [
-        .macOS(.v10_15)
+        .macOS(.v12)
     ],
     products: [
         .library(
-            name: "ActivityKit",
-            targets: ["ActivityKit"]
+            name: "SystemInfoKit",
+            targets: ["SystemInfoKit"]
         )
     ],
     targets: [
         .target(
-            name: "ActivityKit",
+            name: "SystemInfoKit",
+            resources: [.process("Resources")]
         ),
         .testTarget(
-            name: "ActivityKitTests",
-            dependencies: ["ActivityKit"]
+            name: "SystemInfoKitTests",
+            dependencies: ["SystemInfoKit"]
         )
     ]
 )
