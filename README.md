@@ -61,7 +61,7 @@ Battery: not installed
 Storage: 58.7% used
     584.13 GB / 994.66 GB
 Network: Ethernet
-    Local IP: xxx.xx.x.xxx
+    Local IP: 012.345.67.89
     Upload:  50.7 KB/s
     Download:   1.7 KB/s
 ```
