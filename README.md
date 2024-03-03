@@ -5,7 +5,7 @@ SystemInfoKit provides macOS system information.
 - CPU usage
 - Memory performance
 - Battery state
-- Disk capacity
+- Storage capacity
 - Network connection
 
 ## Requirements
