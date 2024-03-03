@@ -27,7 +27,7 @@
 "batteryUnknown" = "不明";
 
 // Storage
-"storage%lf" = "ストレージ: %4.1f%% used";
+"storage%lf" = "ストレージ: %4.1f%% 使用中";
 
 // Network
 "network%@" = "ネットワーク: %@";
