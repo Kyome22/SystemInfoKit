@@ -1,7 +1,7 @@
 import Foundation
 
-struct LoadData {
-    var ip: String
+public struct LoadData {
+    public var ip: String
     var up: Double
     var down: Double
 
@@ -12,11 +12,11 @@ struct LoadData {
     }
 }
 
-struct PacketData: CustomStringConvertible {
+public struct PacketData: CustomStringConvertible {
     var value: Double
     var unit: String
 
-    var description: String {
+    public var description: String {
         return String(format: "%5.1f \(unit)", value)
     }
 
@@ -30,10 +30,10 @@ public struct NetworkInfo: SystemInfo {
     public let type: SystemInfoType = .network
     public let value: Double = .zero
     public let icon: String = "network"
-    private var nameValue: String
-    private var loadDataValue = LoadData()
-    private var uploadValue = PacketData()
-    private var downloadValue = PacketData()
+    public private(set) var nameValue: String
+    public private(set) var loadDataValue = LoadData()
+    public private(set) var uploadValue = PacketData()
+    public private(set) var downloadValue = PacketData()
 
     public var summary: String {
         return String(localized: "network\(nameValue)", bundle: .module)
