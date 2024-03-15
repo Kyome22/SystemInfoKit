@@ -4,8 +4,8 @@ SystemInfoKit provides macOS system information.
 
 - CPU usage
 - Memory performance
-- Battery state
 - Storage capacity
+- Battery state
 - Network connection
 
 ## Requirements
@@ -53,13 +53,13 @@ Memory: 72.9%
     App:  6.4 GB
     Wired:  1.8 GB
     Compressed:  3.5 GB
+Storage: 58.7% used
+    584.13 GB / 994.66 GB
 Battery: not installed
     Power Source: Unknown
     Max Capacity:   0.0%
     Cycle Count: 0
     Temperature:  0.0℃
-Storage: 58.7% used
-    584.13 GB / 994.66 GB
 Network: Ethernet
     Local IP: 192.0.2.1
     Upload:  50.7 KB/s

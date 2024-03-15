@@ -7,8 +7,8 @@ public final class SystemInfoObserver {
             monitorInterval: monitorInterval,
             cpuType: CPURepositoryImpl.self,
             memoryType: MemoryRepositoryImpl.self,
-            batteryType: BatteryRepositoryImpl.self,
             storageType: StorageRepositoryImpl.self,
+            batteryType: BatteryRepositoryImpl.self,
             networkType: NetworkRepositoryImpl.self
         )
     }
@@ -18,26 +18,26 @@ public final class SystemInfoObserver {
             monitorInterval: monitorInterval,
             cpuType: CPURepositoryMock.self,
             memoryType: MemoryRepositoryMock.self,
-            batteryType: BatteryRepositoryMock.self,
             storageType: StorageRepositoryMock.self,
+            batteryType: BatteryRepositoryMock.self,
             networkType: NetworkRepositoryMock.self
         )
     }
 
     public var activatedCPU: Bool = true
     public var activatedMemory: Bool = true
-    public var activatedBattery: Bool = true
     public var activatedStorage: Bool = true
+    public var activatedBattery: Bool = true
     public var activatedNetwork: Bool = true
 
     private let cpuType: CPURepository.Type
     private var cpuRepository: (any CPURepository)?
     private let memoryType: MemoryRepository.Type
     private var memoryRepository: (any MemoryRepository)?
-    private let batteryType: BatteryRepository.Type
-    private var batteryRepository: (any BatteryRepository)?
     private let storageType: StorageRepository.Type
     private var storageRepository: (any StorageRepository)?
+    private let batteryType: BatteryRepository.Type
+    private var batteryRepository: (any BatteryRepository)?
     private let networkType: NetworkRepository.Type
     private var networkRepository: (any NetworkRepository)?
     private var timerCancellables: AnyCancellable?
@@ -52,23 +52,23 @@ public final class SystemInfoObserver {
         monitorInterval: Double = 5.0,
         cpuType: CPURepository.Type,
         memoryType: MemoryRepository.Type,
-        batteryType: BatteryRepository.Type,
         storageType: StorageRepository.Type,
+        batteryType: BatteryRepository.Type,
         networkType: NetworkRepository.Type
     ) {
         self.monitorInterval = monitorInterval
         self.cpuType = cpuType
         self.memoryType = memoryType
-        self.batteryType = batteryType
         self.storageType = storageType
+        self.batteryType = batteryType
         self.networkType = networkType
     }
 
     public func startMonitoring() {
         cpuRepository = cpuType.init()
         memoryRepository = memoryType.init()
-        batteryRepository = batteryType.init()
         storageRepository = storageType.init()
+        batteryRepository = batteryType.init()
         networkRepository = networkType.init()
         timerCancellables = Timer
             .publish(every: monitorInterval, on: RunLoop.main, in: .common)
@@ -84,8 +84,8 @@ public final class SystemInfoObserver {
         timerCancellables = nil
         cpuRepository = nil
         memoryRepository = nil
-        batteryRepository = nil
         storageRepository = nil
+        batteryRepository = nil
         networkRepository = nil
     }
 
@@ -103,19 +103,19 @@ public final class SystemInfoObserver {
         } else {
             memoryRepository?.reset()
         }
-        // Battery
-        if activatedBattery {
-            batteryRepository?.update()
-            systemInfo.batteryInfo = batteryRepository?.current
-        } else {
-            batteryRepository?.reset()
-        }
         // Storage
         if activatedStorage {
             storageRepository?.update()
             systemInfo.storageInfo = storageRepository?.current
         } else {
             storageRepository?.reset()
+        }
+        // Battery
+        if activatedBattery {
+            batteryRepository?.update()
+            systemInfo.batteryInfo = batteryRepository?.current
+        } else {
+            batteryRepository?.reset()
         }
         // Network
         if activatedNetwork {
