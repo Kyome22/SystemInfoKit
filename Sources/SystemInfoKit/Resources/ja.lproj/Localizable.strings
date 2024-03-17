@@ -17,6 +17,7 @@
 "memoryCompressed%lf" = "圧縮: %4.1f GB";
 
 // Battery
+"battery" = "バッテリー";
 "battery%lf" = "バッテリー: %5.1f%%";
 "batteryIsNotInstalled" = "バッテリー: 非搭載";
 "batteryHealth%lf" = "ヘルス: %5.1f%%";

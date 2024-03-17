@@ -2,8 +2,8 @@ public struct BatteryInfo: SystemInfo {
     public let type: SystemInfoType = .battery
     public internal(set) var value: Double = .zero
     public let installed: Bool
-    private(set) var isCharging: Bool = false
-    private var powerSourceValue: String
+    public internal(set) var isCharging: Bool = false
+    private var adapterName: String?
     private var healthValue: Double = .zero
     private var maxCapacityValue: Double = .zero
     private var cycleValue: Int = .zero
@@ -35,6 +35,14 @@ public struct BatteryInfo: SystemInfo {
         }
     }
 
+    private var powerSourceValue: String {
+        if isCharging {
+            return adapterName ?? String(localized: "batteryUnknown", bundle: .module)
+        } else {
+            return String(localized: "battery", bundle: .module)
+        }
+    }
+
     private var healthOrMaxCapacity: String {
 #if arch(x86_64) // Intel chip
         return String(localized: "batteryHealth\(healthValue)", bundle: .module)
@@ -54,15 +62,14 @@ public struct BatteryInfo: SystemInfo {
 
     init(installed: Bool = false) {
         self.installed = installed
-        self.powerSourceValue = String(localized: "batteryUnknown", bundle: .module)
     }
 
     mutating func setIsCharging(_ value: Bool) {
         self.isCharging = value
     }
 
-    mutating func setPowerSource(_ value: String) {
-        self.powerSourceValue = value
+    mutating func setAdapterName(_ value: String) {
+        self.adapterName = value
     }
 
     mutating func setHealthValue(_ value: Double) {

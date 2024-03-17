@@ -17,6 +17,7 @@
 "memoryCompressed%lf" = "Compressed: %4.1f GB";
 
 // Battery
+"battery" = "Battery";
 "battery%lf" = "Battery: %5.1f%%";
 "batteryIsNotInstalled" = "Battery: not installed";
 "batteryHealth%lf" = "Health: %5.1f%%";

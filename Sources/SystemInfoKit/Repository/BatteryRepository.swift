@@ -50,7 +50,7 @@ final class BatteryRepositoryImpl: BatteryRepository {
         }
         if let adapter = dict["AdapterDetails"] as? [String: AnyObject],
            let name = adapter["Name"] as? String {
-            result.setPowerSource(name)
+            result.setAdapterName(name)
         }
         if let cycleCount = dict["CycleCount"] as? Int {
             result.setCycleValue(cycleCount)
