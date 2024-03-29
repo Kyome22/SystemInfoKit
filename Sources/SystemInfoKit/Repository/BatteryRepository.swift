@@ -34,17 +34,21 @@ final class BatteryRepositoryImpl: BatteryRepository {
         guard let installed = dict["BatteryInstalled"] as? Int else { return }
         var result = BatteryInfo(installed: installed == 1)
 
+#if arch(x86_64) // Intel chip
         if let designCapacity = dict["DesignCapacity"] as? Double,
            let maxCapacity = dict["MaxCapacity"] as? Double,
            let currentCapacity = dict["CurrentCapacity"] as? Double {
-#if arch(x86_64) // Intel chip
-            result.value = 100.0 * currentCapacity / maxCapacity
-            result.setHealthValue(100.0 * maxCapacity / designCapacity)
-#elseif arch(arm64) // Apple Silicon chip
-            result.value = currentCapacity
-            result.setMaxCapacityValue(maxCapacity.round2dp)
-#endif
+            result.value = (100.0 * currentCapacity / maxCapacity).round2dp
+            result.setHealthValue((100.0 * maxCapacity / designCapacity).round2dp)
         }
+#elseif arch(arm64) // Apple Silicon chip
+        if let designCapacity = dict["DesignCapacity"] as? Double,
+           let nominalCapacity = dict["NominalChargeCapacity"] as? Double,
+           let currentCapacity = dict["CurrentCapacity"] as? Double {
+            result.value = currentCapacity
+            result.setMaxCapacityValue(min((100.0 * nominalCapacity / designCapacity).round2dp, 100.0))
+        }
+#endif
         if let isCharging = dict["IsCharging"] as? Int {
             result.setIsCharging(isCharging == 1)
         }
