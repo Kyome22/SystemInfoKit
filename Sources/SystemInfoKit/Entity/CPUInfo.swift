@@ -21,14 +21,14 @@ public struct CPUInfo: SystemInfo {
     init() {}
 
     mutating func setSystemValue(_ value: Double) {
-        self.systemValue = value
+        systemValue = value
     }
 
     mutating func setUserValue(_ value: Double) {
-        self.userValue = value
+        userValue = value
     }
 
     mutating func setIdleValue(_ value: Double) {
-        self.idleValue = value
+        idleValue = value
     }
 }

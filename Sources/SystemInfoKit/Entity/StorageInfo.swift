@@ -1,10 +1,10 @@
 import Foundation
 
-struct ByteData: CustomStringConvertible {
-    var value: Double
-    var unit: String
+public struct ByteData: CustomStringConvertible {
+    public internal(set) var value: Double
+    public internal(set) var unit: String
 
-    var description: String {
+    public var description: String {
         return String(format: "%.2f %@", value, unit)
     }
 }
@@ -13,9 +13,9 @@ public struct StorageInfo: SystemInfo {
     public let type: SystemInfoType = .storage
     public internal(set) var value: Double = .zero
     public let icon: String = "internaldrive"
-    private var totalValue = ByteData(value: .zero, unit: "GB")
-    private var availableValue = ByteData(value: .zero, unit: "GB")
-    private var usedValue = ByteData(value: .zero, unit: "GB")
+    public private(set) var totalValue = ByteData(value: .zero, unit: "GB")
+    public private(set) var availableValue = ByteData(value: .zero, unit: "GB")
+    public private(set) var usedValue = ByteData(value: .zero, unit: "GB")
 
     public var summary: String {
         return String(localized: "storage\(value)", bundle: .module)
@@ -42,14 +42,14 @@ public struct StorageInfo: SystemInfo {
     }
 
     mutating func setTotalValue(byteCount: Int64) {
-        self.totalValue = convertByteData(byteCount)
+        totalValue = convertByteData(byteCount)
     }
 
     mutating func setAvailableValue(byteCount: Int64) {
-        self.availableValue = convertByteData(byteCount)
+        availableValue = convertByteData(byteCount)
     }
 
     mutating func setUsedValue(byteCount: Int64) {
-        self.usedValue = convertByteData(byteCount)
+        usedValue = convertByteData(byteCount)
     }
 }

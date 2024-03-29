@@ -48,7 +48,7 @@ public struct NetworkInfo: SystemInfo {
     }
 
     init() {
-        self.nameValue = String(localized: "networkNoConnection", bundle: .module)
+        nameValue = String(localized: "networkNoConnection", bundle: .module)
     }
 
     private func convert(byte: Double) -> PacketData {
@@ -68,12 +68,12 @@ public struct NetworkInfo: SystemInfo {
     }
 
     mutating func setNameValue(_ value: String) {
-        self.nameValue = value
+        nameValue = value
     }
 
     mutating func setLoadDataValue(_ value: LoadData) {
-        self.loadDataValue = value
-        self.uploadValue = convert(byte: value.up)
-        self.downloadValue = convert(byte: value.down)
+        loadDataValue = value
+        uploadValue = convert(byte: value.up)
+        downloadValue = convert(byte: value.down)
     }
 }

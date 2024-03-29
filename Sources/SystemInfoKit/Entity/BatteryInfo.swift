@@ -65,26 +65,26 @@ public struct BatteryInfo: SystemInfo {
     }
 
     mutating func setIsCharging(_ value: Bool) {
-        self.isCharging = value
+        isCharging = value
     }
 
     mutating func setAdapterName(_ value: String) {
-        self.adapterName = value
+        adapterName = value
     }
 
     mutating func setHealthValue(_ value: Double) {
-        self.healthValue = value
+        healthValue = value
     }
 
     mutating func setMaxCapacityValue(_ value: Double) {
-        self.maxCapacityValue = value
+        maxCapacityValue = value
     }
 
     mutating func setCycleValue(_ value: Int) {
-        self.cycleValue = value
+        cycleValue = value
     }
 
     mutating func setTemperatureValue(_ value: Double) {
-        self.temperatureValue = value
+        temperatureValue = value
     }
 }

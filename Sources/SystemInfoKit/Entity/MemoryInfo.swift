@@ -23,18 +23,18 @@ public struct MemoryInfo: SystemInfo {
     init() {}
 
     mutating func setPressureValue(_ value: Double) {
-        self.pressureValue = value
+        pressureValue = value
     }
 
     mutating func setAppValue(_ value: Double) {
-        self.appValue = value
+        appValue = value
     }
 
     mutating func setWiredValue(_ value: Double) {
-        self.wiredValue = value
+        wiredValue = value
     }
 
     mutating func setCompressedValue(_ value: Double) {
-        self.compressedValue = value
+        compressedValue = value
     }
 }
