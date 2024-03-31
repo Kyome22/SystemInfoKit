@@ -66,6 +66,11 @@ Network: Ethernet
     Download:   1.7 KB/s
 ```
 
+## Supported languages
+
+- English (primary)
+- Japanese
+
 ## Copyright and License
 
 Copyright 2020 Takuto Nakamura
