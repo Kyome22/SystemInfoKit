@@ -31,13 +31,13 @@ public struct StorageInfo: SystemInfo {
 
     init() {}
 
-    // support french style 3,14 → 3.14
     private func convertByteData(_ byteCount: Int64) -> ByteData {
-        let fmt = ByteCountFormatter()
-        fmt.countStyle = .decimal
-        let array = fmt.string(fromByteCount: byteCount)
-            .replacingOccurrences(of: ",", with: ".")
-            .components(separatedBy: .whitespaces)
+        let style = ByteCountFormatStyle(
+            style: .decimal,
+            allowedUnits: [.kb, .mb, .gb, .tb, .pb, .eb],
+            locale: Locale(identifier: "en_US")
+        )
+        let array = style.format(byteCount).components(separatedBy: .whitespaces)
         return ByteData(value: Double(array[0]) ?? 0.0, unit: array[1])
     }
 
