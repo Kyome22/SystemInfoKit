@@ -70,6 +70,7 @@ Network: Ethernet
 
 - English (primary)
 - Japanese
+- Korean
 
 ## Copyright and License
 
