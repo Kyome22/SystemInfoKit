@@ -43,18 +43,26 @@ public struct BatteryInfo: SystemInfo {
         }
     }
 
-    private var healthOrMaxCapacity: String {
-#if arch(x86_64) // Intel chip
-        return String(localized: "batteryHealth\(healthValue)", bundle: .module)
-#elseif arch(arm64) // Apple Silicon chip
+    private var condition: String {
+        return String(localized: "batteryCondition\(healthValue)", bundle: .module)
+    }
+
+    private var maxCapacity: String {
         return String(localized: "batteryMaxCapacity\(maxCapacityValue)", bundle: .module)
+    }
+
+    private var conditionOrMaxCapacity: String {
+#if arch(x86_64) // Intel chip
+        return condition
+#elseif arch(arm64) // Apple Silicon chip
+        return maxCapacity
 #endif
     }
 
     public var details: [String] {
         return [
             String(localized: "batteryPowerSource\(powerSourceValue)", bundle: .module),
-            healthOrMaxCapacity,
+            conditionOrMaxCapacity,
             String(localized: "batteryCycle\(cycleValue)", bundle: .module),
             String(localized: "batteryTemperature\(temperatureValue)", bundle: .module)
         ]
