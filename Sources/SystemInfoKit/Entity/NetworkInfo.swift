@@ -1,7 +1,7 @@
 import Foundation
 
-public struct LoadData {
-    public var ip: String
+struct LoadData {
+    var ip: String
     var up: Double
     var down: Double
 
@@ -13,8 +13,8 @@ public struct LoadData {
 }
 
 public struct PacketData: CustomStringConvertible {
-    var value: Double
-    var unit: String
+    public var value: Double
+    public var unit: String
 
     public var description: String {
         return String(format: "%5.1f \(unit)", value)
@@ -31,7 +31,7 @@ public struct NetworkInfo: SystemInfo {
     public let value: Double = .zero
     public let icon: String = "network"
     public private(set) var nameValue: String
-    public private(set) var loadDataValue = LoadData()
+    public private(set) var ipValue: String = "-"
     public private(set) var uploadValue = PacketData()
     public private(set) var downloadValue = PacketData()
 
@@ -41,7 +41,7 @@ public struct NetworkInfo: SystemInfo {
 
     public var details: [String] {
         return [
-            String(localized: "networkLocalIP\(loadDataValue.ip)", bundle: .module),
+            String(localized: "networkLocalIP\(ipValue)", bundle: .module),
             String(localized: "networkUpload\(uploadValue.description)", bundle: .module),
             String(localized: "networkDownload\(downloadValue.description)", bundle: .module)
         ]
@@ -72,7 +72,7 @@ public struct NetworkInfo: SystemInfo {
     }
 
     mutating func setLoadDataValue(_ value: LoadData) {
-        loadDataValue = value
+        ipValue = value.ip
         uploadValue = convert(byte: value.up)
         downloadValue = convert(byte: value.down)
     }
