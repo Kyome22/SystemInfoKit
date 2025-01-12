@@ -10,6 +10,7 @@ final class SystemInfoKitTests: XCTestCase {
         cancellables.removeAll()
     }
 
+    @MainActor
     func testStatistics() {
         let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
         var cnt = 0

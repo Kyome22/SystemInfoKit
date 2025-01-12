@@ -1,4 +1,4 @@
-import Darwin
+@preconcurrency import Darwin
 
 protocol MemoryRepository: AnyObject {
     var current: MemoryInfo { get }
@@ -24,7 +24,7 @@ final class MemoryRepositoryImpl: MemoryRepository {
         var size: mach_msg_type_number_t = hostBasicInfoCount
         let hostInfo = host_basic_info_t.allocate(capacity: 1)
         let _ = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int()) { (pointer) -> kern_return_t in
-            return host_info(mach_host_self(), HOST_BASIC_INFO, pointer, &size)
+            host_info(mach_host_self(), HOST_BASIC_INFO, pointer, &size)
         }
         let data = hostInfo.move()
         hostInfo.deallocate()
@@ -35,7 +35,7 @@ final class MemoryRepositoryImpl: MemoryRepository {
         var size: mach_msg_type_number_t = hostVmInfo64Count
         let hostInfo = vm_statistics64_t.allocate(capacity: 1)
         let _ = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { (pointer) -> kern_return_t in
-            return host_statistics64(mach_host_self(), HOST_VM_INFO64, pointer, &size)
+            host_statistics64(mach_host_self(), HOST_VM_INFO64, pointer, &size)
         }
         let data = hostInfo.move()
         hostInfo.deallocate()

@@ -22,13 +22,14 @@ final class BatteryRepositoryImpl: BatteryRepository {
 
         // Open Connection
         service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceNameMatching("AppleSmartBattery"))
-        if service == MACH_PORT_NULL { return }
+        guard service != MACH_PORT_NULL else { return }
 
         // Read Dictionary Data
         var props: Unmanaged<CFMutableDictionary>? = nil
         guard IORegistryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, 0) == kIOReturnSuccess,
-              let dict = props?.takeUnretainedValue() as? [String: AnyObject]
-        else { return }
+              let dict = props?.takeUnretainedValue() as? [String: AnyObject] else {
+            return
+        }
         props?.release()
 
         guard let installed = dict["BatteryInstalled"] as? Int else { return }

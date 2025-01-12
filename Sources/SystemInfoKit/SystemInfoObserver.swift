@@ -3,7 +3,7 @@ import Combine
 
 public final class SystemInfoObserver {
     public static func shared(monitorInterval: Double = 5.0) -> SystemInfoObserver {
-        return SystemInfoObserver(
+        SystemInfoObserver(
             monitorInterval: monitorInterval,
             cpuType: CPURepositoryImpl.self,
             memoryType: MemoryRepositoryImpl.self,
@@ -14,7 +14,7 @@ public final class SystemInfoObserver {
     }
 
     public static func sharedMock(monitorInterval: Double = 5.0) -> SystemInfoObserver {
-        return SystemInfoObserver(
+        SystemInfoObserver(
             monitorInterval: monitorInterval,
             cpuType: CPURepositoryMock.self,
             memoryType: MemoryRepositoryMock.self,
@@ -24,21 +24,21 @@ public final class SystemInfoObserver {
         )
     }
 
-    public var activatedCPU: Bool = true
-    public var activatedMemory: Bool = true
-    public var activatedStorage: Bool = true
-    public var activatedBattery: Bool = true
-    public var activatedNetwork: Bool = true
+    public var activatedCPU = true
+    public var activatedMemory = true
+    public var activatedStorage = true
+    public var activatedBattery = true
+    public var activatedNetwork = true
 
-    private let cpuType: CPURepository.Type
+    private let cpuType: any CPURepository.Type
     private var cpuRepository: (any CPURepository)?
-    private let memoryType: MemoryRepository.Type
+    private let memoryType: any MemoryRepository.Type
     private var memoryRepository: (any MemoryRepository)?
-    private let storageType: StorageRepository.Type
+    private let storageType: any StorageRepository.Type
     private var storageRepository: (any StorageRepository)?
-    private let batteryType: BatteryRepository.Type
+    private let batteryType: any BatteryRepository.Type
     private var batteryRepository: (any BatteryRepository)?
-    private let networkType: NetworkRepository.Type
+    private let networkType: any NetworkRepository.Type
     private var networkRepository: (any NetworkRepository)?
     private var timerCancellables: AnyCancellable?
     private let monitorInterval: Double
@@ -50,11 +50,11 @@ public final class SystemInfoObserver {
 
     private init(
         monitorInterval: Double = 5.0,
-        cpuType: CPURepository.Type,
-        memoryType: MemoryRepository.Type,
-        storageType: StorageRepository.Type,
-        batteryType: BatteryRepository.Type,
-        networkType: NetworkRepository.Type
+        cpuType: any CPURepository.Type,
+        memoryType: any MemoryRepository.Type,
+        storageType: any StorageRepository.Type,
+        batteryType: any BatteryRepository.Type,
+        networkType: any NetworkRepository.Type
     ) {
         self.monitorInterval = monitorInterval
         self.cpuType = cpuType

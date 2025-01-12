@@ -59,7 +59,7 @@ final class NetworkRepositoryImpl: NetworkRepository {
         guard addr.sa_family == UInt8(AF_INET) else { return nil }
         var ip = [CChar](repeating: 0, count: Int(NI_MAXHOST))
         getnameinfo(&addr, socklen_t(addr.sa_len), &ip, socklen_t(ip.count), nil, socklen_t(0), NI_NUMERICHOST)
-        return String(cString: ip)
+        return String(cString: ip, encoding: .utf8)
     }
 
     private func getUpDown(_ id: String) -> LoadData {

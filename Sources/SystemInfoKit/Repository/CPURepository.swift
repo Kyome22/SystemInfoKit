@@ -21,7 +21,7 @@ final class CPURepositoryImpl: CPURepository {
         var size: mach_msg_type_number_t = loadInfoCount
         let hostInfo = host_cpu_load_info_t.allocate(capacity: 1)
         let _ = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { (pointer) -> kern_return_t in
-            return host_statistics(mach_host_self(), HOST_CPU_LOAD_INFO, pointer, &size)
+            host_statistics(mach_host_self(), HOST_CPU_LOAD_INFO, pointer, &size)
         }
         let data = hostInfo.move()
         hostInfo.deallocate()

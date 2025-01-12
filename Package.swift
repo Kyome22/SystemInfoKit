@@ -1,6 +1,10 @@
-// swift-tools-version:5.9
+// swift-tools-version: 6.0
 
 import PackageDescription
+
+let swiftSettings: [SwiftSetting] = [
+    .enableUpcomingFeature("ExistentialAny"),
+]
 
 let package = Package(
     name: "SystemInfoKit",
@@ -17,11 +21,13 @@ let package = Package(
     targets: [
         .target(
             name: "SystemInfoKit",
-            resources: [.process("Resources")]
+            resources: [.process("Resources")],
+            swiftSettings: swiftSettings
         ),
         .testTarget(
             name: "SystemInfoKitTests",
-            dependencies: ["SystemInfoKit"]
+            dependencies: ["SystemInfoKit"],
+            swiftSettings: swiftSettings
         )
     ]
 )
