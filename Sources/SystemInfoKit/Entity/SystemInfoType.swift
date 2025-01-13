@@ -1,4 +1,4 @@
-public enum SystemInfoType {
+public enum SystemInfoType: Sendable {
     case cpu
     case memory
     case storage

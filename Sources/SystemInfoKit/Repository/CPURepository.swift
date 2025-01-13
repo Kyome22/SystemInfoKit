@@ -1,14 +1,6 @@
 import Darwin
 
-protocol CPURepository: AnyObject {
-    var current: CPUInfo { get }
-
-    init()
-
-    func update()
-}
-
-final class CPURepositoryImpl: CPURepository {
+struct CPURepository: Sendable {
     var current = CPUInfo()
     private let loadInfoCount: mach_msg_type_number_t!
     private var loadPrevious = host_cpu_load_info()
@@ -21,14 +13,14 @@ final class CPURepositoryImpl: CPURepository {
         var size: mach_msg_type_number_t = loadInfoCount
         let hostInfo = host_cpu_load_info_t.allocate(capacity: 1)
         let _ = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { (pointer) -> kern_return_t in
-            return host_statistics(mach_host_self(), HOST_CPU_LOAD_INFO, pointer, &size)
+            host_statistics(mach_host_self(), HOST_CPU_LOAD_INFO, pointer, &size)
         }
         let data = hostInfo.move()
         hostInfo.deallocate()
         return data
     }
 
-    func update() {
+    mutating func update() {
         var result = CPUInfo()
 
         defer {
@@ -52,9 +44,4 @@ final class CPURepositoryImpl: CPURepository {
         result.setUserValue(user.round2dp)
         result.setIdleValue(idle.round2dp)
     }
-}
-
-final class CPURepositoryMock: CPURepository {
-    let current = CPUInfo()
-    func update() {}
 }

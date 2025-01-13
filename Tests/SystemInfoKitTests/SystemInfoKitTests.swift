@@ -3,35 +3,23 @@ import XCTest
 import Combine
 
 final class SystemInfoKitTests: XCTestCase {
-    var cancellables = Set<AnyCancellable>()
-
-    override func tearDown() {
-        super.tearDown()
-        cancellables.removeAll()
-    }
-
-    func testStatistics() {
+    @MainActor
+    func test_statistics() {
         let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
         var cnt = 0
         let expect = expectation(description: "systemInfo")
-
-        observer.systemInfoPublisher
-            .sink { systemInfoBundle in
+        let task = Task {
+            for await systemInfoBundle in observer.systemInfoStream {
                 Swift.print(systemInfoBundle)
                 cnt += 1
                 if cnt == 3 {
                     expect.fulfill()
                 }
             }
-            .store(in: &cancellables)
-
-        observer.startMonitoring()
-
-        waitForExpectations(timeout: 7.0) { [observer] (error) in
-            observer.stopMonitoring()
-            if let error = error {
-                XCTFail("Did not get systemInfo, \(error.localizedDescription)")
-            }
         }
+        observer.startMonitoring()
+        waitForExpectations(timeout: 7.0)
+        observer.stopMonitoring()
+        task.cancel()
     }
 }

@@ -1,18 +1,9 @@
 import IOKit
 
-protocol BatteryRepository: AnyObject {
-    var current: BatteryInfo { get }
-
-    init()
-
-    func update()
-    func reset()
-}
-
-final class BatteryRepositoryImpl: BatteryRepository {
+struct BatteryRepository: Sendable {
     var current = BatteryInfo()
 
-    func update() {
+    mutating func update() {
         var service: io_service_t = 0
 
         defer {
@@ -22,13 +13,14 @@ final class BatteryRepositoryImpl: BatteryRepository {
 
         // Open Connection
         service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceNameMatching("AppleSmartBattery"))
-        if service == MACH_PORT_NULL { return }
+        guard service != MACH_PORT_NULL else { return }
 
         // Read Dictionary Data
         var props: Unmanaged<CFMutableDictionary>? = nil
         guard IORegistryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, 0) == kIOReturnSuccess,
-              let dict = props?.takeUnretainedValue() as? [String: AnyObject]
-        else { return }
+              let dict = props?.takeUnretainedValue() as? [String: AnyObject] else {
+            return
+        }
         props?.release()
 
         guard let installed = dict["BatteryInstalled"] as? Int else { return }
@@ -65,13 +57,7 @@ final class BatteryRepositoryImpl: BatteryRepository {
         current = result
     }
 
-    func reset() {
+    mutating func reset() {
         current = BatteryInfo()
     }
-}
-
-final class BatteryRepositoryMock: BatteryRepository {
-    let current = BatteryInfo()
-    func update() {}
-    func reset() {}
 }

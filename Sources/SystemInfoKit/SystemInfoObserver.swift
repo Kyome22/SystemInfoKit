@@ -1,129 +1,129 @@
 import Foundation
 import Combine
+import os
 
-public final class SystemInfoObserver {
+public final class SystemInfoObserver: Sendable {
     public static func shared(monitorInterval: Double = 5.0) -> SystemInfoObserver {
-        return SystemInfoObserver(
-            monitorInterval: monitorInterval,
-            cpuType: CPURepositoryImpl.self,
-            memoryType: MemoryRepositoryImpl.self,
-            storageType: StorageRepositoryImpl.self,
-            batteryType: BatteryRepositoryImpl.self,
-            networkType: NetworkRepositoryImpl.self
-        )
+        SystemInfoObserver(monitorInterval: monitorInterval)
     }
 
-    public static func sharedMock(monitorInterval: Double = 5.0) -> SystemInfoObserver {
-        return SystemInfoObserver(
-            monitorInterval: monitorInterval,
-            cpuType: CPURepositoryMock.self,
-            memoryType: MemoryRepositoryMock.self,
-            storageType: StorageRepositoryMock.self,
-            batteryType: BatteryRepositoryMock.self,
-            networkType: NetworkRepositoryMock.self
-        )
-    }
+    private let protectedActivationState = OSAllocatedUnfairLock<[SystemInfoType: Bool]>(
+        initialState: [.cpu: true, .memory: true, .storage: true, .battery: true, .network: true]
+    )
 
-    public var activatedCPU: Bool = true
-    public var activatedMemory: Bool = true
-    public var activatedStorage: Bool = true
-    public var activatedBattery: Bool = true
-    public var activatedNetwork: Bool = true
-
-    private let cpuType: CPURepository.Type
-    private var cpuRepository: (any CPURepository)?
-    private let memoryType: MemoryRepository.Type
-    private var memoryRepository: (any MemoryRepository)?
-    private let storageType: StorageRepository.Type
-    private var storageRepository: (any StorageRepository)?
-    private let batteryType: BatteryRepository.Type
-    private var batteryRepository: (any BatteryRepository)?
-    private let networkType: NetworkRepository.Type
-    private var networkRepository: (any NetworkRepository)?
-    private var timerCancellables: AnyCancellable?
     private let monitorInterval: Double
+    private let protectedCPURepository = OSAllocatedUnfairLock<CPURepository?>(initialState: nil)
+    private let protectedMemoryRepository = OSAllocatedUnfairLock<MemoryRepository?>(initialState: nil)
+    private let protectedStorageRepository = OSAllocatedUnfairLock<StorageRepository?>(initialState: nil)
+    private let protectedBatteryRepository = OSAllocatedUnfairLock<BatteryRepository?>(initialState: nil)
+    private let protectedNetworkRepository = OSAllocatedUnfairLock<NetworkRepository?>(initialState: nil)
+    private let protectedTimer = OSAllocatedUnfairLock<AnyCancellable?>(initialState: nil)
 
     private let systemInfoSubject = CurrentValueSubject<SystemInfoBundle, Never>(.init())
-    public var systemInfoPublisher: AnyPublisher<SystemInfoBundle, Never> {
-        systemInfoSubject.eraseToAnyPublisher()
+    public var systemInfoStream: AsyncStream<SystemInfoBundle> {
+        AsyncStream { continuation in
+            let cancellable = systemInfoSubject.sink { value in
+                continuation.yield(value)
+            }
+            continuation.onTermination = { _ in
+                cancellable.cancel()
+            }
+        }
     }
 
-    private init(
-        monitorInterval: Double = 5.0,
-        cpuType: CPURepository.Type,
-        memoryType: MemoryRepository.Type,
-        storageType: StorageRepository.Type,
-        batteryType: BatteryRepository.Type,
-        networkType: NetworkRepository.Type
-    ) {
+    private init(monitorInterval: Double = 5.0) {
         self.monitorInterval = monitorInterval
-        self.cpuType = cpuType
-        self.memoryType = memoryType
-        self.storageType = storageType
-        self.batteryType = batteryType
-        self.networkType = networkType
     }
 
     public func startMonitoring() {
-        cpuRepository = cpuType.init()
-        memoryRepository = memoryType.init()
-        storageRepository = storageType.init()
-        batteryRepository = batteryType.init()
-        networkRepository = networkType.init()
-        timerCancellables = Timer
+        protectedCPURepository.withLock { $0 = .init() }
+        protectedMemoryRepository.withLock { $0 = .init() }
+        protectedStorageRepository.withLock { $0 = .init() }
+        protectedBatteryRepository.withLock { $0 = .init() }
+        protectedNetworkRepository.withLock { $0 = .init() }
+        let timer = Timer
             .publish(every: monitorInterval, on: RunLoop.main, in: .common)
             .autoconnect()
             .prepend(Date())
             .sink { [weak self] _ in
                 self?.updateSystemInfo()
             }
+        protectedTimer.withLock { $0 = timer }
     }
 
     public func stopMonitoring() {
-        timerCancellables?.cancel()
-        timerCancellables = nil
-        cpuRepository = nil
-        memoryRepository = nil
-        storageRepository = nil
-        batteryRepository = nil
-        networkRepository = nil
+        protectedTimer.withLock {
+            $0?.cancel()
+            $0 = nil
+        }
+        protectedCPURepository.withLock { $0 = nil }
+        protectedMemoryRepository.withLock { $0 = nil }
+        protectedStorageRepository.withLock { $0 = nil }
+        protectedBatteryRepository.withLock { $0 = nil }
+        protectedNetworkRepository.withLock { $0 = nil }
+    }
+
+    public func activate(types: [SystemInfoType]) {
+        protectedActivationState.withLock { state in
+            types.forEach { state[$0] = true }
+        }
+    }
+
+    public func deactivate(types: [SystemInfoType]) {
+        protectedActivationState.withLock { state in
+            types.forEach { state[$0] = false }
+        }
     }
 
     private func updateSystemInfo() {
         var systemInfo = SystemInfoBundle()
+        let activationState = protectedActivationState.withLock(\.self)
         // CPU
-        if activatedCPU {
-            cpuRepository?.update()
-            systemInfo.cpuInfo = cpuRepository?.current
+        if activationState[.cpu] == true {
+            systemInfo.cpuInfo = protectedCPURepository.withLock {
+                $0?.update()
+                return $0?.current
+            }
         }
         // Memory
-        if activatedMemory {
-            memoryRepository?.update()
-            systemInfo.memoryInfo = memoryRepository?.current
+        if activationState[.memory] == true {
+            systemInfo.memoryInfo = protectedMemoryRepository.withLock {
+                $0?.update()
+                return $0?.current
+            }
         } else {
-            memoryRepository?.reset()
+            protectedMemoryRepository.withLock { $0?.reset() }
         }
         // Storage
-        if activatedStorage {
-            storageRepository?.update()
-            systemInfo.storageInfo = storageRepository?.current
+        if activationState[.storage] == true {
+            systemInfo.storageInfo = protectedStorageRepository.withLock {
+                $0?.update()
+                return $0?.current
+            }
         } else {
-            storageRepository?.reset()
+            protectedStorageRepository.withLock { $0?.reset() }
         }
         // Battery
-        if activatedBattery {
-            batteryRepository?.update()
-            systemInfo.batteryInfo = batteryRepository?.current
+        if activationState[.battery] == true {
+            systemInfo.batteryInfo = protectedBatteryRepository.withLock {
+                $0?.update()
+                return $0?.current
+            }
         } else {
-            batteryRepository?.reset()
+            protectedBatteryRepository.withLock { $0?.reset() }
         }
         // Network
-        if activatedNetwork {
-            networkRepository?.update(interval: monitorInterval)
-            systemInfo.networkInfo = networkRepository?.current
+        if activationState[.network] == true {
+            systemInfo.networkInfo = protectedNetworkRepository.withLock {
+                $0?.update(interval: monitorInterval)
+                return $0?.current
+            }
         } else {
-            networkRepository?.reset()
+            protectedNetworkRepository.withLock { $0?.reset() }
         }
         systemInfoSubject.send(systemInfo)
     }
 }
+
+extension AnyCancellable: @retroactive @unchecked Sendable {}
+extension CurrentValueSubject: @retroactive @unchecked Sendable {}

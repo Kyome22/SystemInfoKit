@@ -1,13 +1,13 @@
 public struct BatteryInfo: SystemInfo {
-    public let type: SystemInfoType = .battery
-    public internal(set) var value: Double = .zero
+    public let type = SystemInfoType.battery
+    public internal(set) var value = Double.zero
     public let installed: Bool
-    public internal(set) var isCharging: Bool = false
+    public internal(set) var isCharging = false
     private var adapterName: String?
-    private var healthValue: Double = .zero
-    private var maxCapacityValue: Double = .zero
-    private var cycleValue: Int = .zero
-    private var temperatureValue: Double = .zero
+    private var healthValue = Double.zero
+    private var maxCapacityValue = Double.zero
+    private var cycleValue = Int.zero
+    private var temperatureValue = Double.zero
 
     public var icon: String {
         let suffix = if #available(macOS 14.0, *) { "percent" } else { "" }
@@ -29,38 +29,38 @@ public struct BatteryInfo: SystemInfo {
 
     public var summary: String {
         if installed {
-            return String(localized: "battery\(value)", bundle: .module)
+            String(localized: "battery\(value)", bundle: .module)
         } else {
-            return String(localized: "batteryIsNotInstalled", bundle: .module)
+            String(localized: "batteryIsNotInstalled", bundle: .module)
         }
     }
 
     private var powerSourceValue: String {
         if isCharging {
-            return adapterName ?? String(localized: "batteryUnknown", bundle: .module)
+            adapterName ?? String(localized: "batteryUnknown", bundle: .module)
         } else {
-            return String(localized: "battery", bundle: .module)
+            String(localized: "battery", bundle: .module)
         }
     }
 
     private var condition: String {
-        return String(localized: "batteryCondition\(healthValue)", bundle: .module)
+        String(localized: "batteryCondition\(healthValue)", bundle: .module)
     }
 
     private var maxCapacity: String {
-        return String(localized: "batteryMaxCapacity\(maxCapacityValue)", bundle: .module)
+        String(localized: "batteryMaxCapacity\(maxCapacityValue)", bundle: .module)
     }
 
     private var conditionOrMaxCapacity: String {
 #if arch(x86_64) // Intel chip
-        return condition
+        condition
 #elseif arch(arm64) // Apple Silicon chip
-        return maxCapacity
+        maxCapacity
 #endif
     }
 
     public var details: [String] {
-        return [
+        [
             String(localized: "batteryPowerSource\(powerSourceValue)", bundle: .module),
             conditionOrMaxCapacity,
             String(localized: "batteryCycle\(cycleValue)", bundle: .module),
