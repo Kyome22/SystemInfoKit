@@ -10,10 +10,9 @@ SystemInfoKit provides macOS system information.
 
 ## Requirements
 
-- Development with Xcode 15.2+
-- Written in Swift 5.9
-- swift-tools-version: 5.9
-- Compatible with macOS 12.0+
+- Development with Xcode 16.2+
+- Written in Swift 6.0
+- Compatible with macOS 13.0+
 
 ## Installation
 
@@ -23,18 +22,15 @@ SystemInfoKit supports Swift Package Manager.
 
 ```swift
 import SystemInfoKit
-import Combine
 
 // Get all system info per 3 seconds
 let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
-var cancellables = Set<AnyCancellable>()
 
-observer.systemInfoPublisher
-    .sink { systemInfo in
-        Swift.print(systemInfo)
+Task {
+    for await systemInfoBundle in observer.systemInfoStream {
+        Swift.print(systemInfoBundle)
     }
-    .store(in: &cancellables)
-
+}
 observer.startMonitoring()
 
 // Finish to get system info

@@ -1,18 +1,18 @@
 public struct MemoryInfo: SystemInfo {
-    public let type: SystemInfoType = .memory
-    public internal(set) var value: Double = .zero
-    public let icon: String = "memorychip"
-    private var pressureValue: Double = .zero
-    private var appValue: Double = .zero
-    private var wiredValue: Double = .zero
-    private var compressedValue: Double = .zero
+    public let type = SystemInfoType.memory
+    public internal(set) var value = Double.zero
+    public let icon = "memorychip"
+    private var pressureValue = Double.zero
+    private var appValue = Double.zero
+    private var wiredValue = Double.zero
+    private var compressedValue = Double.zero
 
     public var summary: String {
-        return String(localized: "memory\(value)", bundle: .module)
+        String(localized: "memory\(value)", bundle: .module)
     }
 
     public var details: [String] {
-        return [
+        [
             String(localized: "memoryPressure\(pressureValue)", bundle: .module),
             String(localized: "memoryApp\(appValue)", bundle: .module),
             String(localized: "memoryWired\(wiredValue)", bundle: .module),

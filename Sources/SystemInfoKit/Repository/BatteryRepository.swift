@@ -1,18 +1,9 @@
 import IOKit
 
-protocol BatteryRepository: AnyObject {
-    var current: BatteryInfo { get }
-
-    init()
-
-    func update()
-    func reset()
-}
-
-final class BatteryRepositoryImpl: BatteryRepository {
+struct BatteryRepository: Sendable {
     var current = BatteryInfo()
 
-    func update() {
+    mutating func update() {
         var service: io_service_t = 0
 
         defer {
@@ -66,13 +57,7 @@ final class BatteryRepositoryImpl: BatteryRepository {
         current = result
     }
 
-    func reset() {
+    mutating func reset() {
         current = BatteryInfo()
     }
-}
-
-final class BatteryRepositoryMock: BatteryRepository {
-    let current = BatteryInfo()
-    func update() {}
-    func reset() {}
 }

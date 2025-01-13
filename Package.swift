@@ -10,7 +10,7 @@ let package = Package(
     name: "SystemInfoKit",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v12)
+        .macOS(.v13)
     ],
     products: [
         .library(

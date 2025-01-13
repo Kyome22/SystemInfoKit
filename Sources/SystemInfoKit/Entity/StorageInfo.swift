@@ -1,31 +1,31 @@
 import Foundation
 
-public struct ByteData: CustomStringConvertible {
+public struct ByteData: Sendable, CustomStringConvertible {
     public internal(set) var value: Double
     public internal(set) var unit: String
 
     public var description: String {
-        return String(format: "%.2f %@", value, unit)
+        String(format: "%.2f %@", value, unit)
     }
 }
 
 public struct StorageInfo: SystemInfo {
-    public let type: SystemInfoType = .storage
-    public internal(set) var value: Double = .zero
-    public let icon: String = "internaldrive"
+    public let type = SystemInfoType.storage
+    public internal(set) var value = Double.zero
+    public let icon = "internaldrive"
     public private(set) var totalValue = ByteData(value: .zero, unit: "GB")
     public private(set) var availableValue = ByteData(value: .zero, unit: "GB")
     public private(set) var usedValue = ByteData(value: .zero, unit: "GB")
 
     public var summary: String {
-        return String(localized: "storage\(value)", bundle: .module)
+        String(localized: "storage\(value)", bundle: .module)
     }
 
     public var details: [String] {
         if value == .zero {
-            return ["--- GB / --- GB"]
+            ["--- GB / --- GB"]
         } else {
-            return ["\(usedValue) / \(totalValue)"]
+            ["\(usedValue) / \(totalValue)"]
         }
     }
 

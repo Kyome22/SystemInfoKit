@@ -1,4 +1,4 @@
-public protocol SystemInfo: CustomStringConvertible {
+public protocol SystemInfo: Sendable, CustomStringConvertible {
     var type: SystemInfoType { get }
     var value: Double { get }
     var icon: String { get }

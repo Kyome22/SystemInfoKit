@@ -1,6 +1,6 @@
 import Foundation
 
-struct LoadData {
+struct LoadData: Sendable {
     var ip: String
     var up: Double
     var down: Double
@@ -12,12 +12,12 @@ struct LoadData {
     }
 }
 
-public struct PacketData: CustomStringConvertible {
+public struct PacketData: Sendable, CustomStringConvertible {
     public var value: Double
     public var unit: String
 
     public var description: String {
-        return String(format: "%5.1f \(unit)", value)
+        String(format: "%5.1f \(unit)", value)
     }
 
     init(value: Double = .zero, unit: String = "KB/s") {
@@ -27,20 +27,20 @@ public struct PacketData: CustomStringConvertible {
 }
 
 public struct NetworkInfo: SystemInfo {
-    public let type: SystemInfoType = .network
-    public let value: Double = .zero
-    public let icon: String = "network"
+    public let type = SystemInfoType.network
+    public let value = Double.zero
+    public let icon = "network"
     public private(set) var nameValue: String
-    public private(set) var ipValue: String = "-"
+    public private(set) var ipValue = "-"
     public private(set) var uploadValue = PacketData()
     public private(set) var downloadValue = PacketData()
 
     public var summary: String {
-        return String(localized: "network\(nameValue)", bundle: .module)
+        String(localized: "network\(nameValue)", bundle: .module)
     }
 
     public var details: [String] {
-        return [
+        [
             String(localized: "networkLocalIP\(ipValue)", bundle: .module),
             String(localized: "networkUpload\(uploadValue.description)", bundle: .module),
             String(localized: "networkDownload\(downloadValue.description)", bundle: .module)
@@ -56,14 +56,14 @@ public struct NetworkInfo: SystemInfo {
         let MB: Double = pow(KB, 2)
         let GB: Double = pow(KB, 3)
         let TB: Double = pow(KB, 4)
-        if TB <= byte {
-            return PacketData(value: (byte / TB).round2dp, unit: "TB/s")
+        return if TB <= byte {
+            PacketData(value: (byte / TB).round2dp, unit: "TB/s")
         } else if GB <= byte {
-            return PacketData(value: (byte / GB).round2dp, unit: "GB/s")
+            PacketData(value: (byte / GB).round2dp, unit: "GB/s")
         } else if MB <= byte {
-            return PacketData(value: (byte / MB).round2dp, unit: "MB/s")
+            PacketData(value: (byte / MB).round2dp, unit: "MB/s")
         } else {
-            return PacketData(value: (byte / KB).round2dp, unit: "KB/s")
+            PacketData(value: (byte / KB).round2dp, unit: "KB/s")
         }
     }
 

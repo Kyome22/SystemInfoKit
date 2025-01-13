@@ -1,18 +1,9 @@
 import Foundation
 
-protocol StorageRepository: AnyObject {
-    var current: StorageInfo { get }
-
-    init()
-
-    func update()
-    func reset()
-}
-
-final class StorageRepositoryImpl: StorageRepository {
+struct StorageRepository: Sendable {
     var current = StorageInfo()
 
-    func update() {
+    mutating func update() {
         var result = StorageInfo()
 
         defer {
@@ -32,13 +23,7 @@ final class StorageRepositoryImpl: StorageRepository {
         result.setUsedValue(byteCount: used)
     }
 
-    func reset() {
+    mutating func reset() {
         current = StorageInfo()
     }
-}
-
-final class StorageRepositoryMock: StorageRepository {
-    let current = StorageInfo()
-    func update() {}
-    func reset() {}
 }

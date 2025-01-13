@@ -1,15 +1,6 @@
 @preconcurrency import Darwin
 
-protocol MemoryRepository: AnyObject {
-    var current: MemoryInfo { get }
-
-    init()
-
-    func update()
-    func reset()
-}
-
-final class MemoryRepositoryImpl: MemoryRepository {
+struct MemoryRepository: Sendable {
     var current = MemoryInfo()
     private let gigaByte: Double = 1_073_741_824 // 2^30
     private let hostVmInfo64Count: mach_msg_type_number_t!
@@ -42,7 +33,7 @@ final class MemoryRepositoryImpl: MemoryRepository {
         return data
     }
 
-    func update() {
+    mutating func update() {
         var result = MemoryInfo()
 
         defer {
@@ -69,13 +60,7 @@ final class MemoryRepositoryImpl: MemoryRepository {
         result.setCompressedValue(compressed.round2dp)
     }
 
-    func reset() {
+    mutating func reset() {
         current = MemoryInfo()
     }
-}
-
-final class MemoryRepositoryMock: MemoryRepository {
-    let current = MemoryInfo()
-    func update() {}
-    func reset() {}
 }

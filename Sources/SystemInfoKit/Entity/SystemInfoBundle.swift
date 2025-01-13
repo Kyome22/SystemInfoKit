@@ -1,4 +1,4 @@
-public struct SystemInfoBundle {
+public struct SystemInfoBundle: Sendable {
     public var cpuInfo: CPUInfo?
     public var memoryInfo: MemoryInfo?
     public var storageInfo: StorageInfo?
