@@ -63,15 +63,9 @@ public final class SystemInfoObserver: Sendable {
         protectedNetworkRepository.withLock { $0 = nil }
     }
 
-    public func activate(types: [SystemInfoType]) {
+    public func toggleActivation(requests: [SystemInfoType: Bool]) {
         protectedActivationState.withLock { state in
-            types.forEach { state[$0] = true }
-        }
-    }
-
-    public func deactivate(types: [SystemInfoType]) {
-        protectedActivationState.withLock { state in
-            types.forEach { state[$0] = false }
+            requests.forEach { state[$0.key] = $0.value }
         }
     }
 
