@@ -27,7 +27,7 @@ import SystemInfoKit
 let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
 
 Task {
-    for await systemInfoBundle in observer.systemInfoStream {
+    for await systemInfoBundle in observer.systemInfoStream() {
         Swift.print(systemInfoBundle)
     }
 }
