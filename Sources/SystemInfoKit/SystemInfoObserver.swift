@@ -1,5 +1,5 @@
+@preconcurrency import Combine
 import Foundation
-import Combine
 import os
 
 public final class SystemInfoObserver: Sendable {
@@ -19,8 +19,8 @@ public final class SystemInfoObserver: Sendable {
     private let protectedNetworkRepository = OSAllocatedUnfairLock<NetworkRepository?>(initialState: nil)
     private let protectedTimer = OSAllocatedUnfairLock<AnyCancellable?>(initialState: nil)
 
-    private let systemInfoSubject = CurrentValueSubject<SystemInfoBundle, Never>(.init())
-    public var systemInfoStream: AsyncStream<SystemInfoBundle> {
+    private let systemInfoSubject = PassthroughSubject<SystemInfoBundle, Never>()
+    public func systemInfoStream() -> AsyncStream<SystemInfoBundle> {
         AsyncStream { continuation in
             let cancellable = systemInfoSubject.sink { value in
                 continuation.yield(value)
@@ -118,6 +118,3 @@ public final class SystemInfoObserver: Sendable {
         systemInfoSubject.send(systemInfo)
     }
 }
-
-extension AnyCancellable: @retroactive @unchecked Sendable {}
-extension CurrentValueSubject: @retroactive @unchecked Sendable {}
