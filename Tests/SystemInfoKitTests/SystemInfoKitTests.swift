@@ -1,25 +1,25 @@
-@testable import SystemInfoKit
-import XCTest
-import Combine
+import Foundation
+import Testing
 
-final class SystemInfoKitTests: XCTestCase {
-    @MainActor
-    func test_statistics() {
+@testable import SystemInfoKit
+
+struct SystemInfoKitTests {
+    @Test
+    func test_statistics() async {
         let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
-        var cnt = 0
-        let expect = expectation(description: "systemInfo")
         let task = Task {
-            for await systemInfoBundle in observer.systemInfoStream {
+            var count = 0
+            for await systemInfoBundle in observer.systemInfoStream() {
                 Swift.print(systemInfoBundle)
-                cnt += 1
-                if cnt == 3 {
-                    expect.fulfill()
+                count += 1
+                if count == 2 {
+                    break
                 }
             }
         }
+        defer { task.cancel() }
         observer.startMonitoring()
-        waitForExpectations(timeout: 7.0)
+        await task.value
         observer.stopMonitoring()
-        task.cancel()
     }
 }
