@@ -54,8 +54,24 @@ struct NetworkRepository: Sendable {
         return String(cString: ip, encoding: .utf8)
     }
 
-    private mutating func getUpDown(_ id: String) -> LoadData {
-        var result = LoadData()
+    private func convert(byte: Double) -> PacketData {
+        let kb: Double = 1024
+        let mb: Double = pow(kb, 2)
+        let gb: Double = pow(kb, 3)
+        let tb: Double = pow(kb, 4)
+        return if tb <= byte {
+            PacketData(value: (byte / tb).round2dp, unit: .tb)
+        } else if gb <= byte {
+            PacketData(value: (byte / gb).round2dp, unit: .gb)
+        } else if mb <= byte {
+            PacketData(value: (byte / mb).round2dp, unit: .mb)
+        } else {
+            PacketData(value: (byte / kb).round2dp, unit: .kb)
+        }
+    }
+
+    private mutating func getUpDown(_ id: String) -> UpDownPacketData {
+        var result = UpDownPacketData()
         var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
         guard getifaddrs(&ifaddr) == .zero else { return result }
 
@@ -76,11 +92,10 @@ struct NetworkRepository: Sendable {
                 previousIP = ip
             }
         }
-        result.ip = previousIP
         freeifaddrs(ifaddr)
         if previousUpload != .zero && previousDownload != .zero {
-            result.up = Double(upload - previousUpload) / interval
-            result.down = Double(download - previousDownload) / interval
+            result.upload = convert(byte: Double(upload - previousUpload) / interval)
+            result.download = convert(byte: Double(download - previousDownload) / interval)
         }
         previousUpload = upload
         previousDownload = download
@@ -96,12 +111,20 @@ struct NetworkRepository: Sendable {
 
         self.interval = max(interval, 1.0)
         if let id = getDefaultID() {
-            result.setNameValue(getHardwareName(id))
-            result.setLoadDataValue(getUpDown(id))
+            result.nameValue = getHardwareName(id)
+            let upDown = getUpDown(id)
+            result.ipValue = previousIP
+            result.uploadValue = upDown.upload
+            result.downloadValue = upDown.download
         }
     }
 
     mutating func reset() {
         current = NetworkInfo()
+    }
+
+    private struct UpDownPacketData {
+        var upload = PacketData()
+        var download = PacketData()
     }
 }
