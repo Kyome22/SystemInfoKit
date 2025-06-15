@@ -1,28 +1,24 @@
 import Foundation
 
 struct LoadData: Sendable {
-    var ip: String
-    var up: Double
-    var down: Double
+    var ip = "-"
+    var up = Double.zero
+    var down = Double.zero
+}
 
-    init(ip: String = "-", up: Double = .zero, down: Double = .zero) {
-        self.ip = ip
-        self.up = up
-        self.down = down
-    }
+public enum PacketUnit: String, Sendable {
+    case kb = "KB/s"
+    case mb = "MB/s"
+    case gb = "GB/s"
+    case tb = "TB/s"
 }
 
 public struct PacketData: Sendable, CustomStringConvertible {
-    public var value: Double
-    public var unit: String
+    public var value = Double.zero
+    public var unit = PacketUnit.kb
 
     public var description: String {
-        String(format: "%5.1f \(unit)", value)
-    }
-
-    init(value: Double = .zero, unit: String = "KB/s") {
-        self.value = value
-        self.unit = unit
+        String(format: "%5.1f \(unit.rawValue)", value)
     }
 }
 
@@ -52,18 +48,18 @@ public struct NetworkInfo: SystemInfo {
     }
 
     private func convert(byte: Double) -> PacketData {
-        let KB: Double = 1024
-        let MB: Double = pow(KB, 2)
-        let GB: Double = pow(KB, 3)
-        let TB: Double = pow(KB, 4)
-        return if TB <= byte {
-            PacketData(value: (byte / TB).round2dp, unit: "TB/s")
-        } else if GB <= byte {
-            PacketData(value: (byte / GB).round2dp, unit: "GB/s")
-        } else if MB <= byte {
-            PacketData(value: (byte / MB).round2dp, unit: "MB/s")
+        let kb: Double = 1024
+        let mb: Double = pow(kb, 2)
+        let gb: Double = pow(kb, 3)
+        let tb: Double = pow(kb, 4)
+        return if tb <= byte {
+            PacketData(value: (byte / tb).round2dp, unit: .tb)
+        } else if gb <= byte {
+            PacketData(value: (byte / gb).round2dp, unit: .gb)
+        } else if mb <= byte {
+            PacketData(value: (byte / mb).round2dp, unit: .mb)
         } else {
-            PacketData(value: (byte / KB).round2dp, unit: "KB/s")
+            PacketData(value: (byte / kb).round2dp, unit: .kb)
         }
     }
 
