@@ -67,7 +67,9 @@ public struct BatteryInfo: SystemInfo {
             String(localized: "batteryTemperature\(temperatureValue)", bundle: .module)
         ]
     }
+}
 
+extension BatteryInfo {
     public static func createMock(
         value: Double,
         isInstalled: Bool,

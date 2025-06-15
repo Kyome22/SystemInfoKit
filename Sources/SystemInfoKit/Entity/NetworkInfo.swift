@@ -14,10 +14,6 @@ public struct PacketData: Sendable, CustomStringConvertible {
     public var description: String {
         String(format: "%5.1f \(unit.rawValue)", value)
     }
-
-    public static func createMock(value: Double, unit: PacketUnit) -> PacketData {
-        PacketData(value: value, unit: unit)
-    }
 }
 
 public struct NetworkInfo: SystemInfo {
@@ -44,7 +40,15 @@ public struct NetworkInfo: SystemInfo {
             String(localized: "networkDownload\(downloadValue.description)", bundle: .module)
         ]
     }
+}
 
+extension PacketData {
+    public static func createMock(value: Double, unit: PacketUnit) -> PacketData {
+        PacketData(value: value, unit: unit)
+    }
+}
+
+extension NetworkInfo {
     public static func createMock(
         nameValue: String?,
         ipValue: String,

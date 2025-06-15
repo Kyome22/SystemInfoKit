@@ -17,7 +17,9 @@ public struct CPUInfo: SystemInfo {
             String(localized: "cpuIdle\(idleValue)", bundle: .module)
         ]
     }
+}
 
+extension CPUInfo {
     public static func createMock(
         value: Double,
         systemValue: Double,

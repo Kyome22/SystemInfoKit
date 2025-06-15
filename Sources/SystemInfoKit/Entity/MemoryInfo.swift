@@ -19,7 +19,9 @@ public struct MemoryInfo: SystemInfo {
             String(localized: "memoryCompressed\(compressedValue)", bundle: .module)
         ]
     }
+}
 
+extension MemoryInfo {
     public static func createMock(
         value: Double,
         pressureValue: Double,

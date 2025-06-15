@@ -7,10 +7,6 @@ public struct ByteData: Sendable, CustomStringConvertible {
     public var description: String {
         String(format: "%.2f %@", value, unit)
     }
-
-    public static func createMock(value: Double, unit: String) -> ByteData {
-        ByteData(value: value, unit: unit)
-    }
 }
 
 public struct StorageInfo: SystemInfo {
@@ -32,7 +28,15 @@ public struct StorageInfo: SystemInfo {
             ["\(usedValue) / \(totalValue)"]
         }
     }
+}
 
+extension ByteData {
+    public static func createMock(value: Double, unit: String) -> ByteData {
+        ByteData(value: value, unit: unit)
+    }
+}
+
+extension StorageInfo {
     public static func createMock(
         value: Double,
         totalValue: ByteData,
