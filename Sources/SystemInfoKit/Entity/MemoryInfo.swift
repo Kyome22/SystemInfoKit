@@ -20,5 +20,19 @@ public struct MemoryInfo: SystemInfo {
         ]
     }
 
-    init() {}
+    public static func createMock(
+        value: Double,
+        pressureValue: Double,
+        appValue: Double,
+        wiredValue: Double,
+        compressedValue: Double
+    ) -> MemoryInfo {
+        MemoryInfo(
+            value: value,
+            pressureValue: pressureValue,
+            appValue: appValue,
+            wiredValue: wiredValue,
+            compressedValue: compressedValue
+        )
+    }
 }
