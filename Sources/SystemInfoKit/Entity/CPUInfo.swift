@@ -18,5 +18,17 @@ public struct CPUInfo: SystemInfo {
         ]
     }
 
-    init() {}
+    public static func createMock(
+        value: Double,
+        systemValue: Double,
+        userValue: Double,
+        idleValue: Double
+    ) -> CPUInfo {
+        CPUInfo(
+            value: value,
+            systemValue: systemValue,
+            userValue: userValue,
+            idleValue: idleValue
+        )
+    }
 }
