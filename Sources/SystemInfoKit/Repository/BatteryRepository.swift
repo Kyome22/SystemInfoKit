@@ -31,28 +31,28 @@ struct BatteryRepository: Sendable {
            let maxCapacity = dict["MaxCapacity"] as? Double,
            let currentCapacity = dict["CurrentCapacity"] as? Double {
             result.value = (100.0 * currentCapacity / maxCapacity).round2dp
-            result.setHealthValue((100.0 * maxCapacity / designCapacity).round2dp)
+            result.healthValue = (100.0 * maxCapacity / designCapacity).round2dp
         }
 #elseif arch(arm64) // Apple Silicon chip
         if let designCapacity = dict["DesignCapacity"] as? Double,
            let nominalCapacity = dict["NominalChargeCapacity"] as? Double,
            let currentCapacity = dict["CurrentCapacity"] as? Double {
             result.value = currentCapacity
-            result.setMaxCapacityValue(min((100.0 * nominalCapacity / designCapacity).round2dp, 100.0))
+            result.maxCapacityValue = min((100.0 * nominalCapacity / designCapacity).round2dp, 100.0)
         }
 #endif
         if let isCharging = dict["IsCharging"] as? Int {
-            result.setIsCharging(isCharging == 1)
+            result.isCharging = isCharging == 1
         }
         if let adapter = dict["AdapterDetails"] as? [String: AnyObject],
            let name = adapter["Name"] as? String {
-            result.setAdapterName(name)
+            result.adapterName = name
         }
         if let cycleCount = dict["CycleCount"] as? Int {
-            result.setCycleValue(cycleCount)
+            result.cycleValue = cycleCount
         }
         if let temperature = dict["Temperature"] as? Double {
-            result.setTemperatureValue(temperature / 100.0)
+            result.temperatureValue = temperature / 100.0
         }
         current = result
     }

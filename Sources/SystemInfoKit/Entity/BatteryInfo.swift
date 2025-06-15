@@ -3,11 +3,11 @@ public struct BatteryInfo: SystemInfo {
     public internal(set) var value = Double.zero
     public let installed: Bool
     public internal(set) var isCharging = false
-    private var adapterName: String?
-    private var healthValue = Double.zero
-    private var maxCapacityValue = Double.zero
-    private var cycleValue = Int.zero
-    private var temperatureValue = Double.zero
+    public internal(set) var adapterName: String?
+    public internal(set) var healthValue = Double.zero
+    public internal(set) var maxCapacityValue = Double.zero
+    public internal(set) var cycleValue = Int.zero
+    public internal(set) var temperatureValue = Double.zero
 
     public var icon: String {
         let suffix = if #available(macOS 14.0, *) { "percent" } else { "" }
@@ -70,29 +70,5 @@ public struct BatteryInfo: SystemInfo {
 
     init(installed: Bool = false) {
         self.installed = installed
-    }
-
-    mutating func setIsCharging(_ value: Bool) {
-        isCharging = value
-    }
-
-    mutating func setAdapterName(_ value: String) {
-        adapterName = value
-    }
-
-    mutating func setHealthValue(_ value: Double) {
-        healthValue = value
-    }
-
-    mutating func setMaxCapacityValue(_ value: Double) {
-        maxCapacityValue = value
-    }
-
-    mutating func setCycleValue(_ value: Int) {
-        cycleValue = value
-    }
-
-    mutating func setTemperatureValue(_ value: Double) {
-        temperatureValue = value
     }
 }
