@@ -1,7 +1,7 @@
 import IOKit
 
 struct BatteryRepository: Sendable {
-    var current = BatteryInfo()
+    var current = BatteryInfo(isInstalled: false)
 
     mutating func update() {
         var service: io_service_t = 0
@@ -24,7 +24,7 @@ struct BatteryRepository: Sendable {
         props?.release()
 
         guard let installed = dict["BatteryInstalled"] as? Int else { return }
-        var result = BatteryInfo(installed: installed == 1)
+        var result = BatteryInfo(isInstalled: installed == 1)
 
 #if arch(x86_64) // Intel chip
         if let designCapacity = dict["DesignCapacity"] as? Double,
@@ -58,6 +58,6 @@ struct BatteryRepository: Sendable {
     }
 
     mutating func reset() {
-        current = BatteryInfo()
+        current = BatteryInfo(isInstalled: false)
     }
 }

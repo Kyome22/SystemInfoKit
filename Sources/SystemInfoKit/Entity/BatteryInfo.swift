@@ -1,7 +1,7 @@
 public struct BatteryInfo: SystemInfo {
     public let type = SystemInfoType.battery
     public internal(set) var value = Double.zero
-    public let installed: Bool
+    public let isInstalled: Bool
     public internal(set) var isCharging = false
     public internal(set) var adapterName: String?
     public internal(set) var healthValue = Double.zero
@@ -11,7 +11,7 @@ public struct BatteryInfo: SystemInfo {
 
     public var icon: String {
         let suffix = if #available(macOS 14.0, *) { "percent" } else { "" }
-        switch (installed, isCharging) {
+        switch (isInstalled, isCharging) {
         case (true, true):
             return "battery.100\(suffix).bolt"
         case (true, false):
@@ -28,7 +28,7 @@ public struct BatteryInfo: SystemInfo {
     }
 
     public var summary: String {
-        if installed {
+        if isInstalled {
             String(localized: "battery\(value)", bundle: .module)
         } else {
             String(localized: "batteryIsNotInstalled", bundle: .module)
@@ -68,7 +68,25 @@ public struct BatteryInfo: SystemInfo {
         ]
     }
 
-    init(installed: Bool = false) {
-        self.installed = installed
+    public static func createMock(
+        value: Double,
+        isInstalled: Bool,
+        isCharging: Bool,
+        adapterName: String?,
+        healthValue: Double,
+        maxCapacityValue: Double,
+        cycleValue: Int,
+        temperatureValue: Double
+    ) -> BatteryInfo {
+        BatteryInfo(
+            value: value,
+            isInstalled: isInstalled,
+            isCharging: isCharging,
+            adapterName: adapterName,
+            healthValue: healthValue,
+            maxCapacityValue: maxCapacityValue,
+            cycleValue: cycleValue,
+            temperatureValue: temperatureValue
+        )
     }
 }
