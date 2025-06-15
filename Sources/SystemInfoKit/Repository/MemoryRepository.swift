@@ -54,10 +54,10 @@ struct MemoryRepository: Sendable {
         let using       = active + inactive + speculative + wired + compressed - purgeable - external
 
         result.value = min(99.9, (100.0 * using / maxMem).round2dp)
-        result.setPressureValue((100.0 * (wired + compressed) / maxMem).round2dp)
-        result.setAppValue((using - wired - compressed).round2dp)
-        result.setWiredValue(wired.round2dp)
-        result.setCompressedValue(compressed.round2dp)
+        result.pressureValue = (100.0 * (wired + compressed) / maxMem).round2dp
+        result.appValue = (using - wired - compressed).round2dp
+        result.wiredValue = wired.round2dp
+        result.compressedValue = compressed.round2dp
     }
 
     mutating func reset() {
