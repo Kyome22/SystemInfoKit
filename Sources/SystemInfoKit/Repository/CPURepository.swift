@@ -40,8 +40,8 @@ struct CPURepository: Sendable {
         let idle = 100.0 * idleDiff / totalTicks
 
         result.value = min(99.9, (sys + user).round2dp)
-        result.setSystemValue(sys.round2dp)
-        result.setUserValue(user.round2dp)
-        result.setIdleValue(idle.round2dp)
+        result.systemValue = sys.round2dp
+        result.userValue = user.round2dp
+        result.idleValue = idle.round2dp
     }
 }

@@ -2,9 +2,9 @@ public struct CPUInfo: SystemInfo {
     public let type = SystemInfoType.cpu
     public internal(set) var value = Double.zero
     public let icon = "cpu"
-    private var systemValue = Double.zero
-    private var userValue = Double.zero
-    private var idleValue = Double.zero
+    public internal(set) var systemValue = Double.zero
+    public internal(set) var userValue = Double.zero
+    public internal(set) var idleValue = Double.zero
 
     public var summary: String {
         String(localized: "cpu\(value)", bundle: .module)
@@ -19,16 +19,4 @@ public struct CPUInfo: SystemInfo {
     }
 
     init() {}
-
-    mutating func setSystemValue(_ value: Double) {
-        systemValue = value
-    }
-
-    mutating func setUserValue(_ value: Double) {
-        userValue = value
-    }
-
-    mutating func setIdleValue(_ value: Double) {
-        idleValue = value
-    }
 }
