@@ -91,4 +91,6 @@ extension BatteryInfo {
             temperatureValue: temperatureValue
         )
     }
+
+    public static let zero = BatteryInfo(isInstalled: true)
 }

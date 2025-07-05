@@ -37,4 +37,6 @@ extension MemoryInfo {
             compressedValue: compressedValue
         )
     }
+
+    public static let zero = MemoryInfo()
 }

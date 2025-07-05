@@ -62,4 +62,6 @@ extension NetworkInfo {
             downloadValue: downloadValue
         )
     }
+
+    public static let zero = NetworkInfo()
 }

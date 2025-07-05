@@ -50,4 +50,6 @@ extension StorageInfo {
             usedValue: usedValue
         )
     }
+
+    public static let zero = StorageInfo()
 }

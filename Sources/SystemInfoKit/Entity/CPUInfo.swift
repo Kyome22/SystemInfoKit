@@ -33,4 +33,6 @@ extension CPUInfo {
             idleValue: idleValue
         )
     }
+
+    public static let zero = CPUInfo()
 }
