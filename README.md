@@ -67,6 +67,7 @@ Network: Ethernet
 - English (primary)
 - Japanese
 - Korean
+- Simplified Chinese
 
 ## Copyright and License
 
