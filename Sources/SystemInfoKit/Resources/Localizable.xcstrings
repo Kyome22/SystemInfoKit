@@ -20,6 +20,12 @@
             "state" : "translated",
             "value" : "배터리"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "电池"
+          }
         }
       }
     },
@@ -41,6 +47,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "배터리: %5.1f%%"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "电池: %5.1f%%"
           }
         }
       }
@@ -64,6 +76,12 @@
             "state" : "translated",
             "value" : "상태: %5.1f%%"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "状态: %5.1f%%"
+          }
         }
       }
     },
@@ -85,6 +103,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사이클 수: %lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "循环计数: %lld"
           }
         }
       }
@@ -108,6 +132,12 @@
             "state" : "translated",
             "value" : "배터리: 설치됨"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "电池: 未安装"
+          }
         }
       }
     },
@@ -129,6 +159,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "성능 최대치: %5.1f%%"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最大容量: %5.1f%%"
           }
         }
       }
@@ -152,6 +188,12 @@
             "state" : "translated",
             "value" : "전원 공급원: %@"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "电源: %@"
+          }
         }
       }
     },
@@ -173,6 +215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "온도: %4.1f℃"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "温度: %4.1f℃"
           }
         }
       }
@@ -196,6 +244,12 @@
             "state" : "translated",
             "value" : "알 수 없음"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未知"
+          }
         }
       }
     },
@@ -214,6 +268,12 @@
           }
         },
         "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU: %4.1f%%"
+          }
+        },
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "CPU: %4.1f%%"
@@ -240,6 +300,12 @@
             "state" : "translated",
             "value" : "대기: %4.1f%%"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "闲置: %4.1f%%"
+          }
         }
       }
     },
@@ -261,6 +327,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "시스템: %4.1f%%"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "系统: %4.1f%%"
           }
         }
       }
@@ -284,6 +356,12 @@
             "state" : "translated",
             "value" : "사용자: %4.1f%%"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用户: %4.1f%%"
+          }
         }
       }
     },
@@ -305,6 +383,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "메모리: %4.1f%%"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "内存: %4.1f%%"
           }
         }
       }
@@ -328,6 +412,12 @@
             "state" : "translated",
             "value" : "앱 메모리: %4.1f%%"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App 内存: %4.1f GB"
+          }
         }
       }
     },
@@ -349,6 +439,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "압축됨: %4.1f GB"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "被压缩: %4.1f GB"
           }
         }
       }
@@ -372,6 +468,12 @@
             "state" : "translated",
             "value" : "압력: %4.1f%%"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "压力: %4.1f%%"
+          }
         }
       }
     },
@@ -393,6 +495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "와이어드 메모리: %4.1f GB"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "联动内存: %4.1f GB"
           }
         }
       }
@@ -416,6 +524,12 @@
             "state" : "translated",
             "value" : "네트워크: %@"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "网络: %@"
+          }
         }
       }
     },
@@ -437,6 +551,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "다운로드: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下载: %@"
           }
         }
       }
@@ -460,6 +580,12 @@
             "state" : "translated",
             "value" : "로컬 IP: %@"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本地 IP: %@"
+          }
         }
       }
     },
@@ -481,6 +607,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "연결 없음"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未连接"
           }
         }
       }
@@ -504,6 +636,12 @@
             "state" : "translated",
             "value" : "알 수 없음"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未知"
+          }
         }
       }
     },
@@ -526,6 +664,12 @@
             "state" : "translated",
             "value" : "업로드: %@"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上传: %@"
+          }
         }
       }
     },
@@ -547,6 +691,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "저장 용량: %4.1f%% 사용됨"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "储存: %4.1f%% 已使用"
           }
         }
       }
