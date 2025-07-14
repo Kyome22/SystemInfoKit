@@ -9,6 +9,12 @@
             "value" : "Battery"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batterie"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35,6 +41,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Battery: %5.1f%%"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batterie : %5.1f%%"
           }
         },
         "ja" : {
@@ -65,6 +77,12 @@
             "value" : "Condition: %5.1f%%"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "État de la batterie : %5.1f%%"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91,6 +109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cycle Count: %lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de cycles"
           }
         },
         "ja" : {
@@ -121,6 +145,12 @@
             "value" : "Battery: Not Installed"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batterie : Non installé"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -147,6 +177,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Max Capacity: %5.1f%%"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capacité max : %5.1f%%"
           }
         },
         "ja" : {
@@ -177,6 +213,12 @@
             "value" : "Power Source: %@"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Source d’alimentation : %@"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -203,6 +245,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Temperature: %4.1f℃"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Température : %4.1f°C"
           }
         },
         "ja" : {
@@ -233,6 +281,12 @@
             "value" : "Unknown"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inconnue"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -259,6 +313,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "CPU: %4.1f%%"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU : %4.1f%%"
           }
         },
         "ja" : {
@@ -289,6 +349,12 @@
             "value" : "Idle: %4.1f%%"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inactif : %4.1f%%"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -315,6 +381,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "System: %4.1f%%"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Système : %4.1f%%"
           }
         },
         "ja" : {
@@ -345,6 +417,12 @@
             "value" : "User: %4.1f%%"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilisateur : %4.1f%%"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -371,6 +449,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Memory: %4.1f%%"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mémoire : %4.1f%%"
           }
         },
         "ja" : {
@@ -401,6 +485,12 @@
             "value" : "App Memory: %4.1f GB"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mémoire de l’app : %4.1f Go"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -427,6 +517,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compressed: %4.1f GB"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compressée : %4.1f Go"
           }
         },
         "ja" : {
@@ -457,6 +553,12 @@
             "value" : "Pressure: %4.1f%%"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Charge mémoire : %4.1f%%"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -483,6 +585,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wired Memory: %4.1f GB"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mémoire résidente : %4.1f Go"
           }
         },
         "ja" : {
@@ -513,6 +621,12 @@
             "value" : "Network: %@"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réseau : %@"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -539,6 +653,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Download: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réception : %@"
           }
         },
         "ja" : {
@@ -569,6 +689,12 @@
             "value" : "Local IP: %@"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP local : %@"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -595,6 +721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Connection"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune connexion"
           }
         },
         "ja" : {
@@ -625,6 +757,12 @@
             "value" : "Unknown"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inconnue"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -653,6 +791,12 @@
             "value" : "Upload: %@"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoi : %@"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -679,6 +823,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Storage: %4.1f%% used"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stockage : %4.1f%% utilisé"
           }
         },
         "ja" : {
