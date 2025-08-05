@@ -68,6 +68,7 @@ Network: Ethernet
 - Japanese
 - Korean
 - Simplified Chinese
+- French
 
 ## Copyright and License
 
