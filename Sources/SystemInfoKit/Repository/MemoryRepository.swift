@@ -2,7 +2,6 @@
 
 struct MemoryRepository: Sendable {
     var current = MemoryInfo()
-    private let gigaByte: Double = 1_073_741_824 // 2^30
     private let hostVmInfo64Count: mach_msg_type_number_t!
     private let hostBasicInfoCount: mach_msg_type_number_t!
 
@@ -11,7 +10,7 @@ struct MemoryRepository: Sendable {
         hostBasicInfoCount = UInt32(MemoryLayout<host_basic_info_data_t>.size / MemoryLayout<integer_t>.size)
     }
 
-    private var maxMemory: Double {
+    private var maxMemory: Int64 {
         var size: mach_msg_type_number_t = hostBasicInfoCount
         let hostInfo = host_basic_info_t.allocate(capacity: 1)
         let _ = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int()) { (pointer) -> kern_return_t in
@@ -19,7 +18,7 @@ struct MemoryRepository: Sendable {
         }
         let data = hostInfo.move()
         hostInfo.deallocate()
-        return Double(data.max_mem) / gigaByte
+        return Int64(data.max_mem)
     }
 
     private var vmStatistics64: vm_statistics64 {
@@ -43,21 +42,21 @@ struct MemoryRepository: Sendable {
         let maxMem = maxMemory
         let load = vmStatistics64
 
-        let unit        = Double(vm_kernel_page_size) / gigaByte
-        let active      = Double(load.active_count) * unit
-        let speculative = Double(load.speculative_count) * unit
-        let inactive    = Double(load.inactive_count) * unit
-        let wired       = Double(load.wire_count) * unit
-        let compressed  = Double(load.compressor_page_count) * unit
-        let purgeable   = Double(load.purgeable_count) * unit
-        let external    = Double(load.external_page_count) * unit
+        let page        = Int64(vm_kernel_page_size)
+        let active      = Int64(load.active_count) * page
+        let speculative = Int64(load.speculative_count) * page
+        let inactive    = Int64(load.inactive_count) * page
+        let wired       = Int64(load.wire_count) * page
+        let compressed  = Int64(load.compressor_page_count) * page
+        let purgeable   = Int64(load.purgeable_count) * page
+        let external    = Int64(load.external_page_count) * page
         let using       = active + inactive + speculative + wired + compressed - purgeable - external
 
-        result.value = min(99.9, (100.0 * using / maxMem).round2dp)
-        result.pressureValue = (100.0 * (wired + compressed) / maxMem).round2dp
-        result.appValue = (using - wired - compressed).round2dp
-        result.wiredValue = wired.round2dp
-        result.compressedValue = compressed.round2dp
+        result.value = min(99.9, (100.0 * Double(using) / Double(maxMem)).round2dp)
+        result.pressureValue = (100.0 * (Double(wired) + Double(compressed)) / Double(maxMem)).round2dp
+        result.appValue = ByteData(byteCount: using - wired - compressed)
+        result.wiredValue = ByteData(byteCount: wired)
+        result.compressedValue = ByteData(byteCount: compressed)
     }
 
     mutating func reset() {

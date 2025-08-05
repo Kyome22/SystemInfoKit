@@ -477,70 +477,70 @@
         }
       }
     },
-    "memoryApp%lf" : {
+    "memoryApp%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "App Memory: %4.1f GB"
+            "value" : "App Memory: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mémoire de l’app : %4.1f Go"
+            "value" : "Mémoire de l’app : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アプリメモリ: %4.1f GB"
+            "value" : "アプリメモリ: %@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "앱 메모리: %4.1f%%"
+            "value" : "앱 메모리: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "App 内存: %4.1f GB"
+            "value" : "App 内存: %@"
           }
         }
       }
     },
-    "memoryCompressed%lf" : {
+    "memoryCompressed%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compressed: %4.1f GB"
+            "value" : "Compressed: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compressée : %4.1f Go"
+            "value" : "Compressée : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "圧縮: %4.1f GB"
+            "value" : "圧縮: %@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "압축됨: %4.1f GB"
+            "value" : "압축됨: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "被压缩: %4.1f GB"
+            "value" : "被压缩: %@"
           }
         }
       }
@@ -579,36 +579,36 @@
         }
       }
     },
-    "memoryWired%lf" : {
+    "memoryWired%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wired Memory: %4.1f GB"
+            "value" : "Wired Memory: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mémoire résidente : %4.1f Go"
+            "value" : "Mémoire résidente : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "確保されているメモリ: %4.1f GB"
+            "value" : "確保されているメモリ: %@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "와이어드 메모리: %4.1f GB"
+            "value" : "와이어드 메모리: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "联动内存: %4.1f GB"
+            "value" : "联动内存: %@"
           }
         }
       }
