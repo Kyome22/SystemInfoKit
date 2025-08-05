@@ -52,7 +52,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "バッテリー: %5.1f%%"
+            "value" : "バッテリー：%5.1f%%"
           }
         },
         "ko" : {
@@ -64,7 +64,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "电池: %5.1f%%"
+            "value" : "电池：%5.1f%%"
           }
         }
       }
@@ -86,7 +86,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "状態: %5.1f%%"
+            "value" : "状態：%5.1f%%"
           }
         },
         "ko" : {
@@ -98,7 +98,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "状态: %5.1f%%"
+            "value" : "状态：%5.1f%%"
           }
         }
       }
@@ -120,7 +120,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "充放電回数: %lld"
+            "value" : "充放電回数：%lld"
           }
         },
         "ko" : {
@@ -132,7 +132,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "循环计数: %lld"
+            "value" : "循环计数：%lld"
           }
         }
       }
@@ -154,7 +154,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "バッテリー: 非搭載"
+            "value" : "バッテリー：非搭載"
           }
         },
         "ko" : {
@@ -166,7 +166,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "电池: 未安装"
+            "value" : "电池：未安装"
           }
         }
       }
@@ -188,7 +188,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最大容量: %5.1f%%"
+            "value" : "最大容量：%5.1f%%"
           }
         },
         "ko" : {
@@ -200,7 +200,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最大容量: %5.1f%%"
+            "value" : "最大容量：%5.1f%%"
           }
         }
       }
@@ -222,7 +222,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "供給源: %@"
+            "value" : "供給源：%@"
           }
         },
         "ko" : {
@@ -234,7 +234,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "电源: %@"
+            "value" : "电源：%@"
           }
         }
       }
@@ -256,7 +256,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "温度: %4.1f℃"
+            "value" : "温度：%4.1f℃"
           }
         },
         "ko" : {
@@ -268,7 +268,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "温度: %4.1f℃"
+            "value" : "温度：%4.1f℃"
           }
         }
       }
@@ -324,7 +324,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CPU: %4.1f%%"
+            "value" : "CPU：%4.1f%%"
           }
         },
         "ko" : {
@@ -336,7 +336,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CPU: %4.1f%%"
+            "value" : "CPU：%4.1f%%"
           }
         }
       }
@@ -358,7 +358,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アイドル状態: %4.1f%%"
+            "value" : "アイドル状態：%4.1f%%"
           }
         },
         "ko" : {
@@ -370,7 +370,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "闲置: %4.1f%%"
+            "value" : "闲置：%4.1f%%"
           }
         }
       }
@@ -392,7 +392,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "システム: %4.1f%%"
+            "value" : "システム：%4.1f%%"
           }
         },
         "ko" : {
@@ -404,7 +404,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "系统: %4.1f%%"
+            "value" : "系统：%4.1f%%"
           }
         }
       }
@@ -426,7 +426,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ユーザ: %4.1f%%"
+            "value" : "ユーザ：%4.1f%%"
           }
         },
         "ko" : {
@@ -438,7 +438,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "用户: %4.1f%%"
+            "value" : "用户：%4.1f%%"
           }
         }
       }
@@ -460,7 +460,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メモリ: %4.1f%%"
+            "value" : "メモリ：%4.1f%%"
           }
         },
         "ko" : {
@@ -472,75 +472,75 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "内存: %4.1f%%"
+            "value" : "内存：%4.1f%%"
           }
         }
       }
     },
-    "memoryApp%lf" : {
+    "memoryApp%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "App Memory: %4.1f GB"
+            "value" : "App Memory: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mémoire de l’app : %4.1f Go"
+            "value" : "Mémoire de l’app : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アプリメモリ: %4.1f GB"
+            "value" : "アプリメモリ：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "앱 메모리: %4.1f%%"
+            "value" : "앱 메모리: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "App 内存: %4.1f GB"
+            "value" : "App 内存：%@"
           }
         }
       }
     },
-    "memoryCompressed%lf" : {
+    "memoryCompressed%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compressed: %4.1f GB"
+            "value" : "Compressed: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compressée : %4.1f Go"
+            "value" : "Compressée : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "圧縮: %4.1f GB"
+            "value" : "圧縮：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "압축됨: %4.1f GB"
+            "value" : "압축됨: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "被压缩: %4.1f GB"
+            "value" : "被压缩：%@"
           }
         }
       }
@@ -562,7 +562,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレッシャー: %4.1f%%"
+            "value" : "プレッシャー：%4.1f%%"
           }
         },
         "ko" : {
@@ -574,41 +574,41 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "压力: %4.1f%%"
+            "value" : "压力：%4.1f%%"
           }
         }
       }
     },
-    "memoryWired%lf" : {
+    "memoryWired%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wired Memory: %4.1f GB"
+            "value" : "Wired Memory: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mémoire résidente : %4.1f Go"
+            "value" : "Mémoire résidente : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "確保されているメモリ: %4.1f GB"
+            "value" : "確保されているメモリ：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "와이어드 메모리: %4.1f GB"
+            "value" : "와이어드 메모리: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "联动内存: %4.1f GB"
+            "value" : "联动内存：%@"
           }
         }
       }
@@ -630,7 +630,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ネットワーク: %@"
+            "value" : "ネットワーク：%@"
           }
         },
         "ko" : {
@@ -642,7 +642,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "网络: %@"
+            "value" : "网络：%@"
           }
         }
       }
@@ -652,31 +652,31 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Download: %@"
+            "value" : "Download: %@/s"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Réception : %@"
+            "value" : "Réception : %@/s"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ダウンロード: %@"
+            "value" : "ダウンロード：%@/s"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "다운로드: %@"
+            "value" : "다운로드: %@/s"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "下载: %@"
+            "value" : "下载：%@/s"
           }
         }
       }
@@ -698,7 +698,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ローカル IP: %@"
+            "value" : "ローカル IP：%@"
           }
         },
         "ko" : {
@@ -710,7 +710,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "本地 IP: %@"
+            "value" : "本地 IP：%@"
           }
         }
       }
@@ -788,31 +788,31 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upload: %@"
+            "value" : "Upload: %@/s"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Envoi : %@"
+            "value" : "Envoi : %@/s"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アップロード: %@"
+            "value" : "アップロード：%@/s"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "업로드: %@"
+            "value" : "업로드: %@/s"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "上传: %@"
+            "value" : "上传：%@/s"
           }
         }
       }
@@ -834,7 +834,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストレージ: %4.1f%% 使用中"
+            "value" : "ストレージ：%4.1f%% 使用中"
           }
         },
         "ko" : {
@@ -846,7 +846,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "储存: %4.1f%% 已使用"
+            "value" : "储存：%4.1f%% 已使用"
           }
         }
       }

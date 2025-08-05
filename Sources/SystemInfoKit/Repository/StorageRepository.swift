@@ -3,16 +3,6 @@ import Foundation
 struct StorageRepository: Sendable {
     var current = StorageInfo()
 
-    private func convertByteData(_ byteCount: Int64) -> ByteData {
-        let style = ByteCountFormatStyle(
-            style: .decimal,
-            allowedUnits: [.kb, .mb, .gb, .tb, .pb, .eb],
-            locale: Locale(identifier: "en_US")
-        )
-        let array = style.format(byteCount).components(separatedBy: .whitespaces)
-        return ByteData(value: Double(array[0]) ?? 0.0, unit: array[1])
-    }
-
     mutating func update() {
         var result = StorageInfo()
 
@@ -28,9 +18,9 @@ struct StorageRepository: Sendable {
         let used: Int64 = total - available
 
         result.value = min(99.9, (100.0 * Double(used) / Double(total)).round2dp)
-        result.totalValue = convertByteData(total)
-        result.availableValue = convertByteData(available)
-        result.usedValue = convertByteData(used)
+        result.totalValue = ByteData(byteCount: total)
+        result.availableValue = ByteData(byteCount: available)
+        result.usedValue = ByteData(byteCount: used)
     }
 
     mutating func reset() {

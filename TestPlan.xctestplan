@@ -1,0 +1,26 @@
+{
+  "configurations" : [
+    {
+      "id" : "22CAEDCA-E995-466A-97BC-CACC8478EA98",
+      "name" : "Configuration",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "language" : "en",
+    "region" : "US",
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SystemInfoKitTests",
+        "name" : "SystemInfoKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
