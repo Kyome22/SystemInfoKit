@@ -114,7 +114,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nombre de cycles"
+            "value" : "Nombre de cycles : %lld"
           }
         },
         "ja" : {
