@@ -6,8 +6,8 @@ public struct NetworkInfo: SystemInfo {
     public let icon = "network"
     public internal(set) var nameValue: String?
     public internal(set) var ipValue = "-"
-    public internal(set) var uploadValue = ByteData.zero
-    public internal(set) var downloadValue = ByteData.zero
+    public internal(set) var uploadValue = ByteDataPerSecond.zero
+    public internal(set) var downloadValue = ByteDataPerSecond.zero
 
     public var summary: String {
         if let nameValue {
@@ -30,8 +30,8 @@ extension NetworkInfo {
     public static func createMock(
         nameValue: String?,
         ipValue: String,
-        uploadValue: ByteData,
-        downloadValue: ByteData
+        uploadValue: ByteDataPerSecond,
+        downloadValue: ByteDataPerSecond
     ) -> NetworkInfo {
         NetworkInfo(
             nameValue: nameValue,

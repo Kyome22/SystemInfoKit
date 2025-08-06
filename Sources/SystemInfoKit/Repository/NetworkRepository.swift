@@ -78,8 +78,8 @@ struct NetworkRepository: Sendable {
         }
         freeifaddrs(ifaddr)
         if previousUpload != .zero && previousDownload != .zero {
-            result.upload = ByteData(byteCount: Int64(Double(upload - previousUpload) / interval))
-            result.download = ByteData(byteCount: Int64(Double(download - previousDownload) / interval))
+            result.upload = ByteDataPerSecond(byteCount: Int64(Double(upload - previousUpload) / interval))
+            result.download = ByteDataPerSecond(byteCount: Int64(Double(download - previousDownload) / interval))
         }
         previousUpload = upload
         previousDownload = download
@@ -108,7 +108,7 @@ struct NetworkRepository: Sendable {
     }
 
     private struct UpDownByteData {
-        var upload = ByteData.zero
-        var download = ByteData.zero
+        var upload = ByteDataPerSecond.zero
+        var download = ByteDataPerSecond.zero
     }
 }
