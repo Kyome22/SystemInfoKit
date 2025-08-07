@@ -6,7 +6,7 @@ public struct ByteData: Sendable, CustomStringConvertible {
     public internal(set) var unit: String
 
     public var description: String {
-        String(format: "%4.1f %@", locale: Locale.current, value, unit)
+        String(format: "%4.1f %@", locale: .current, value, unit)
     }
 
     public init(byteCount: Int64) {
@@ -15,10 +15,13 @@ public struct ByteData: Sendable, CustomStringConvertible {
             style: .decimal,
             allowedUnits: .kb.union(.mb).union(.gb).union(.tb).union(.pb),
             spellsOutZero: false,
-            locale: Locale.current
+            locale: .current
         )
         let array = style.format(byteCount).components(separatedBy: .whitespaces)
-        self.value = Double(array[0]) ?? .zero
+        let formatter = NumberFormatter()
+        formatter.locale = .current
+        formatter.numberStyle = .decimal
+        self.value = formatter.number(from: array[0])?.doubleValue ?? .zero
         self.unit = array[1]
     }
 

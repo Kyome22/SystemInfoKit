@@ -35,70 +35,70 @@
         }
       }
     },
-    "battery%lf" : {
+    "battery%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Battery: %5.1f%%"
+            "value" : "Battery: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Batterie : %5.1f%%"
+            "value" : "Batterie : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "バッテリー：%5.1f%%"
+            "value" : "バッテリー：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "배터리: %5.1f%%"
+            "value" : "배터리: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "电池：%5.1f%%"
+            "value" : "电池：%@"
           }
         }
       }
     },
-    "batteryCondition%lf" : {
+    "batteryCondition%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Condition: %5.1f%%"
+            "value" : "Condition: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "État de la batterie : %5.1f%%"
+            "value" : "État de la batterie : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "状態：%5.1f%%"
+            "value" : "状態：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "상태: %5.1f%%"
+            "value" : "상태: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "状态：%5.1f%%"
+            "value" : "状态：%@"
           }
         }
       }
@@ -171,36 +171,36 @@
         }
       }
     },
-    "batteryMaxCapacity%lf" : {
+    "batteryMaxCapacity%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Max Capacity: %5.1f%%"
+            "value" : "Max Capacity: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Capacité max : %5.1f%%"
+            "value" : "Capacité max : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最大容量：%5.1f%%"
+            "value" : "最大容量：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "성능 최대치: %5.1f%%"
+            "value" : "성능 최대치: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最大容量：%5.1f%%"
+            "value" : "最大容量：%@"
           }
         }
       }
@@ -307,172 +307,172 @@
         }
       }
     },
-    "cpu%lf" : {
+    "cpu%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CPU: %4.1f%%"
+            "value" : "CPU: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CPU : %4.1f%%"
+            "value" : "CPU : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CPU：%4.1f%%"
+            "value" : "CPU：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CPU: %4.1f%%"
+            "value" : "CPU: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CPU：%4.1f%%"
+            "value" : "CPU：%@"
           }
         }
       }
     },
-    "cpuIdle%lf" : {
+    "cpuIdle%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Idle: %4.1f%%"
+            "value" : "Idle: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inactif : %4.1f%%"
+            "value" : "Inactif : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アイドル状態：%4.1f%%"
+            "value" : "アイドル状態：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "대기: %4.1f%%"
+            "value" : "대기: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "闲置：%4.1f%%"
+            "value" : "闲置：%@"
           }
         }
       }
     },
-    "cpuSystem%lf" : {
+    "cpuSystem%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "System: %4.1f%%"
+            "value" : "System: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Système : %4.1f%%"
+            "value" : "Système : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "システム：%4.1f%%"
+            "value" : "システム：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "시스템: %4.1f%%"
+            "value" : "시스템: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "系统：%4.1f%%"
+            "value" : "系统：%@"
           }
         }
       }
     },
-    "cpuUser%lf" : {
+    "cpuUser%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "User: %4.1f%%"
+            "value" : "User: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilisateur : %4.1f%%"
+            "value" : "Utilisateur : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ユーザ：%4.1f%%"
+            "value" : "ユーザ：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "사용자: %4.1f%%"
+            "value" : "사용자: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "用户：%4.1f%%"
+            "value" : "用户：%@"
           }
         }
       }
     },
-    "memory%lf" : {
+    "memory%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Memory: %4.1f%%"
+            "value" : "Memory: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mémoire : %4.1f%%"
+            "value" : "Mémoire : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メモリ：%4.1f%%"
+            "value" : "メモリ：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "메모리: %4.1f%%"
+            "value" : "메모리: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "内存：%4.1f%%"
+            "value" : "内存：%@"
           }
         }
       }
@@ -545,36 +545,36 @@
         }
       }
     },
-    "memoryPressure%lf" : {
+    "memoryPressure%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pressure: %4.1f%%"
+            "value" : "Pressure: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Charge mémoire : %4.1f%%"
+            "value" : "Charge mémoire : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プレッシャー：%4.1f%%"
+            "value" : "プレッシャー：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "압력: %4.1f%%"
+            "value" : "압력: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "压力：%4.1f%%"
+            "value" : "压力：%@"
           }
         }
       }
@@ -817,36 +817,36 @@
         }
       }
     },
-    "storage%lf" : {
+    "storage%@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Storage: %4.1f%% used"
+            "value" : "Storage: %@ used"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stockage : %4.1f%% utilisé"
+            "value" : "Stockage : %@ utilisé"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ストレージ：%4.1f%% 使用中"
+            "value" : "ストレージ：%@ 使用中"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "저장 용량: %4.1f%% 사용됨"
+            "value" : "저장 용량: %@ 사용됨"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "储存：%4.1f%% 已使用"
+            "value" : "储存：%@ 已使用"
           }
         }
       }

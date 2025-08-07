@@ -1,7 +1,8 @@
 import IOKit
 
 struct BatteryRepository: Sendable {
-    var current = BatteryInfo(isInstalled: false)
+    var processor: Processor
+    var current = BatteryInfo.zero
 
     mutating func update() {
         var service: io_service_t = 0
@@ -26,21 +27,23 @@ struct BatteryRepository: Sendable {
         guard let installed = dict["BatteryInstalled"] as? Int else { return }
         var result = BatteryInfo(isInstalled: installed == 1)
 
-#if arch(x86_64) // Intel chip
-        if let designCapacity = dict["DesignCapacity"] as? Double,
-           let maxCapacity = dict["MaxCapacity"] as? Double,
-           let currentCapacity = dict["CurrentCapacity"] as? Double {
-            result.value = (100.0 * currentCapacity / maxCapacity).round2dp
-            result.healthValue = (100.0 * maxCapacity / designCapacity).round2dp
+        switch processor {
+        case .appleSilicon:
+            if let designCapacity = dict["DesignCapacity"] as? Double,
+               let nominalCapacity = dict["NominalChargeCapacity"] as? Double,
+               let currentCapacity = dict["CurrentCapacity"] as? Double {
+                result.percentage = .init(rawValue: currentCapacity, width: 5)
+                result.health = .maxCapacity(.init(rawValue: nominalCapacity / designCapacity, width: 5))
+            }
+        case .intel:
+            if let designCapacity = dict["DesignCapacity"] as? Double,
+               let maxCapacity = dict["MaxCapacity"] as? Double,
+               let currentCapacity = dict["CurrentCapacity"] as? Double {
+                result.percentage = .init(rawValue: currentCapacity / maxCapacity, width: 5)
+                result.health = .condition(.init(rawValue: maxCapacity / designCapacity, width: 5))
+            }
         }
-#elseif arch(arm64) // Apple Silicon chip
-        if let designCapacity = dict["DesignCapacity"] as? Double,
-           let nominalCapacity = dict["NominalChargeCapacity"] as? Double,
-           let currentCapacity = dict["CurrentCapacity"] as? Double {
-            result.value = currentCapacity
-            result.maxCapacityValue = min((100.0 * nominalCapacity / designCapacity).round2dp, 100.0)
-        }
-#endif
+
         if let isCharging = dict["IsCharging"] as? Int {
             result.isCharging = isCharging == 1
         }
@@ -49,10 +52,10 @@ struct BatteryRepository: Sendable {
             result.adapterName = name
         }
         if let cycleCount = dict["CycleCount"] as? Int {
-            result.cycleValue = cycleCount
+            result.cycleCount = cycleCount
         }
         if let temperature = dict["Temperature"] as? Double {
-            result.temperatureValue = temperature / 100.0
+            result.temperature = temperature / 100.0
         }
         current = result
     }

@@ -95,11 +95,11 @@ struct NetworkRepository: Sendable {
 
         self.interval = max(interval, 1.0)
         if let id = getDefaultID() {
-            result.nameValue = getHardwareName(id)
+            result.name = getHardwareName(id)
             let upDown = getUpDown(id)
-            result.ipValue = previousIP
-            result.uploadValue = upDown.upload
-            result.downloadValue = upDown.download
+            result.ip = previousIP
+            result.upload = upDown.upload
+            result.download = upDown.download
         }
     }
 

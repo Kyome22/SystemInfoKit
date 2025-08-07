@@ -17,10 +17,10 @@ struct StorageRepository: Sendable {
         let available = (dict[URLResourceKey.volumeAvailableCapacityForImportantUsageKey] as! NSNumber).int64Value
         let used: Int64 = total - available
 
-        result.value = min(99.9, (100.0 * Double(used) / Double(total)).round2dp)
-        result.totalValue = ByteData(byteCount: total)
-        result.availableValue = ByteData(byteCount: available)
-        result.usedValue = ByteData(byteCount: used)
+        result.percentage = .init(rawValue: min(Double(used) / Double(total), 0.999))
+        result.total = .init(byteCount: total)
+        result.available = .init(byteCount: available)
+        result.used = .init(byteCount: used)
     }
 
     mutating func reset() {
