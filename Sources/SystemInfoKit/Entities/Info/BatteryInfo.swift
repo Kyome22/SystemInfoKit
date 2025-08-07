@@ -1,13 +1,12 @@
 public struct BatteryInfo: SystemInfo {
     public let type = SystemInfoType.battery
-    public internal(set) var value = Double.zero
+    public internal(set) var percentage = Percentage.zero
     public let isInstalled: Bool
     public internal(set) var isCharging = false
     public internal(set) var adapterName: String?
-    public internal(set) var healthValue = Double.zero
-    public internal(set) var maxCapacityValue = Double.zero
-    public internal(set) var cycleValue = Int.zero
-    public internal(set) var temperatureValue = Double.zero
+    public internal(set) var health = CapacityHealth.maxCapacity(.zero)
+    public internal(set) var cycleCount = Int.zero
+    public internal(set) var temperature = Double.zero
 
     public var icon: String {
         let suffix = if #available(macOS 14.0, *) { "percent" } else { "" }
@@ -15,7 +14,7 @@ public struct BatteryInfo: SystemInfo {
         case (true, true):
             return "battery.100\(suffix).bolt"
         case (true, false):
-            return switch value {
+            return switch percentage.value {
             case 0 ..< 20:  "battery.0\(suffix)"
             case 20 ..< 45: "battery.25\(suffix)"
             case 45 ..< 70: "battery.50\(suffix)"
@@ -29,13 +28,13 @@ public struct BatteryInfo: SystemInfo {
 
     public var summary: String {
         if isInstalled {
-            String(localized: "battery\(value)", bundle: .module)
+            String(localized: "battery\(percentage.description)", bundle: .module)
         } else {
             String(localized: "batteryIsNotInstalled", bundle: .module)
         }
     }
 
-    private var powerSourceValue: String {
+    private var powerSource: String {
         if isCharging {
             adapterName ?? String(localized: "batteryUnknown", bundle: .module)
         } else {
@@ -43,52 +42,43 @@ public struct BatteryInfo: SystemInfo {
         }
     }
 
-    private var condition: String {
-        String(localized: "batteryCondition\(healthValue)", bundle: .module)
-    }
-
-    private var maxCapacity: String {
-        String(localized: "batteryMaxCapacity\(maxCapacityValue)", bundle: .module)
-    }
-
     private var conditionOrMaxCapacity: String {
-#if arch(x86_64) // Intel chip
-        condition
-#elseif arch(arm64) // Apple Silicon chip
-        maxCapacity
-#endif
+        switch health {
+        case let .maxCapacity(percentage):
+            String(localized: "batteryCondition\(percentage.description)", bundle: .module)
+        case let .condition(percentage):
+            String(localized: "batteryMaxCapacity\(percentage.description)", bundle: .module)
+        }
     }
 
     public var details: [String] {
         [
-            String(localized: "batteryPowerSource\(powerSourceValue)", bundle: .module),
+            String(localized: "batteryPowerSource\(powerSource)", bundle: .module),
             conditionOrMaxCapacity,
-            String(localized: "batteryCycle\(cycleValue)", bundle: .module),
-            String(localized: "batteryTemperature\(temperatureValue)", bundle: .module)
+            String(localized: "batteryCycle\(cycleCount)", bundle: .module),
+            String(localized: "batteryTemperature\(temperature)", bundle: .module)
         ]
     }
 }
 
 extension BatteryInfo {
     public static func createMock(
-        value: Double,
+        percentage: Percentage,
         isInstalled: Bool,
         isCharging: Bool,
         adapterName: String?,
-        healthValue: Double,
-        maxCapacityValue: Double,
-        cycleValue: Int,
-        temperatureValue: Double
+        health: CapacityHealth,
+        cycleCount: Int,
+        temperature: Double
     ) -> BatteryInfo {
         BatteryInfo(
-            value: value,
+            percentage: percentage,
             isInstalled: isInstalled,
             isCharging: isCharging,
             adapterName: adapterName,
-            healthValue: healthValue,
-            maxCapacityValue: maxCapacityValue,
-            cycleValue: cycleValue,
-            temperatureValue: temperatureValue
+            health: health,
+            cycleCount: cycleCount,
+            temperature: temperature
         )
     }
 

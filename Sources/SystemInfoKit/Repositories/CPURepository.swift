@@ -35,13 +35,13 @@ struct CPURepository: Sendable {
         loadPrevious = load
 
         let totalTicks = sysDiff + userDiff + idleDiff + niceDiff
-        let sys  = 100.0 * sysDiff / totalTicks
-        let user = 100.0 * userDiff / totalTicks
-        let idle = 100.0 * idleDiff / totalTicks
+        let sys  = sysDiff / totalTicks
+        let user = userDiff / totalTicks
+        let idle = idleDiff / totalTicks
 
-        result.value = min(99.9, (sys + user).round2dp)
-        result.systemValue = sys.round2dp
-        result.userValue = user.round2dp
-        result.idleValue = idle.round2dp
+        result.percentage = .init(rawValue: min(sys + user, 0.999))
+        result.system = .init(rawValue: sys)
+        result.user = .init(rawValue: user)
+        result.idle = .init(rawValue: idle)
     }
 }

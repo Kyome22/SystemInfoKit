@@ -1,6 +1,6 @@
 public protocol SystemInfo: Sendable, CustomStringConvertible {
     var type: SystemInfoType { get }
-    var value: Double { get }
+    var percentage: Percentage { get }
     var icon: String { get }
     var summary: String { get }
     var details: [String] { get }

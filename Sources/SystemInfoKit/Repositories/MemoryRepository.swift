@@ -52,11 +52,11 @@ struct MemoryRepository: Sendable {
         let external    = Int64(load.external_page_count) * page
         let using       = active + inactive + speculative + wired + compressed - purgeable - external
 
-        result.value = min(99.9, (100.0 * Double(using) / Double(maxMem)).round2dp)
-        result.pressureValue = (100.0 * (Double(wired) + Double(compressed)) / Double(maxMem)).round2dp
-        result.appValue = ByteData(byteCount: using - wired - compressed)
-        result.wiredValue = ByteData(byteCount: wired)
-        result.compressedValue = ByteData(byteCount: compressed)
+        result.percentage = .init(rawValue: min(Double(using) / Double(maxMem), 0.999))
+        result.pressure = .init(rawValue: (Double(wired) + Double(compressed)) / Double(maxMem))
+        result.app = .init(byteCount: using - wired - compressed)
+        result.wired = .init(byteCount: wired)
+        result.compressed = .init(byteCount: compressed)
     }
 
     mutating func reset() {
