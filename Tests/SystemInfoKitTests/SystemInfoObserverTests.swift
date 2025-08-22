@@ -3,7 +3,7 @@ import Testing
 
 @testable import SystemInfoKit
 
-struct SystemInfoKitTests {
+struct SystemInfoObserverTests {
     @Test
     func test_statistics() async {
         let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
