@@ -4,25 +4,31 @@ public struct ByteData: Sendable, CustomStringConvertible {
     public internal(set) var byteCount: Int64
     public internal(set) var value: Double
     public internal(set) var unit: String
+    var locale: Locale
 
     public var description: String {
-        String(format: "%4.1f %@", locale: .current, value, unit)
+        String(format: "%4.1f %@", locale: locale, value, unit)
     }
 
-    public init(byteCount: Int64) {
+    public init(byteCount: Int64, locale: Locale = .current) {
         self.byteCount = byteCount
-        let style = ByteCountFormatStyle(
+        self.locale = locale
+        let formatStyle = ByteCountFormatStyle(
             style: .decimal,
             allowedUnits: .kb.union(.mb).union(.gb).union(.tb).union(.pb),
             spellsOutZero: false,
-            locale: .current
+            locale: locale
         )
-        let array = style.format(byteCount).components(separatedBy: .whitespaces)
+        guard let (count, unit) = formatStyle.format(byteCount).separete() else {
+            self.value = .zero
+            self.unit = ""
+            return
+        }
         let formatter = NumberFormatter()
-        formatter.locale = .current
+        formatter.locale = locale
         formatter.numberStyle = .decimal
-        self.value = formatter.number(from: array[0])?.doubleValue ?? .zero
-        self.unit = array[1]
+        self.value = formatter.number(from: count)?.doubleValue ?? .zero
+        self.unit = unit
     }
 
     public static let zero = ByteData(byteCount: .zero)
