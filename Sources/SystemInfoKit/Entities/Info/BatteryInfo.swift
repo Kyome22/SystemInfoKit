@@ -4,7 +4,7 @@ public struct BatteryInfo: SystemInfo {
     public let isInstalled: Bool
     public internal(set) var isCharging = false
     public internal(set) var adapterName: String?
-    public internal(set) var health = CapacityHealth.maxCapacity(.zero)
+    public internal(set) var maxCapacity = Percentage.zero
     public internal(set) var cycleCount = Int.zero
     public internal(set) var temperature = Double.zero
 
@@ -42,19 +42,10 @@ public struct BatteryInfo: SystemInfo {
         }
     }
 
-    private var conditionOrMaxCapacity: String {
-        switch health {
-        case let .maxCapacity(percentage):
-            String(localized: "batteryCondition\(percentage.description)", bundle: .module)
-        case let .condition(percentage):
-            String(localized: "batteryMaxCapacity\(percentage.description)", bundle: .module)
-        }
-    }
-
     public var details: [String] {
         [
             String(localized: "batteryPowerSource\(powerSource)", bundle: .module),
-            conditionOrMaxCapacity,
+            String(localized: "batteryMaxCapacity\(maxCapacity.description)", bundle: .module),
             String(localized: "batteryCycle\(cycleCount)", bundle: .module),
             String(localized: "batteryTemperature\(temperature)", bundle: .module)
         ]
@@ -67,7 +58,7 @@ extension BatteryInfo {
         isInstalled: Bool,
         isCharging: Bool,
         adapterName: String?,
-        health: CapacityHealth,
+        maxCapacity: Percentage,
         cycleCount: Int,
         temperature: Double
     ) -> BatteryInfo {
@@ -76,7 +67,7 @@ extension BatteryInfo {
             isInstalled: isInstalled,
             isCharging: isCharging,
             adapterName: adapterName,
-            health: health,
+            maxCapacity: maxCapacity,
             cycleCount: cycleCount,
             temperature: temperature
         )

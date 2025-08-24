@@ -36,15 +36,10 @@ public final class SystemInfoObserver: Sendable {
     }
 
     public func startMonitoring() {
-        #if arch(arm64) // Apple Silicon chip
-        let processor = Processor.appleSilicon
-        #elseif arch(x86_64) // Intel chip
-        let processor = Processor.intel
-        #endif
         protectedCPURepository.withLock { $0 = .init() }
         protectedMemoryRepository.withLock { $0 = .init() }
         protectedStorageRepository.withLock { $0 = .init() }
-        protectedBatteryRepository.withLock { $0 = .init(processor: processor) }
+        protectedBatteryRepository.withLock { $0 = .init() }
         protectedNetworkRepository.withLock { $0 = .init() }
         let timer = Timer
             .publish(every: monitorInterval, on: RunLoop.main, in: .common)
