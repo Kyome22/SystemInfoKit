@@ -29,8 +29,8 @@ struct BatteryRepository: Sendable {
         if let designCapacity = dict["DesignCapacity"] as? Double,
            let maxCapacity = dict["AppleRawMaxCapacity"] as? Double,
            let currentCapacity = dict["AppleRawCurrentCapacity"] as? Double {
-            result.percentage = .init(rawValue: currentCapacity / maxCapacity, width: 5)
-            result.maxCapacity = .init(rawValue: maxCapacity / designCapacity, width: 5)
+            result.percentage = .init(rawValue: min(currentCapacity / maxCapacity, 1), width: 5)
+            result.maxCapacity = .init(rawValue: min(maxCapacity / designCapacity, 1), width: 5)
         }
 
         if let isCharging = dict["IsCharging"] as? Int {
