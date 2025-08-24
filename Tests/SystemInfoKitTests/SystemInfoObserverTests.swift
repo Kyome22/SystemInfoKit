@@ -10,7 +10,7 @@ struct SystemInfoObserverTests {
         let task = Task {
             var count = 0
             for await systemInfoBundle in observer.systemInfoStream() {
-                Swift.print(systemInfoBundle)
+                Swift.print(systemInfoBundle, "\n")
                 count += 1
                 if count == 2 {
                     break
