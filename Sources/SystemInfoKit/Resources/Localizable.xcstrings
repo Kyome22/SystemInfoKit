@@ -210,7 +210,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Temperature: %4.1f℃"
+            "value" : "Temperature: %4.1f°C"
           }
         },
         "fr" : {
@@ -222,19 +222,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "温度：%4.1f℃"
+            "value" : "温度：%4.1f°C"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "온도: %4.1f℃"
+            "value" : "온도: %4.1f°C"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "温度：%4.1f℃"
+            "value" : "温度：%4.1f°C"
           }
         }
       }
