@@ -6,12 +6,17 @@ extension String {
         let unit = Reference(Substring.self)
         let regex = Regex {
             Capture(as: count) {
-                OneOrMore(.digit)
                 ChoiceOf {
-                    "."
-                    ","
+                    Regex {
+                        OneOrMore(.digit)
+                        ChoiceOf {
+                            "."
+                            ","
+                        }
+                        OneOrMore(.digit)
+                    }
+                    OneOrMore(.digit)
                 }
-                OneOrMore(.digit)
             }
             Optionally(.whitespace)
             Capture(as: unit) {

@@ -1,7 +1,6 @@
 import Foundation
 
 public struct ByteData: Sendable, CustomStringConvertible {
-    public internal(set) var byteCount: Int64
     public internal(set) var value: Double
     public internal(set) var unit: String
     var locale: Locale
@@ -11,24 +10,25 @@ public struct ByteData: Sendable, CustomStringConvertible {
     }
 
     public init(byteCount: Int64, locale: Locale = .current) {
-        self.byteCount = byteCount
         self.locale = locale
-        let formatStyle = ByteCountFormatStyle(
-            style: .decimal,
-            allowedUnits: .kb.union(.mb).union(.gb).union(.tb).union(.pb),
-            spellsOutZero: false,
-            locale: locale
-        )
-        guard let (count, unit) = formatStyle.format(byteCount).separete() else {
-            self.value = .zero
-            self.unit = ""
-            return
+
+        let mf = MeasurementFormatter()
+        mf.locale = locale
+        mf.unitStyle = .short
+        mf.unitOptions = .naturalScale
+
+        let nf = NumberFormatter()
+        nf.locale = locale
+        nf.numberStyle = .decimal
+
+        let measurment = Measurement<UnitInformationStorage>(value: Double(byteCount), unit: .bytes)
+
+        (value, unit) = if let (count, unit) = mf.string(from: measurment).separete(),
+                           let value = nf.number(from: count)?.doubleValue {
+            (value, unit)
+        } else {
+            (.zero, "")
         }
-        let formatter = NumberFormatter()
-        formatter.locale = locale
-        formatter.numberStyle = .decimal
-        self.value = formatter.number(from: count)?.doubleValue ?? .zero
-        self.unit = unit
     }
 
     public static let zero = ByteData(byteCount: .zero)
