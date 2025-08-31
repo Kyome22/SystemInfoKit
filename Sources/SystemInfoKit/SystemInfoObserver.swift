@@ -7,16 +7,7 @@ public final class SystemInfoObserver: Sendable {
         SystemInfoObserver(monitorInterval: monitorInterval)
     }
 
-    private let protectedActivationState = OSAllocatedUnfairLock<[SystemInfoType: Bool]>(
-        initialState: [.cpu: true, .memory: true, .storage: true, .battery: true, .network: true]
-    )
-
-    private let monitorInterval: Double
-    private let protectedCPURepository = OSAllocatedUnfairLock<CPURepository?>(initialState: nil)
-    private let protectedMemoryRepository = OSAllocatedUnfairLock<MemoryRepository?>(initialState: nil)
-    private let protectedStorageRepository = OSAllocatedUnfairLock<StorageRepository?>(initialState: nil)
-    private let protectedBatteryRepository = OSAllocatedUnfairLock<BatteryRepository?>(initialState: nil)
-    private let protectedNetworkRepository = OSAllocatedUnfairLock<NetworkRepository?>(initialState: nil)
+    private let systemInfoStateClient: SystemInfoStateClient
     private let protectedTimer = OSAllocatedUnfairLock<AnyCancellable?>(initialState: nil)
 
     private let systemInfoSubject = PassthroughSubject<SystemInfoBundle, Never>()
@@ -31,18 +22,18 @@ public final class SystemInfoObserver: Sendable {
         }
     }
 
-    private init(monitorInterval: Double = 5.0) {
-        self.monitorInterval = monitorInterval
+    init(
+        systemInfoStateClient: SystemInfoStateClient = .liveValue,
+        monitorInterval: Double
+    ) {
+        self.systemInfoStateClient = systemInfoStateClient
+        systemInfoStateClient.withLock { $0.interval = max(monitorInterval, 1.0) }
     }
 
     public func startMonitoring() {
-        protectedCPURepository.withLock { $0 = .init() }
-        protectedMemoryRepository.withLock { $0 = .init() }
-        protectedStorageRepository.withLock { $0 = .init() }
-        protectedBatteryRepository.withLock { $0 = .init() }
-        protectedNetworkRepository.withLock { $0 = .init() }
+        let interval = systemInfoStateClient.withLock(\.interval)
         let timer = Timer
-            .publish(every: monitorInterval, on: RunLoop.main, in: .common)
+            .publish(every: interval, on: RunLoop.main, in: .common)
             .autoconnect()
             .prepend(Date())
             .sink { [weak self] _ in
@@ -56,65 +47,52 @@ public final class SystemInfoObserver: Sendable {
             $0?.cancel()
             $0 = nil
         }
-        protectedCPURepository.withLock { $0 = nil }
-        protectedMemoryRepository.withLock { $0 = nil }
-        protectedStorageRepository.withLock { $0 = nil }
-        protectedBatteryRepository.withLock { $0 = nil }
-        protectedNetworkRepository.withLock { $0 = nil }
     }
 
     public func toggleActivation(requests: [SystemInfoType: Bool]) {
-        protectedActivationState.withLock { state in
-            requests.forEach { state[$0.key] = $0.value }
+        systemInfoStateClient.withLock { state in
+            requests.forEach { state.activationState[$0.key] = $0.value }
         }
     }
 
     private func updateSystemInfo() {
-        var systemInfo = SystemInfoBundle()
-        let activationState = protectedActivationState.withLock(\.self)
+        let activationState = systemInfoStateClient.withLock(\.activationState)
         // CPU
+        let cpuRepository = CPURepository(systemInfoStateClient)
         if activationState[.cpu] == true {
-            systemInfo.cpuInfo = protectedCPURepository.withLock {
-                $0?.update()
-                return $0?.current
-            }
+            cpuRepository.update()
+        } else {
+            cpuRepository.reset()
         }
         // Memory
+        let memoryRepository = MemoryRepository(systemInfoStateClient)
         if activationState[.memory] == true {
-            systemInfo.memoryInfo = protectedMemoryRepository.withLock {
-                $0?.update()
-                return $0?.current
-            }
+            memoryRepository.update()
         } else {
-            protectedMemoryRepository.withLock { $0?.reset() }
+            memoryRepository.reset()
         }
         // Storage
+        let storageRepository = StorageRepository(systemInfoStateClient)
         if activationState[.storage] == true {
-            systemInfo.storageInfo = protectedStorageRepository.withLock {
-                $0?.update()
-                return $0?.current
-            }
+            storageRepository.update()
         } else {
-            protectedStorageRepository.withLock { $0?.reset() }
+            storageRepository.reset()
         }
         // Battery
+        let batteryRepository = BatteryRepository(systemInfoStateClient)
         if activationState[.battery] == true {
-            systemInfo.batteryInfo = protectedBatteryRepository.withLock {
-                $0?.update()
-                return $0?.current
-            }
+            batteryRepository.update()
         } else {
-            protectedBatteryRepository.withLock { $0?.reset() }
+            batteryRepository.reset()
         }
         // Network
+        let networkRepository = NetworkRepository(systemInfoStateClient)
         if activationState[.network] == true {
-            systemInfo.networkInfo = protectedNetworkRepository.withLock {
-                $0?.update(interval: monitorInterval)
-                return $0?.current
-            }
+            networkRepository.update()
         } else {
-            protectedNetworkRepository.withLock { $0?.reset() }
+            networkRepository.reset()
         }
-        systemInfoSubject.send(systemInfo)
+        // Send SystemInfoBundle
+        systemInfoSubject.send(systemInfoStateClient.withLock(\.bundle))
     }
 }
