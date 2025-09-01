@@ -48,6 +48,9 @@ struct CPURepository: Sendable {
     }
 
     func reset() {
-        systemInfoStateClient.withLock { $0.bundle.cpuInfo = .init() }
+        systemInfoStateClient.withLock {
+            $0.bundle.cpuInfo = .init()
+            $0.previousLoadInfo = .init()
+        }
     }
 }
