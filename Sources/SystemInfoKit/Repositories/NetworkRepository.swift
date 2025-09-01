@@ -62,20 +62,23 @@ struct NetworkRepository: Sendable {
         guard getifaddrs(&ifaddr) == .zero else { return result }
 
         var pointer = ifaddr
+        var detectedIP = NetworkIP.uninitialized
         var networkLoad = NetworkLoad.zero
+
         while pointer != nil {
             defer { pointer = pointer?.pointee.ifa_next }
+            if !detectedIP.isInitialized, let value = getIPAddress(id, pointer!) {
+                detectedIP = .address(value)
+            }
             if let value = getNetworkLoad(id, pointer!) {
                 networkLoad += value
             }
-            if let value = getIPAddress(id, pointer!), value != systemInfoStateClient.withLock(\.latestIP) {
-                systemInfoStateClient.withLock {
-                    $0.latestIP = value
-                    $0.previousNetworkLoad = .zero
-                }
-            }
         }
         freeifaddrs(ifaddr)
+
+        if detectedIP.isInitialized {
+            systemInfoStateClient.withLock { [detectedIP] in $0.latestIP = detectedIP }
+        }
 
         let interval = systemInfoStateClient.withLock(\.interval)
         let previousNetworkLoad = systemInfoStateClient.withLock(\.previousNetworkLoad)
@@ -98,13 +101,17 @@ struct NetworkRepository: Sendable {
         if let id = getDefaultID() {
             result.name = getHardwareName(id)
             let networkByteData = getNetworkByteData(id)
-            result.ip = systemInfoStateClient.withLock(\.latestIP)
+            result.ip = systemInfoStateClient.withLock(\.latestIP.displayString)
             result.upload = networkByteData.upload
             result.download = networkByteData.download
         }
     }
 
     func reset() {
-        systemInfoStateClient.withLock { $0.bundle.networkInfo = .init() }
+        systemInfoStateClient.withLock {
+            $0.bundle.networkInfo = .init()
+            $0.latestIP = .uninitialized
+            $0.previousNetworkLoad = .zero
+        }
     }
 }

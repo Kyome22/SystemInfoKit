@@ -14,9 +14,9 @@ func -(left: NetworkLoad, right: NetworkLoad) -> NetworkLoad {
 
 func +=(left: inout NetworkLoad, right: NetworkLoad) {
     left.upload += right.upload
-    left.download += left.download
+    left.download += right.download
 }
 
 func !=(left: NetworkLoad, right: NetworkLoad) -> Bool {
-    left.upload != right.upload && left.download != right.download
+    left.upload != right.upload || left.download != right.download
 }
