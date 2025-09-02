@@ -1,10 +1,10 @@
 @preconcurrency import Darwin
 
 struct MemoryRepository: SystemRepository {
-    private var systemInfoStateClient: SystemInfoStateClient
+    private var stateClient: StateClient
 
-    init(_ systemInfoStateClient: SystemInfoStateClient) {
-        self.systemInfoStateClient = systemInfoStateClient
+    init(_ stateClient: StateClient) {
+        self.stateClient = stateClient
     }
 
     private var maxMemory: Int64 {
@@ -32,7 +32,7 @@ struct MemoryRepository: SystemRepository {
     func update() {
         var result = MemoryInfo()
         defer {
-            systemInfoStateClient.withLock { [result] in $0.bundle.memoryInfo = result }
+            stateClient.withLock { [result] in $0.bundle.memoryInfo = result }
         }
 
         let maxMem = maxMemory
@@ -56,6 +56,6 @@ struct MemoryRepository: SystemRepository {
     }
 
     func reset() {
-        systemInfoStateClient.withLock { $0.bundle.memoryInfo = .init() }
+        stateClient.withLock { $0.bundle.memoryInfo = .init() }
     }
 }

@@ -1,10 +1,10 @@
 import Darwin
 
 struct CPURepository: SystemRepository {
-    private var systemInfoStateClient: SystemInfoStateClient
+    private var stateClient: StateClient
 
-    init(_ systemInfoStateClient: SystemInfoStateClient) {
-        self.systemInfoStateClient = systemInfoStateClient
+    init(_ stateClient: StateClient) {
+        self.stateClient = stateClient
     }
 
     private func hostCPULoadInfo() -> host_cpu_load_info {
@@ -25,16 +25,16 @@ struct CPURepository: SystemRepository {
     func update() {
         var result = CPUInfo()
         defer {
-            systemInfoStateClient.withLock { [result] in $0.bundle.cpuInfo = result }
+            stateClient.withLock { [result] in $0.bundle.cpuInfo = result }
         }
 
-        let previousLoadInfo = systemInfoStateClient.withLock(\.previousLoadInfo)
+        let previousLoadInfo = stateClient.withLock(\.previousLoadInfo)
         let loadInfo = hostCPULoadInfo()
         let userDiff = Double(loadInfo.cpu_ticks.0 - previousLoadInfo.cpu_ticks.0)
         let systemDiff  = Double(loadInfo.cpu_ticks.1 - previousLoadInfo.cpu_ticks.1)
         let idleDiff = Double(loadInfo.cpu_ticks.2 - previousLoadInfo.cpu_ticks.2)
         let niceDiff = Double(loadInfo.cpu_ticks.3 - previousLoadInfo.cpu_ticks.3)
-        systemInfoStateClient.withLock { $0.previousLoadInfo = loadInfo }
+        stateClient.withLock { $0.previousLoadInfo = loadInfo }
 
         let totalTicks = systemDiff + userDiff + idleDiff + niceDiff
         let system  = systemDiff / totalTicks
@@ -48,7 +48,7 @@ struct CPURepository: SystemRepository {
     }
 
     func reset() {
-        systemInfoStateClient.withLock {
+        stateClient.withLock {
             $0.bundle.cpuInfo = .init()
             $0.previousLoadInfo = .init()
         }

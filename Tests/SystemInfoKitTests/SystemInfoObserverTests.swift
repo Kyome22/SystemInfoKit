@@ -26,13 +26,13 @@ struct SystemInfoObserverTests {
 
     @Test
     func toggleActivation() {
-        let state = OSAllocatedUnfairLock<SystemInfoState>(initialState: .init())
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock {
             $0.activationState = [
                 .cpu: true, .memory: false, .storage: true, .battery: false, .network: true
             ]
         }
-        let observer = SystemInfoObserver(systemInfoStateClient: .testValue(state), monitorInterval: 1.0)
+        let observer = SystemInfoObserver(stateClient: .testValue(state), monitorInterval: 1.0)
         observer.toggleActivation(requests: [.cpu: false, .memory: true])
         let actual = state.withLock(\.activationState)
         #expect(actual == [.cpu: false, .memory: true, .storage: true, .battery: false, .network: true])

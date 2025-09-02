@@ -1,6 +1,6 @@
 import Darwin
 
-struct SystemInfoState: Sendable {
+struct State: Sendable {
     var activationState: [SystemInfoType: Bool] = Dictionary(
         uniqueKeysWithValues: SystemInfoType.allCases.map({ ($0, true) })
     )

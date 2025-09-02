@@ -1,16 +1,16 @@
 import Foundation
 
 struct StorageRepository: SystemRepository {
-    private var systemInfoStateClient: SystemInfoStateClient
+    private var stateClient: StateClient
 
-    init(_ systemInfoStateClient: SystemInfoStateClient) {
-        self.systemInfoStateClient = systemInfoStateClient
+    init(_ stateClient: StateClient) {
+        self.stateClient = stateClient
     }
 
     func update() {
         var result = StorageInfo()
         defer {
-            systemInfoStateClient.withLock { [result] in $0.bundle.storageInfo = result }
+            stateClient.withLock { [result] in $0.bundle.storageInfo = result }
         }
 
         let url = NSURL(fileURLWithPath: "/")
@@ -27,6 +27,6 @@ struct StorageRepository: SystemRepository {
     }
 
     func reset() {
-        systemInfoStateClient.withLock { $0.bundle.storageInfo = .init() }
+        stateClient.withLock { $0.bundle.storageInfo = .init() }
     }
 }

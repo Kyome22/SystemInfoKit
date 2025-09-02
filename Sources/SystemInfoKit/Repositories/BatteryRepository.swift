@@ -1,10 +1,10 @@
 import IOKit
 
 struct BatteryRepository: SystemRepository {
-    private var systemInfoStateClient: SystemInfoStateClient
+    private var stateClient: StateClient
 
-    init(_ systemInfoStateClient: SystemInfoStateClient) {
-        self.systemInfoStateClient = systemInfoStateClient
+    init(_ stateClient: StateClient) {
+        self.stateClient = stateClient
     }
 
     func update() {
@@ -28,7 +28,7 @@ struct BatteryRepository: SystemRepository {
 
         var result = BatteryInfo(isInstalled: installed == 1)
         defer {
-            systemInfoStateClient.withLock { [result] in $0.bundle.batteryInfo = result }
+            stateClient.withLock { [result] in $0.bundle.batteryInfo = result }
         }
 
         if let designCapacity = dict["DesignCapacity"] as? Double,
@@ -54,6 +54,6 @@ struct BatteryRepository: SystemRepository {
     }
 
     func reset() {
-        systemInfoStateClient.withLock { $0.bundle.batteryInfo = .init(isInstalled: false) }
+        stateClient.withLock { $0.bundle.batteryInfo = .init(isInstalled: false) }
     }
 }

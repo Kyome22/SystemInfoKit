@@ -7,7 +7,7 @@ public final class SystemInfoObserver: Sendable {
         SystemInfoObserver(monitorInterval: monitorInterval)
     }
 
-    private let systemInfoStateClient: SystemInfoStateClient
+    private let stateClient: StateClient
     private let protectedTimer = OSAllocatedUnfairLock<AnyCancellable?>(initialState: nil)
 
     private let systemInfoSubject = PassthroughSubject<SystemInfoBundle, Never>()
@@ -23,15 +23,15 @@ public final class SystemInfoObserver: Sendable {
     }
 
     init(
-        systemInfoStateClient: SystemInfoStateClient = .liveValue,
+        stateClient: StateClient = .liveValue,
         monitorInterval: Double
     ) {
-        self.systemInfoStateClient = systemInfoStateClient
-        systemInfoStateClient.withLock { $0.interval = max(monitorInterval, 1.0) }
+        self.stateClient = stateClient
+        stateClient.withLock { $0.interval = max(monitorInterval, 1.0) }
     }
 
     public func startMonitoring() {
-        let interval = systemInfoStateClient.withLock(\.interval)
+        let interval = stateClient.withLock(\.interval)
         let timer = Timer
             .publish(every: interval, on: RunLoop.main, in: .common)
             .autoconnect()
@@ -50,20 +50,20 @@ public final class SystemInfoObserver: Sendable {
     }
 
     public func toggleActivation(requests: [SystemInfoType: Bool]) {
-        systemInfoStateClient.withLock {
+        stateClient.withLock {
             $0.activationState.merge(requests) { _, new in new }
         }
     }
 
     private func updateSystemInfo() {
         SystemInfoType.allCases.forEach { type in
-            let repository = type.repositoryType.init(systemInfoStateClient)
-            if systemInfoStateClient.withLock(\.activationState[type]) ?? false {
+            let repository = type.repositoryType.init(stateClient)
+            if stateClient.withLock(\.activationState[type]) ?? false {
                 repository.update()
             } else {
                 repository.reset()
             }
         }
-        systemInfoSubject.send(systemInfoStateClient.withLock(\.bundle))
+        systemInfoSubject.send(stateClient.withLock(\.bundle))
     }
 }

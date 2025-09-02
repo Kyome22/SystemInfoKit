@@ -4,10 +4,10 @@ import SystemConfiguration
 struct NetworkRepository: SystemRepository {
     typealias TransmissionSpeed = (upload: ByteDataPerSecond, download: ByteDataPerSecond)
 
-    private var systemInfoStateClient: SystemInfoStateClient
+    private var stateClient: StateClient
 
-    init(_ systemInfoStateClient: SystemInfoStateClient) {
-        self.systemInfoStateClient = systemInfoStateClient
+    init(_ stateClient: StateClient) {
+        self.stateClient = stateClient
     }
 
     private func getDefaultID() -> String? {
@@ -79,17 +79,17 @@ struct NetworkRepository: SystemRepository {
         freeifaddrs(ifaddr)
 
         if ipAddress.isInitialized {
-            systemInfoStateClient.withLock { [ipAddress] in $0.latestIPAddress = ipAddress }
+            stateClient.withLock { [ipAddress] in $0.latestIPAddress = ipAddress }
         }
 
-        let interval = systemInfoStateClient.withLock(\.interval)
-        let previousDataTraffic = systemInfoStateClient.withLock(\.previousDataTraffic)
+        let interval = stateClient.withLock(\.interval)
+        let previousDataTraffic = stateClient.withLock(\.previousDataTraffic)
         if previousDataTraffic != .zero {
             let dataTrafficDiff = dataTraffic - previousDataTraffic
             result.upload = ByteDataPerSecond(byteCount: Int64(Double(dataTrafficDiff.upload) / interval))
             result.download = ByteDataPerSecond(byteCount: Int64(Double(dataTrafficDiff.download) / interval))
         }
-        systemInfoStateClient.withLock { [dataTraffic] in $0.previousDataTraffic = dataTraffic }
+        stateClient.withLock { [dataTraffic] in $0.previousDataTraffic = dataTraffic }
 
         return result
     }
@@ -97,20 +97,20 @@ struct NetworkRepository: SystemRepository {
     func update() {
         var result = NetworkInfo()
         defer {
-            systemInfoStateClient.withLock { [result] in $0.bundle.networkInfo = result }
+            stateClient.withLock { [result] in $0.bundle.networkInfo = result }
         }
 
         if let id = getDefaultID() {
             result.name = getHardwareName(id)
             let transmissionSpeed = getTransmissionSpeed(id)
-            result.ipAddress = systemInfoStateClient.withLock(\.latestIPAddress)
+            result.ipAddress = stateClient.withLock(\.latestIPAddress)
             result.upload = transmissionSpeed.upload
             result.download = transmissionSpeed.download
         }
     }
 
     func reset() {
-        systemInfoStateClient.withLock {
+        stateClient.withLock {
             $0.bundle.networkInfo = .init()
             $0.latestIPAddress = .uninitialized
             $0.previousDataTraffic = .zero

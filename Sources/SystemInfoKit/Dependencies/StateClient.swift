@@ -1,10 +1,10 @@
 import os
 
-struct SystemInfoStateClient {
-    private var getState: @Sendable () -> SystemInfoState
-    private var setState: @Sendable (SystemInfoState) -> Void
+struct StateClient {
+    private var getState: @Sendable () -> State
+    private var setState: @Sendable (State) -> Void
 
-    func withLock<R: Sendable>(_ body: @Sendable (inout SystemInfoState) throws -> R) rethrows -> R {
+    func withLock<R: Sendable>(_ body: @Sendable (inout State) throws -> R) rethrows -> R {
         var state = getState()
         let result = try body(&state)
         setState(state)
@@ -12,14 +12,14 @@ struct SystemInfoStateClient {
     }
 
     static let liveValue: Self = {
-        let state = OSAllocatedUnfairLock<SystemInfoState>(initialState: .init())
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
         return Self(
             getState: { state.withLock(\.self) },
             setState: { value in state.withLock { $0 = value } }
         )
     }()
 
-    static func testValue(_ state: OSAllocatedUnfairLock<SystemInfoState>) -> Self {
+    static func testValue(_ state: OSAllocatedUnfairLock<State>) -> Self {
         Self(
             getState: { state.withLock(\.self) },
             setState: { value in state.withLock { $0 = value } }
