@@ -9,7 +9,7 @@ public struct StorageInfo: SystemInfo {
     public internal(set) var used = ByteData.zero
 
     public var summary: String {
-        String(localized: "storage\(percentage.description)", bundle: .module)
+        String(localized: "storage\(String(describing: percentage))", bundle: .module)
     }
 
     public var details: [String] {

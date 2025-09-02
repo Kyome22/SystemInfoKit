@@ -5,7 +5,7 @@ public struct NetworkInfo: SystemInfo {
     public let percentage = Percentage.zero
     public let icon = "network"
     public internal(set) var name: String?
-    public internal(set) var ipAddress = "-"
+    public internal(set) var ipAddress = IPAddress.uninitialized
     public internal(set) var upload = ByteDataPerSecond.zero
     public internal(set) var download = ByteDataPerSecond.zero
 
@@ -19,9 +19,9 @@ public struct NetworkInfo: SystemInfo {
 
     public var details: [String] {
         [
-            String(localized: "networkLocalIP\(ipAddress)", bundle: .module),
-            String(localized: "networkUpload\(upload.description)", bundle: .module),
-            String(localized: "networkDownload\(download.description)", bundle: .module)
+            String(localized: "networkLocalIP\(String(describing: ipAddress))", bundle: .module),
+            String(localized: "networkUpload\(String(describing: upload))", bundle: .module),
+            String(localized: "networkDownload\(String(describing: download))", bundle: .module)
         ]
     }
 }
@@ -29,7 +29,7 @@ public struct NetworkInfo: SystemInfo {
 extension NetworkInfo {
     public static func createMock(
         name: String?,
-        ipAddress: String,
+        ipAddress: IPAddress,
         upload: ByteDataPerSecond,
         download: ByteDataPerSecond
     ) -> NetworkInfo {

@@ -1,4 +1,4 @@
-enum IPAddress: Equatable, CustomStringConvertible {
+public enum IPAddress: Sendable, Equatable, CustomStringConvertible {
     case uninitialized
     case v4(String)
 
@@ -13,7 +13,7 @@ enum IPAddress: Equatable, CustomStringConvertible {
         self != .uninitialized
     }
 
-    var description: String {
+    public var description: String {
         value ?? "-"
     }
 }

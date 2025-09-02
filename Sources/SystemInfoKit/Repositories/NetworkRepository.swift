@@ -103,7 +103,7 @@ struct NetworkRepository: SystemRepository {
         if let id = getDefaultID() {
             result.name = getHardwareName(id)
             let transmissionSpeed = getTransmissionSpeed(id)
-            result.ipAddress = String(describing: systemInfoStateClient.withLock(\.latestIPAddress))
+            result.ipAddress = systemInfoStateClient.withLock(\.latestIPAddress)
             result.upload = transmissionSpeed.upload
             result.download = transmissionSpeed.download
         }

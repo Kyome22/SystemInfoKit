@@ -28,7 +28,7 @@ public struct BatteryInfo: SystemInfo {
 
     public var summary: String {
         if isInstalled {
-            String(localized: "battery\(percentage.description)", bundle: .module)
+            String(localized: "battery\(String(describing: percentage))", bundle: .module)
         } else {
             String(localized: "batteryIsNotInstalled", bundle: .module)
         }
@@ -45,7 +45,7 @@ public struct BatteryInfo: SystemInfo {
     public var details: [String] {
         [
             String(localized: "batteryPowerSource\(powerSource)", bundle: .module),
-            String(localized: "batteryMaxCapacity\(maxCapacity.description)", bundle: .module),
+            String(localized: "batteryMaxCapacity\(String(describing: maxCapacity))", bundle: .module),
             String(localized: "batteryCycle\(cycleCount)", bundle: .module),
             String(localized: "batteryTemperature\(temperature)", bundle: .module)
         ]

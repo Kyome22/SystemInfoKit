@@ -7,14 +7,14 @@ public struct CPUInfo: SystemInfo {
     public internal(set) var idle = Percentage.zero
 
     public var summary: String {
-        String(localized: "cpu\(percentage.description)", bundle: .module)
+        String(localized: "cpu\(String(describing: percentage))", bundle: .module)
     }
 
     public var details: [String] {
         [
-            String(localized: "cpuSystem\(system.description)", bundle: .module),
-            String(localized: "cpuUser\(user.description)", bundle: .module),
-            String(localized: "cpuIdle\(idle.description)", bundle: .module)
+            String(localized: "cpuSystem\(String(describing: system))", bundle: .module),
+            String(localized: "cpuUser\(String(describing: user))", bundle: .module),
+            String(localized: "cpuIdle\(String(describing: idle))", bundle: .module)
         ]
     }
 }

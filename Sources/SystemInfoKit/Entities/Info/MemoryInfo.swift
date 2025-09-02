@@ -8,15 +8,15 @@ public struct MemoryInfo: SystemInfo {
     public internal(set) var compressed = ByteData.zero
 
     public var summary: String {
-        String(localized: "memory\(percentage.description)", bundle: .module)
+        String(localized: "memory\(String(describing: percentage))", bundle: .module)
     }
 
     public var details: [String] {
         [
-            String(localized: "memoryPressure\(pressure.description)", bundle: .module),
-            String(localized: "memoryApp\(app.description)", bundle: .module),
-            String(localized: "memoryWired\(wired.description)", bundle: .module),
-            String(localized: "memoryCompressed\(compressed.description)", bundle: .module)
+            String(localized: "memoryPressure\(String(describing: pressure))", bundle: .module),
+            String(localized: "memoryApp\(String(describing: app))", bundle: .module),
+            String(localized: "memoryWired\(String(describing: wired))", bundle: .module),
+            String(localized: "memoryCompressed\(String(describing: compressed))", bundle: .module)
         ]
     }
 }
