@@ -1,24 +1,26 @@
 import IOKit
 
 struct BatteryRepository: SystemRepository {
+    private var ioKitClient: IOKitClient
     private var stateClient: StateClient
 
-    init(_ stateClient: StateClient) {
-        self.stateClient = stateClient
+    init(_ dependencies: Dependencies) {
+        ioKitClient = dependencies.ioKitClient
+        stateClient = dependencies.stateClient
     }
 
     func update() {
         // Open Connection
-        let service: io_service_t = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceNameMatching("AppleSmartBattery"))
-        guard service != MACH_PORT_NULL else { return }
+        let service = ioKitClient.getMatchingService(kIOMainPortDefault, IOServiceNameMatching("AppleSmartBattery"))
+        guard service != IO_OBJECT_NULL else { return }
         defer {
-            IOServiceClose(service)
-            IOObjectRelease(service)
+            _ = ioKitClient.close(service)
+            _ = ioKitClient.release(service)
         }
 
         // Read Dictionary Data
         var props: Unmanaged<CFMutableDictionary>? = nil
-        guard IORegistryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, 0) == kIOReturnSuccess,
+        guard ioKitClient.registryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, .zero) == kIOReturnSuccess,
               let dict = props?.takeUnretainedValue() as? [String: AnyObject] else {
             return
         }

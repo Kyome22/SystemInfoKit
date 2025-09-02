@@ -2,9 +2,11 @@ import Foundation
 
 struct StorageRepository: SystemRepository {
     private var stateClient: StateClient
+    private var urlClient: URLClient
 
-    init(_ stateClient: StateClient) {
-        self.stateClient = stateClient
+    init(_ dependencies: Dependencies) {
+        stateClient = dependencies.stateClient
+        urlClient = dependencies.urlClient
     }
 
     func update() {
@@ -13,14 +15,15 @@ struct StorageRepository: SystemRepository {
             stateClient.withLock { [result] in $0.bundle.storageInfo = result }
         }
 
-        let url = NSURL(fileURLWithPath: "/")
-        let keys: [URLResourceKey] = [.volumeTotalCapacityKey, .volumeAvailableCapacityForImportantUsageKey]
-        guard let dict = try? url.resourceValues(forKeys: keys) else { return }
-        let total = (dict[URLResourceKey.volumeTotalCapacityKey] as! NSNumber).int64Value
-        let available = (dict[URLResourceKey.volumeAvailableCapacityForImportantUsageKey] as! NSNumber).int64Value
-        let used: Int64 = total - available
-
-        result.percentage = .init(rawValue: min(Double(used) / Double(total), 0.999))
+        let url = URL(filePath: "/")
+        let keys: Set<URLResourceKey> = [.volumeTotalCapacityKey, .volumeAvailableCapacityForImportantUsageKey]
+        guard let values = try? urlClient.resourceValues(url, keys),
+              let total = values.volumeTotalCapacity.map(Double.init),
+              let available = values.volumeAvailableCapacityForImportantUsage.map(Double.init) else {
+            return
+        }
+        let used = total - available
+        result.percentage = .init(rawValue: min(used / total, 0.999))
         result.total = .init(byteCount: total)
         result.available = .init(byteCount: available)
         result.used = .init(byteCount: used)

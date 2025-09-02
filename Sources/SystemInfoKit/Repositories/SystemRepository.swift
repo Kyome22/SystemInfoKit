@@ -1,5 +1,5 @@
 protocol SystemRepository: Sendable {
-    init(_ stateClient: StateClient)
+    init(_ dependencies: Dependencies)
     func update()
     func reset()
 }

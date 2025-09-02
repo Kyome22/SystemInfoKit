@@ -7,7 +7,7 @@ public struct ByteDataPerSecond: Sendable, CustomStringConvertible {
         String(format: "%4.1f %@/s", locale: byteData.locale, byteData.value, byteData.unit)
     }
 
-    public init(byteCount: Int64, locale: Locale = .current) {
+    public init(byteCount: Double, locale: Locale = .current) {
         byteData = .init(byteCount: byteCount, locale: locale)
     }
 

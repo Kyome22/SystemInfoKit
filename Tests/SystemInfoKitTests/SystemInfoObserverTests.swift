@@ -32,7 +32,10 @@ struct SystemInfoObserverTests {
                 .cpu: true, .memory: false, .storage: true, .battery: false, .network: true
             ]
         }
-        let observer = SystemInfoObserver(stateClient: .testValue(state), monitorInterval: 1.0)
+        let observer = SystemInfoObserver(
+            dependencies: .testDependencies(stateClient: .testDependency(state)),
+            monitorInterval: 1.0
+        )
         observer.toggleActivation(requests: [.cpu: false, .memory: true])
         let actual = state.withLock(\.activationState)
         #expect(actual == [.cpu: false, .memory: true, .storage: true, .battery: false, .network: true])

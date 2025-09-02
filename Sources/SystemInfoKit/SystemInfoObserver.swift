@@ -4,10 +4,10 @@ import os
 
 public final class SystemInfoObserver: Sendable {
     public static func shared(monitorInterval: Double = 5.0) -> SystemInfoObserver {
-        SystemInfoObserver(monitorInterval: monitorInterval)
+        SystemInfoObserver(dependencies: .init(), monitorInterval: monitorInterval)
     }
 
-    private let stateClient: StateClient
+    private let dependencies: Dependencies
     private let protectedTimer = OSAllocatedUnfairLock<AnyCancellable?>(initialState: nil)
 
     private let systemInfoSubject = PassthroughSubject<SystemInfoBundle, Never>()
@@ -23,15 +23,15 @@ public final class SystemInfoObserver: Sendable {
     }
 
     init(
-        stateClient: StateClient = .liveValue,
+        dependencies: Dependencies,
         monitorInterval: Double
     ) {
-        self.stateClient = stateClient
-        stateClient.withLock { $0.interval = max(monitorInterval, 1.0) }
+        self.dependencies = dependencies
+        dependencies.stateClient.withLock { $0.interval = max(monitorInterval, 1.0) }
     }
 
     public func startMonitoring() {
-        let interval = stateClient.withLock(\.interval)
+        let interval = dependencies.stateClient.withLock(\.interval)
         let timer = Timer
             .publish(every: interval, on: RunLoop.main, in: .common)
             .autoconnect()
@@ -50,20 +50,20 @@ public final class SystemInfoObserver: Sendable {
     }
 
     public func toggleActivation(requests: [SystemInfoType: Bool]) {
-        stateClient.withLock {
+        dependencies.stateClient.withLock {
             $0.activationState.merge(requests) { _, new in new }
         }
     }
 
     private func updateSystemInfo() {
         SystemInfoType.allCases.forEach { type in
-            let repository = type.repositoryType.init(stateClient)
-            if stateClient.withLock(\.activationState[type]) ?? false {
+            let repository = type.repositoryType.init(dependencies)
+            if dependencies.stateClient.withLock(\.activationState[type]) ?? false {
                 repository.update()
             } else {
                 repository.reset()
             }
         }
-        systemInfoSubject.send(stateClient.withLock(\.bundle))
+        systemInfoSubject.send(dependencies.stateClient.withLock(\.bundle))
     }
 }

@@ -1,6 +1,6 @@
 struct DataTraffic {
-    var upload: Int64
-    var download: Int64
+    var upload: Double
+    var download: Double
 
     static let zero = DataTraffic(upload: .zero, download: .zero)
 }

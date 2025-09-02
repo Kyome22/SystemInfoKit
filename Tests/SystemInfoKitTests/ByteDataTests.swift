@@ -47,11 +47,11 @@ struct ByteDataTests {
         .init(input: .zero, expectedValue: 0.0, expectedUnit: "B"),
         .init(input: 888, expectedValue: 888.0, expectedUnit: "B"),
         .init(input: 888888, expectedValue: 888.888, expectedUnit: "kB"),
-        .init(input: 888888888, expectedValue: 888.889, expectedUnit: "MB"),
-        .init(input: 888888888888, expectedValue: 888.889, expectedUnit: "GB"),
-        .init(input: 888888888888888, expectedValue: 888.889, expectedUnit: "TB"),
-        .init(input: 888888888888888888, expectedValue: 888.889, expectedUnit: "PB"),
-        .init(input: Int64.max, expectedValue: 9.223, expectedUnit: "EB"),
+        .init(input: 888888800, expectedValue: 888.889, expectedUnit: "MB"),
+        .init(input: 888888800000, expectedValue: 888.889, expectedUnit: "GB"),
+        .init(input: 888888800000000, expectedValue: 888.889, expectedUnit: "TB"),
+        .init(input: 888888800000000000, expectedValue: 888.889, expectedUnit: "PB"),
+        .init(input: 888888800000000000000, expectedValue: 888.889, expectedUnit: "EB"),
     ] as [ScaleByteDataProperty])
     func scale(_ property: ScaleByteDataProperty) {
         let sut = ByteData(
@@ -71,7 +71,7 @@ struct LocaleByteDataProperty {
 }
 
 struct ScaleByteDataProperty {
-    var input: Int64
+    var input: Double
     var expectedValue: Double
     var expectedUnit: String
 }

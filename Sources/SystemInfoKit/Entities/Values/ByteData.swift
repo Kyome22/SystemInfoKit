@@ -9,7 +9,7 @@ public struct ByteData: Sendable, CustomStringConvertible {
         String(format: "%4.1f %@", locale: locale, value, unit)
     }
 
-    public init(byteCount: Int64, locale: Locale = .current) {
+    public init(byteCount: Double, locale: Locale = .current) {
         self.locale = locale
 
         let mf = MeasurementFormatter()
