@@ -1,19 +1,19 @@
-enum NetworkIP: Equatable {
+enum IPAddress: Equatable, CustomStringConvertible {
     case uninitialized
-    case address(String)
+    case v4(String)
 
     var value: String? {
         switch self {
         case .uninitialized: nil
-        case let .address(ip): ip
+        case let .v4(value): value
         }
-    }
-    
-    var displayString: String {
-        value ?? "-"
     }
     
     var isInitialized: Bool {
         self != .uninitialized
+    }
+
+    var description: String {
+        value ?? "-"
     }
 }

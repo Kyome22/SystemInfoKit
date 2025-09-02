@@ -33,27 +33,27 @@ struct NetworkRepository: SystemRepository {
         return String(localized: "networkUnknown", bundle: .module)
     }
 
-    private func getNetworkLoad(_ id: String, _ pointer: UnsafeMutablePointer<ifaddrs>) -> NetworkLoad? {
+    private func getDataTraffic(_ id: String, _ pointer: UnsafeMutablePointer<ifaddrs>) -> DataTraffic? {
         let name = String(cString: pointer.pointee.ifa_name)
         guard name == id else { return nil }
         let addr = pointer.pointee.ifa_addr.pointee
         guard addr.sa_family == UInt8(AF_LINK) else { return nil }
         var data: UnsafeMutablePointer<if_data>? = nil
         data = unsafeBitCast(pointer.pointee.ifa_data, to: UnsafeMutablePointer<if_data>.self)
-        return NetworkLoad(
-            upload: Int64(data?.pointee.ifi_obytes ?? 0),
-            download: Int64(data?.pointee.ifi_ibytes ?? 0)
+        return DataTraffic(
+            upload: Int64(data?.pointee.ifi_obytes ?? .zero),
+            download: Int64(data?.pointee.ifi_ibytes ?? .zero)
         )
     }
 
-    private func getIPAddress(_ id: String, _ pointer: UnsafeMutablePointer<ifaddrs>) -> String? {
+    private func getIPAddress(_ id: String, _ pointer: UnsafeMutablePointer<ifaddrs>) -> IPAddress? {
         let name = String(cString: pointer.pointee.ifa_name)
         guard name == id else { return nil }
         var addr = pointer.pointee.ifa_addr.pointee
         guard addr.sa_family == UInt8(AF_INET) else { return nil }
         var ip = [CChar](repeating: 0, count: Int(NI_MAXHOST))
         getnameinfo(&addr, socklen_t(addr.sa_len), &ip, socklen_t(ip.count), nil, socklen_t(0), NI_NUMERICHOST)
-        return String(cString: ip, encoding: .utf8)
+        return String(cString: ip, encoding: .utf8).map { IPAddress.v4($0) }
     }
 
     private func getNetworkByteData(_ id: String) -> NetworkByteData {
@@ -62,32 +62,32 @@ struct NetworkRepository: SystemRepository {
         guard getifaddrs(&ifaddr) == .zero else { return result }
 
         var pointer = ifaddr
-        var detectedIP = NetworkIP.uninitialized
-        var networkLoad = NetworkLoad.zero
+        var ipAddress = IPAddress.uninitialized
+        var dataTraffic = DataTraffic.zero
 
         while pointer != nil {
             defer { pointer = pointer?.pointee.ifa_next }
-            if !detectedIP.isInitialized, let value = getIPAddress(id, pointer!) {
-                detectedIP = .address(value)
+            if !ipAddress.isInitialized, let value = getIPAddress(id, pointer!) {
+                ipAddress = value
             }
-            if let value = getNetworkLoad(id, pointer!) {
-                networkLoad += value
+            if let value = getDataTraffic(id, pointer!) {
+                dataTraffic += value
             }
         }
         freeifaddrs(ifaddr)
 
-        if detectedIP.isInitialized {
-            systemInfoStateClient.withLock { [detectedIP] in $0.latestIP = detectedIP }
+        if ipAddress.isInitialized {
+            systemInfoStateClient.withLock { [ipAddress] in $0.latestIPAddress = ipAddress }
         }
 
         let interval = systemInfoStateClient.withLock(\.interval)
-        let previousNetworkLoad = systemInfoStateClient.withLock(\.previousNetworkLoad)
-        if previousNetworkLoad != .zero {
-            let networkLoadDiff = networkLoad - previousNetworkLoad
-            result.upload = ByteDataPerSecond(byteCount: Int64(Double(networkLoadDiff.upload) / interval))
-            result.download = ByteDataPerSecond(byteCount: Int64(Double(networkLoadDiff.download) / interval))
+        let previousDataTraffic = systemInfoStateClient.withLock(\.previousDataTraffic)
+        if previousDataTraffic != .zero {
+            let dataTrafficDiff = dataTraffic - previousDataTraffic
+            result.upload = ByteDataPerSecond(byteCount: Int64(Double(dataTrafficDiff.upload) / interval))
+            result.download = ByteDataPerSecond(byteCount: Int64(Double(dataTrafficDiff.download) / interval))
         }
-        systemInfoStateClient.withLock { [networkLoad] in $0.previousNetworkLoad = networkLoad }
+        systemInfoStateClient.withLock { [dataTraffic] in $0.previousDataTraffic = dataTraffic }
 
         return result
     }
@@ -101,7 +101,7 @@ struct NetworkRepository: SystemRepository {
         if let id = getDefaultID() {
             result.name = getHardwareName(id)
             let networkByteData = getNetworkByteData(id)
-            result.ip = systemInfoStateClient.withLock(\.latestIP.displayString)
+            result.ipAddress = String(describing: systemInfoStateClient.withLock(\.latestIPAddress))
             result.upload = networkByteData.upload
             result.download = networkByteData.download
         }
@@ -110,8 +110,8 @@ struct NetworkRepository: SystemRepository {
     func reset() {
         systemInfoStateClient.withLock {
             $0.bundle.networkInfo = .init()
-            $0.latestIP = .uninitialized
-            $0.previousNetworkLoad = .zero
+            $0.latestIPAddress = .uninitialized
+            $0.previousDataTraffic = .zero
         }
     }
 }

@@ -7,6 +7,6 @@ struct SystemInfoState: Sendable {
     var bundle = SystemInfoBundle()
     var interval: Double = 1.0
     var previousLoadInfo = host_cpu_load_info()
-    var latestIP = NetworkIP.uninitialized
-    var previousNetworkLoad = NetworkLoad.zero
+    var latestIPAddress = IPAddress.uninitialized
+    var previousDataTraffic = DataTraffic.zero
 }
