@@ -50,49 +50,20 @@ public final class SystemInfoObserver: Sendable {
     }
 
     public func toggleActivation(requests: [SystemInfoType: Bool]) {
-        systemInfoStateClient.withLock { state in
-            requests.forEach { state.activationState[$0.key] = $0.value }
+        systemInfoStateClient.withLock {
+            $0.activationState.merge(requests) { _, new in new }
         }
     }
 
     private func updateSystemInfo() {
-        let activationState = systemInfoStateClient.withLock(\.activationState)
-        // CPU
-        let cpuRepository = CPURepository(systemInfoStateClient)
-        if activationState[.cpu] == true {
-            cpuRepository.update()
-        } else {
-            cpuRepository.reset()
+        SystemInfoType.allCases.forEach { type in
+            let repository = type.repositoryType.init(systemInfoStateClient)
+            if systemInfoStateClient.withLock(\.activationState[type]) ?? false {
+                repository.update()
+            } else {
+                repository.reset()
+            }
         }
-        // Memory
-        let memoryRepository = MemoryRepository(systemInfoStateClient)
-        if activationState[.memory] == true {
-            memoryRepository.update()
-        } else {
-            memoryRepository.reset()
-        }
-        // Storage
-        let storageRepository = StorageRepository(systemInfoStateClient)
-        if activationState[.storage] == true {
-            storageRepository.update()
-        } else {
-            storageRepository.reset()
-        }
-        // Battery
-        let batteryRepository = BatteryRepository(systemInfoStateClient)
-        if activationState[.battery] == true {
-            batteryRepository.update()
-        } else {
-            batteryRepository.reset()
-        }
-        // Network
-        let networkRepository = NetworkRepository(systemInfoStateClient)
-        if activationState[.network] == true {
-            networkRepository.update()
-        } else {
-            networkRepository.reset()
-        }
-        // Send SystemInfoBundle
         systemInfoSubject.send(systemInfoStateClient.withLock(\.bundle))
     }
 }

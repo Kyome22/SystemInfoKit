@@ -1,6 +1,6 @@
 import Foundation
 
-struct StorageRepository: Sendable {
+struct StorageRepository: SystemRepository {
     private var systemInfoStateClient: SystemInfoStateClient
 
     init(_ systemInfoStateClient: SystemInfoStateClient) {

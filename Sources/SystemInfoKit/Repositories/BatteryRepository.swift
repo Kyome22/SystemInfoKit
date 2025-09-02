@@ -1,6 +1,6 @@
 import IOKit
 
-struct BatteryRepository: Sendable {
+struct BatteryRepository: SystemRepository {
     private var systemInfoStateClient: SystemInfoStateClient
 
     init(_ systemInfoStateClient: SystemInfoStateClient) {

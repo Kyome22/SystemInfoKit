@@ -1,6 +1,6 @@
 import Darwin
 
-struct CPURepository: Sendable {
+struct CPURepository: SystemRepository {
     private var systemInfoStateClient: SystemInfoStateClient
 
     init(_ systemInfoStateClient: SystemInfoStateClient) {

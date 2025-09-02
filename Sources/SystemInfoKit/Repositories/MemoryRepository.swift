@@ -1,6 +1,6 @@
 @preconcurrency import Darwin
 
-struct MemoryRepository: Sendable {
+struct MemoryRepository: SystemRepository {
     private var systemInfoStateClient: SystemInfoStateClient
 
     init(_ systemInfoStateClient: SystemInfoStateClient) {

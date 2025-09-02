@@ -1,7 +1,7 @@
 import Foundation
 import SystemConfiguration
 
-struct NetworkRepository: Sendable {
+struct NetworkRepository: SystemRepository {
     private var systemInfoStateClient: SystemInfoStateClient
 
     init(_ systemInfoStateClient: SystemInfoStateClient) {
