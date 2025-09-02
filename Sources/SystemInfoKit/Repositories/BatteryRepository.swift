@@ -1,19 +1,20 @@
 import IOKit
 
-struct BatteryRepository: Sendable {
-    var current = BatteryInfo.zero
+struct BatteryRepository: SystemRepository {
+    private var systemInfoStateClient: SystemInfoStateClient
 
-    mutating func update() {
-        var service: io_service_t = 0
+    init(_ systemInfoStateClient: SystemInfoStateClient) {
+        self.systemInfoStateClient = systemInfoStateClient
+    }
 
+    func update() {
+        // Open Connection
+        let service: io_service_t = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceNameMatching("AppleSmartBattery"))
+        guard service != MACH_PORT_NULL else { return }
         defer {
             IOServiceClose(service)
             IOObjectRelease(service)
         }
-
-        // Open Connection
-        service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceNameMatching("AppleSmartBattery"))
-        guard service != MACH_PORT_NULL else { return }
 
         // Read Dictionary Data
         var props: Unmanaged<CFMutableDictionary>? = nil
@@ -24,7 +25,11 @@ struct BatteryRepository: Sendable {
         props?.release()
 
         guard let installed = dict["BatteryInstalled"] as? Int else { return }
+
         var result = BatteryInfo(isInstalled: installed == 1)
+        defer {
+            systemInfoStateClient.withLock { [result] in $0.bundle.batteryInfo = result }
+        }
 
         if let designCapacity = dict["DesignCapacity"] as? Double,
            let maxCapacity = dict["AppleRawMaxCapacity"] as? Double,
@@ -46,10 +51,9 @@ struct BatteryRepository: Sendable {
         if let temperature = dict["Temperature"] as? Double {
             result.temperature = temperature / 100.0
         }
-        current = result
     }
 
-    mutating func reset() {
-        current = BatteryInfo(isInstalled: false)
+    func reset() {
+        systemInfoStateClient.withLock { $0.bundle.batteryInfo = .init(isInstalled: false) }
     }
 }

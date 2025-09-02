@@ -1,47 +1,56 @@
 import Darwin
 
-struct CPURepository: Sendable {
-    var current = CPUInfo()
-    private let loadInfoCount: mach_msg_type_number_t!
-    private var loadPrevious = host_cpu_load_info()
+struct CPURepository: SystemRepository {
+    private var systemInfoStateClient: SystemInfoStateClient
 
-    init() {
-        loadInfoCount = UInt32(MemoryLayout<host_cpu_load_info_data_t>.size / MemoryLayout<integer_t>.size)
+    init(_ systemInfoStateClient: SystemInfoStateClient) {
+        self.systemInfoStateClient = systemInfoStateClient
     }
 
     private func hostCPULoadInfo() -> host_cpu_load_info {
-        var size: mach_msg_type_number_t = loadInfoCount
+        var size: mach_msg_type_number_t = UInt32(MemoryLayout<host_cpu_load_info_data_t>.size / MemoryLayout<integer_t>.size)
         let hostInfo = host_cpu_load_info_t.allocate(capacity: 1)
-        let _ = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { (pointer) -> kern_return_t in
+        let result = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { pointer in
             host_statistics(mach_host_self(), HOST_CPU_LOAD_INFO, pointer, &size)
         }
-        let data = hostInfo.move()
+        let data = if result == KERN_SUCCESS {
+            hostInfo.move()
+        } else {
+            host_cpu_load_info()
+        }
         hostInfo.deallocate()
         return data
     }
 
-    mutating func update() {
+    func update() {
         var result = CPUInfo()
-
         defer {
-            current = result
+            systemInfoStateClient.withLock { [result] in $0.bundle.cpuInfo = result }
         }
 
-        let load = hostCPULoadInfo()
-        let userDiff = Double(load.cpu_ticks.0 - loadPrevious.cpu_ticks.0)
-        let sysDiff  = Double(load.cpu_ticks.1 - loadPrevious.cpu_ticks.1)
-        let idleDiff = Double(load.cpu_ticks.2 - loadPrevious.cpu_ticks.2)
-        let niceDiff = Double(load.cpu_ticks.3 - loadPrevious.cpu_ticks.3)
-        loadPrevious = load
+        let previousLoadInfo = systemInfoStateClient.withLock(\.previousLoadInfo)
+        let loadInfo = hostCPULoadInfo()
+        let userDiff = Double(loadInfo.cpu_ticks.0 - previousLoadInfo.cpu_ticks.0)
+        let systemDiff  = Double(loadInfo.cpu_ticks.1 - previousLoadInfo.cpu_ticks.1)
+        let idleDiff = Double(loadInfo.cpu_ticks.2 - previousLoadInfo.cpu_ticks.2)
+        let niceDiff = Double(loadInfo.cpu_ticks.3 - previousLoadInfo.cpu_ticks.3)
+        systemInfoStateClient.withLock { $0.previousLoadInfo = loadInfo }
 
-        let totalTicks = sysDiff + userDiff + idleDiff + niceDiff
-        let sys  = sysDiff / totalTicks
+        let totalTicks = systemDiff + userDiff + idleDiff + niceDiff
+        let system  = systemDiff / totalTicks
         let user = userDiff / totalTicks
         let idle = idleDiff / totalTicks
 
-        result.percentage = .init(rawValue: min(sys + user, 0.999))
-        result.system = .init(rawValue: sys)
+        result.percentage = .init(rawValue: min(system + user, 0.999))
+        result.system = .init(rawValue: system)
         result.user = .init(rawValue: user)
         result.idle = .init(rawValue: idle)
+    }
+
+    func reset() {
+        systemInfoStateClient.withLock {
+            $0.bundle.cpuInfo = .init()
+            $0.previousLoadInfo = .init()
+        }
     }
 }

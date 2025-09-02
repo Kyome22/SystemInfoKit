@@ -1,17 +1,14 @@
 @preconcurrency import Darwin
 
-struct MemoryRepository: Sendable {
-    var current = MemoryInfo()
-    private let hostVmInfo64Count: mach_msg_type_number_t!
-    private let hostBasicInfoCount: mach_msg_type_number_t!
+struct MemoryRepository: SystemRepository {
+    private var systemInfoStateClient: SystemInfoStateClient
 
-    init() {
-        hostVmInfo64Count = UInt32(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
-        hostBasicInfoCount = UInt32(MemoryLayout<host_basic_info_data_t>.size / MemoryLayout<integer_t>.size)
+    init(_ systemInfoStateClient: SystemInfoStateClient) {
+        self.systemInfoStateClient = systemInfoStateClient
     }
 
     private var maxMemory: Int64 {
-        var size: mach_msg_type_number_t = hostBasicInfoCount
+        var size: mach_msg_type_number_t = UInt32(MemoryLayout<host_basic_info_data_t>.size / MemoryLayout<integer_t>.size)
         let hostInfo = host_basic_info_t.allocate(capacity: 1)
         let _ = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int()) { (pointer) -> kern_return_t in
             host_info(mach_host_self(), HOST_BASIC_INFO, pointer, &size)
@@ -22,7 +19,7 @@ struct MemoryRepository: Sendable {
     }
 
     private var vmStatistics64: vm_statistics64 {
-        var size: mach_msg_type_number_t = hostVmInfo64Count
+        var size: mach_msg_type_number_t = UInt32(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
         let hostInfo = vm_statistics64_t.allocate(capacity: 1)
         let _ = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { (pointer) -> kern_return_t in
             host_statistics64(mach_host_self(), HOST_VM_INFO64, pointer, &size)
@@ -32,11 +29,10 @@ struct MemoryRepository: Sendable {
         return data
     }
 
-    mutating func update() {
+    func update() {
         var result = MemoryInfo()
-
         defer {
-            current = result
+            systemInfoStateClient.withLock { [result] in $0.bundle.memoryInfo = result }
         }
 
         let maxMem = maxMemory
@@ -59,7 +55,7 @@ struct MemoryRepository: Sendable {
         result.compressed = .init(byteCount: compressed)
     }
 
-    mutating func reset() {
-        current = MemoryInfo()
+    func reset() {
+        systemInfoStateClient.withLock { $0.bundle.memoryInfo = .init() }
     }
 }

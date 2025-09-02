@@ -1,13 +1,16 @@
 import Foundation
 
-struct StorageRepository: Sendable {
-    var current = StorageInfo()
+struct StorageRepository: SystemRepository {
+    private var systemInfoStateClient: SystemInfoStateClient
 
-    mutating func update() {
+    init(_ systemInfoStateClient: SystemInfoStateClient) {
+        self.systemInfoStateClient = systemInfoStateClient
+    }
+
+    func update() {
         var result = StorageInfo()
-
         defer {
-            current = result
+            systemInfoStateClient.withLock { [result] in $0.bundle.storageInfo = result }
         }
 
         let url = NSURL(fileURLWithPath: "/")
@@ -23,7 +26,7 @@ struct StorageRepository: Sendable {
         result.used = .init(byteCount: used)
     }
 
-    mutating func reset() {
-        current = StorageInfo()
+    func reset() {
+        systemInfoStateClient.withLock { $0.bundle.storageInfo = .init() }
     }
 }
