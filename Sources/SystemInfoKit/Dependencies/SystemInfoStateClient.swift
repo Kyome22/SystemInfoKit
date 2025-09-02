@@ -1,6 +1,6 @@
 import os
 
-struct SystemInfoStateClient: DependencyClient {
+struct SystemInfoStateClient {
     private var getState: @Sendable () -> SystemInfoState
     private var setState: @Sendable (SystemInfoState) -> Void
 
@@ -19,8 +19,10 @@ struct SystemInfoStateClient: DependencyClient {
         )
     }()
 
-    static let testValue = Self(
-        getState: { .init() },
-        setState: { _ in }
-    )
+    static func testValue(_ state: OSAllocatedUnfairLock<SystemInfoState>) -> Self {
+        Self(
+            getState: { state.withLock(\.self) },
+            setState: { value in state.withLock { $0 = value } }
+        )
+    }
 }
