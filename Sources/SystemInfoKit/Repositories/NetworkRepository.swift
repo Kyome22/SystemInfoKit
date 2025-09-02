@@ -2,6 +2,8 @@ import Foundation
 import SystemConfiguration
 
 struct NetworkRepository: SystemRepository {
+    typealias TransmissionSpeed = (upload: ByteDataPerSecond, download: ByteDataPerSecond)
+
     private var systemInfoStateClient: SystemInfoStateClient
 
     init(_ systemInfoStateClient: SystemInfoStateClient) {
@@ -56,8 +58,8 @@ struct NetworkRepository: SystemRepository {
         return String(cString: ip, encoding: .utf8).map { IPAddress.v4($0) }
     }
 
-    private func getNetworkByteData(_ id: String) -> NetworkByteData {
-        var result = NetworkByteData()
+    private func getTransmissionSpeed(_ id: String) -> TransmissionSpeed {
+        var result = TransmissionSpeed(.zero, .zero)
         var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
         guard getifaddrs(&ifaddr) == .zero else { return result }
 
@@ -100,10 +102,10 @@ struct NetworkRepository: SystemRepository {
 
         if let id = getDefaultID() {
             result.name = getHardwareName(id)
-            let networkByteData = getNetworkByteData(id)
+            let transmissionSpeed = getTransmissionSpeed(id)
             result.ipAddress = String(describing: systemInfoStateClient.withLock(\.latestIPAddress))
-            result.upload = networkByteData.upload
-            result.download = networkByteData.download
+            result.upload = transmissionSpeed.upload
+            result.download = transmissionSpeed.download
         }
     }
 
