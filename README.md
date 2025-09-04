@@ -69,6 +69,7 @@ Network: Ethernet
 - Korean
 - Simplified Chinese
 - French
+- German
 
 ## Copyright and License
 
