@@ -2,11 +2,11 @@ import Foundation
 
 struct StorageRepository: SystemRepository {
     private var stateClient: StateClient
-    private var urlClient: URLClient
+    private var urlResourceValuesClient: URLResourceValuesClient
 
     init(_ dependencies: Dependencies) {
         stateClient = dependencies.stateClient
-        urlClient = dependencies.urlClient
+        urlResourceValuesClient = dependencies.urlResourceValuesClient
     }
 
     func update() {
@@ -17,9 +17,9 @@ struct StorageRepository: SystemRepository {
 
         let url = URL(filePath: "/")
         let keys: Set<URLResourceKey> = [.volumeTotalCapacityKey, .volumeAvailableCapacityForImportantUsageKey]
-        guard let values = try? urlClient.resourceValues(url, keys),
-              let total = values.volumeTotalCapacity.map(Double.init),
-              let available = values.volumeAvailableCapacityForImportantUsage.map(Double.init) else {
+        guard let values = try? url.resourceValues(forKeys: keys),
+              let total = urlResourceValuesClient.volumeTotalCapacity(values).map(Double.init),
+              let available = urlResourceValuesClient.volumeAvailableCapacityForImportantUsage(values).map(Double.init) else {
             return
         }
         let used = total - available

@@ -12,7 +12,7 @@ struct MemoryRepository: SystemRepository {
     private var maxMemory: Double {
         var size: mach_msg_type_number_t = UInt32(MemoryLayout<host_basic_info_data_t>.size / MemoryLayout<integer_t>.size)
         let hostInfo = host_basic_info_t.allocate(capacity: 1)
-        let result = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int()) { (pointer) -> kern_return_t in
+        let result = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { (pointer) -> kern_return_t in
             hostClient.info(mach_host_self(), HOST_BASIC_INFO, pointer, &size)
         }
         let data = if result == KERN_SUCCESS {

@@ -1,4 +1,4 @@
-struct DataTraffic {
+struct DataTraffic: Equatable {
     var upload: Double
     var download: Double
 
@@ -15,8 +15,4 @@ func -(left: DataTraffic, right: DataTraffic) -> DataTraffic {
 func +=(left: inout DataTraffic, right: DataTraffic) {
     left.upload += right.upload
     left.download += right.download
-}
-
-func !=(left: DataTraffic, right: DataTraffic) -> Bool {
-    left.upload != right.upload || left.download != right.download
 }

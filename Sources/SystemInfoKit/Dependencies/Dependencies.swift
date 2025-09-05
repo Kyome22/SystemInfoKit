@@ -7,7 +7,7 @@ struct Dependencies: Sendable {
     var scDynamicStoreClient: SCDynamicStoreClient
     var scNetworkInterfaceClient: SCNetworkInterfaceClient
     var stateClient: StateClient
-    var urlClient: URLClient
+    var urlResourceValuesClient: URLResourceValuesClient
 
     init(
         hostClient: HostClient = .liveValue,
@@ -16,7 +16,7 @@ struct Dependencies: Sendable {
         scDynamicStoreClient: SCDynamicStoreClient = .liveValue,
         scNetworkInterfaceClient: SCNetworkInterfaceClient = .liveValue,
         stateClient: StateClient = .liveValue,
-        urlClient: URLClient = .liveValue
+        urlResourceValuesClient: URLResourceValuesClient = .liveValue
     ) {
         self.hostClient = hostClient
         self.ioKitClient = ioKitClient
@@ -24,7 +24,7 @@ struct Dependencies: Sendable {
         self.scDynamicStoreClient = scDynamicStoreClient
         self.scNetworkInterfaceClient = scNetworkInterfaceClient
         self.stateClient = stateClient
-        self.urlClient = urlClient
+        self.urlResourceValuesClient = urlResourceValuesClient
     }
 }
 
@@ -36,7 +36,7 @@ extension Dependencies {
         scDynamicStoreClient: SCDynamicStoreClient = .testValue,
         scNetworkInterfaceClient: SCNetworkInterfaceClient = .testValue,
         stateClient: StateClient = .testValue,
-        urlClient: URLClient = .testValue,
+        urlResourceValuesClient: URLResourceValuesClient = .testValue,
     ) -> Dependencies {
         Dependencies(
             hostClient: hostClient,
@@ -45,7 +45,7 @@ extension Dependencies {
             scDynamicStoreClient: scDynamicStoreClient,
             scNetworkInterfaceClient: scNetworkInterfaceClient,
             stateClient: stateClient,
-            urlClient: urlClient
+            urlResourceValuesClient: urlResourceValuesClient
         )
     }
 }
