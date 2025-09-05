@@ -50,6 +50,10 @@ public struct BatteryInfo: SystemInfo {
             String(localized: "batteryTemperature\(temperature)", bundle: .module)
         ]
     }
+
+    public var description: String {
+        isInstalled ? _description : summary
+    }
 }
 
 extension BatteryInfo {
