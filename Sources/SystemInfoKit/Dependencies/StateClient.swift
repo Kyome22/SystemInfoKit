@@ -1,6 +1,6 @@
 import os
 
-struct StateClient {
+struct StateClient: DependencyClient {
     private var getState: @Sendable () -> State
     private var setState: @Sendable (State) -> Void
 
@@ -19,7 +19,12 @@ struct StateClient {
         )
     }()
 
-    static func testValue(_ state: OSAllocatedUnfairLock<State>) -> Self {
+    static let testValue = Self(
+        getState: { .init() },
+        setState: { _ in }
+    )
+
+    static func testDependency(_ state: OSAllocatedUnfairLock<State>) -> Self {
         Self(
             getState: { state.withLock(\.self) },
             setState: { value in state.withLock { $0 = value } }

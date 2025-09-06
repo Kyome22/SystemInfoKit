@@ -1,38 +1,55 @@
+import Foundation
+
 public struct CPUInfo: SystemInfo {
     public let type = SystemInfoType.cpu
-    public internal(set) var percentage = Percentage.zero
-    public let icon = "cpu"
-    public internal(set) var system = Percentage.zero
-    public internal(set) var user = Percentage.zero
-    public internal(set) var idle = Percentage.zero
+    public internal(set) var percentage: Percentage
+    public internal(set) var system: Percentage
+    public internal(set) var user: Percentage
+    public internal(set) var idle: Percentage
+    var language: Language
+
+    public var icon: String { type.icon }
 
     public var summary: String {
-        String(localized: "cpu\(String(describing: percentage))", bundle: .module)
+        string(localized: "cpu\(String(describing: percentage))")
     }
 
     public var details: [String] {
         [
-            String(localized: "cpuSystem\(String(describing: system))", bundle: .module),
-            String(localized: "cpuUser\(String(describing: user))", bundle: .module),
-            String(localized: "cpuIdle\(String(describing: idle))", bundle: .module)
+            string(localized: "cpuSystem\(String(describing: system))"),
+            string(localized: "cpuUser\(String(describing: user))"),
+            string(localized: "cpuIdle\(String(describing: idle))"),
         ]
     }
-}
 
-extension CPUInfo {
-    public static func createMock(
+    init(
+        percentage: Percentage = .zero,
+        system: Percentage = .zero,
+        user: Percentage = .zero,
+        idle: Percentage = .zero,
+        language: Language
+    ) {
+        self.percentage = percentage.localized(with: language)
+        self.system = system.localized(with: language)
+        self.user = user.localized(with: language)
+        self.idle = idle.localized(with: language)
+        self.language = language
+    }
+
+    public init(
         percentage: Percentage,
         system: Percentage,
         user: Percentage,
-        idle: Percentage
-    ) -> CPUInfo {
-        CPUInfo(
+        idle: Percentage,
+    ) {
+        self.init(
             percentage: percentage,
             system: system,
             user: user,
-            idle: idle
+            idle: idle,
+            language: .automatic
         )
     }
 
-    public static let zero = CPUInfo()
+    public static let zero = CPUInfo(language: .automatic)
 }

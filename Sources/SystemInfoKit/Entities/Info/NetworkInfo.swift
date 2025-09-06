@@ -3,43 +3,58 @@ import Foundation
 public struct NetworkInfo: SystemInfo {
     public let type = SystemInfoType.network
     public let percentage = Percentage.zero
-    public let icon = "network"
     public internal(set) var name: String?
-    public internal(set) var ipAddress = IPAddress.uninitialized
-    public internal(set) var upload = ByteDataPerSecond.zero
-    public internal(set) var download = ByteDataPerSecond.zero
+    public internal(set) var ipAddress: IPAddress
+    public internal(set) var upload: ByteData
+    public internal(set) var download: ByteData
+    var language: Language
+
+    public var icon: String { type.icon }
 
     public var summary: String {
         if let name {
-            String(localized: "network\(name)", bundle: .module)
+            string(localized: "network\(name)")
         } else {
-            String(localized: "networkNoConnection", bundle: .module)
+            string(localized: "networkNoConnection")
         }
     }
 
     public var details: [String] {
         [
-            String(localized: "networkLocalIP\(String(describing: ipAddress))", bundle: .module),
-            String(localized: "networkUpload\(String(describing: upload))", bundle: .module),
-            String(localized: "networkDownload\(String(describing: download))", bundle: .module)
+            string(localized: "networkLocalIP\(String(describing: ipAddress))"),
+            string(localized: "networkUpload\(String(describing: upload))"),
+            string(localized: "networkDownload\(String(describing: download))"),
         ]
     }
-}
 
-extension NetworkInfo {
-    public static func createMock(
+    init(
+        name: String? = nil,
+        ipAddress: IPAddress = .uninitialized,
+        upload: ByteData = .zero,
+        download: ByteData = .zero,
+        language: Language
+    ) {
+        self.name = name
+        self.ipAddress = ipAddress
+        self.upload = upload.localized(with: language)
+        self.download = download.localized(with: language)
+        self.language = language
+    }
+
+    public init(
         name: String?,
         ipAddress: IPAddress,
-        upload: ByteDataPerSecond,
-        download: ByteDataPerSecond
-    ) -> NetworkInfo {
-        NetworkInfo(
+        upload: ByteData,
+        download: ByteData
+    ) {
+        self.init(
             name: name,
             ipAddress: ipAddress,
             upload: upload,
-            download: download
+            download: download,
+            language: .automatic
         )
     }
 
-    public static let zero = NetworkInfo()
+    public static let zero = NetworkInfo(language: .automatic)
 }
