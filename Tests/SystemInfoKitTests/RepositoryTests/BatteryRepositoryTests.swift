@@ -9,26 +9,29 @@ struct BatteryRepositoryTests {
     @Test
     func update_with_battery() throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
-        let sut = BatteryRepository(.testDependencies(
-            ioKitClient: testDependency(of: IOKitClient.self) {
-                $0.getMatchingService = { _, _ in 1 }
-                $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
-                    let dict = NSMutableDictionary(dictionary: [
-                        "BatteryInstalled" : NSNumber(booleanLiteral: true),
-                        "DesignCapacity" : NSNumber(integerLiteral: 6249),
-                        "AppleRawMaxCapacity" : NSNumber(integerLiteral: 5982),
-                        "AppleRawCurrentCapacity" : NSNumber(integerLiteral: 5873),
-                        "IsCharging" : NSNumber(booleanLiteral: true),
-                        "AdapterDetails" : NSDictionary(dictionary: ["Name" : "SomeAdapter"]),
-                        "CycleCount" : NSNumber(integerLiteral: 7),
-                        "Temperature" : NSNumber(integerLiteral: 3019),
-                    ])
-                    pointer?.pointee = Unmanaged.passRetained(dict)
-                    return kIOReturnSuccess
-                }
-            },
-            stateClient: .testDependency(state)
-        ))
+        let sut = BatteryRepository(
+            .testDependencies(
+                ioKitClient: testDependency(of: IOKitClient.self) {
+                    $0.getMatchingService = { _, _ in 1 }
+                    $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
+                        let dict = NSMutableDictionary(dictionary: [
+                            "BatteryInstalled" : NSNumber(booleanLiteral: true),
+                            "DesignCapacity" : NSNumber(integerLiteral: 6249),
+                            "AppleRawMaxCapacity" : NSNumber(integerLiteral: 5982),
+                            "AppleRawCurrentCapacity" : NSNumber(integerLiteral: 5873),
+                            "IsCharging" : NSNumber(booleanLiteral: true),
+                            "AdapterDetails" : NSDictionary(dictionary: ["Name" : "SomeAdapter"]),
+                            "CycleCount" : NSNumber(integerLiteral: 7),
+                            "Temperature" : NSNumber(integerLiteral: 3019),
+                        ])
+                        pointer?.pointee = Unmanaged.passRetained(dict)
+                        return kIOReturnSuccess
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
         sut.update()
         let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
         let expect = [
@@ -44,21 +47,24 @@ struct BatteryRepositoryTests {
     @Test
     func update_without_battery() throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
-        let sut = BatteryRepository(.testDependencies(
-            ioKitClient: testDependency(of: IOKitClient.self) {
-                $0.getMatchingService = { _, _ in 1 }
-                $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
-                    let dict = NSMutableDictionary(dictionary: [
-                        "BatteryInstalled" : NSNumber(booleanLiteral: false),
-                        "IsCharging" : NSNumber(booleanLiteral: false),
-                        "CycleCount" : NSNumber(integerLiteral: 0),
-                    ])
-                    pointer?.pointee = Unmanaged.passRetained(dict)
-                    return kIOReturnSuccess
-                }
-            },
-            stateClient: .testDependency(state)
-        ))
+        let sut = BatteryRepository(
+            .testDependencies(
+                ioKitClient: testDependency(of: IOKitClient.self) {
+                    $0.getMatchingService = { _, _ in 1 }
+                    $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
+                        let dict = NSMutableDictionary(dictionary: [
+                            "BatteryInstalled" : NSNumber(booleanLiteral: false),
+                            "IsCharging" : NSNumber(booleanLiteral: false),
+                            "CycleCount" : NSNumber(integerLiteral: 0),
+                        ])
+                        pointer?.pointee = Unmanaged.passRetained(dict)
+                        return kIOReturnSuccess
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
         sut.update()
         let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
         #expect(actual.description == "Battery: Not Installed")
@@ -74,10 +80,11 @@ struct BatteryRepositoryTests {
                 isCharging: false,
                 maxCapacity: .init(rawValue: 0.957),
                 cycleCount: 7,
-                temperature: 3020
+                temperature: .init(value: 30.2),
+                language: .english
             )
         }
-        let sut = BatteryRepository(.testDependencies(stateClient: .testDependency(state)))
+        let sut = BatteryRepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
         #expect(state.withLock(\.bundle.batteryInfo)?.description == "Battery: Not Installed")
     }

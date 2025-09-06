@@ -4,10 +4,11 @@ import os
 
 public final class SystemInfoObserver: Sendable {
     public static func shared(monitorInterval: Double = 5.0) -> SystemInfoObserver {
-        SystemInfoObserver(dependencies: .init(), monitorInterval: monitorInterval)
+        SystemInfoObserver(dependencies: .init(), monitorInterval: monitorInterval, language: .automatic)
     }
 
     private let dependencies: Dependencies
+    private let language: Language
     private let protectedTimer = OSAllocatedUnfairLock<AnyCancellable?>(initialState: nil)
 
     private let systemInfoSubject = PassthroughSubject<SystemInfoBundle, Never>()
@@ -24,10 +25,12 @@ public final class SystemInfoObserver: Sendable {
 
     init(
         dependencies: Dependencies,
-        monitorInterval: Double
+        monitorInterval: Double,
+        language: Language
     ) {
         self.dependencies = dependencies
         dependencies.stateClient.withLock { $0.interval = max(monitorInterval, 1.0) }
+        self.language = language
     }
 
     public func startMonitoring() {
@@ -57,7 +60,7 @@ public final class SystemInfoObserver: Sendable {
 
     private func updateSystemInfo() {
         SystemInfoType.allCases.forEach { type in
-            let repository = type.repositoryType.init(dependencies)
+            let repository = type.repositoryType.init(dependencies, language: language)
             if dependencies.stateClient.withLock(\.activationState[type]) ?? false {
                 repository.update()
             } else {

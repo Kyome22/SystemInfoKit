@@ -10,18 +10,21 @@ struct CPURepositoryTests {
         state.withLock {
             $0.previousLoadInfo.cpu_ticks = (62511937, 33202830, 859088048, 0)
         }
-        let sut = CPURepository(.testDependencies(
-            hostClient: testDependency(of: HostClient.self) {
-                $0.statistics64 = { _, _, pointer, _ in
-                    pointer?[0] = 62512420
-                    pointer?[1] = 33203135
-                    pointer?[2] = 859090523
-                    pointer?[3] = 0
-                    return KERN_SUCCESS
-                }
-            },
-            stateClient: .testDependency(state)
-        ))
+        let sut = CPURepository(
+            .testDependencies(
+                hostClient: testDependency(of: HostClient.self) {
+                    $0.statistics64 = { _, _, pointer, _ in
+                        pointer?[0] = 62512420
+                        pointer?[1] = 33203135
+                        pointer?[2] = 859090523
+                        pointer?[3] = 0
+                        return KERN_SUCCESS
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
         sut.update()
         let actual = try #require({ state.withLock(\.bundle.cpuInfo) }())
         let expect = [
@@ -41,11 +44,12 @@ struct CPURepositoryTests {
                 percentage: .init(rawValue: 0.241),
                 system: .init(rawValue: 0.93),
                 user: .init(rawValue: 0.148),
-                idle: .init(rawValue: 0.759)
+                idle: .init(rawValue: 0.759),
+                language: .english
             )
             $0.previousLoadInfo.cpu_ticks = (62511937, 33202830, 859088048, 0)
         }
-        let sut = CPURepository(.testDependencies(stateClient: .testDependency(state)))
+        let sut = CPURepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
         let expect = [
             "CPU:  0.0%",

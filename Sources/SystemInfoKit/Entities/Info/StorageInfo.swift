@@ -2,14 +2,16 @@ import Foundation
 
 public struct StorageInfo: SystemInfo {
     public let type = SystemInfoType.storage
-    public internal(set) var percentage = Percentage.zero
-    public let icon = "internaldrive"
-    public internal(set) var total = ByteData.zero
-    public internal(set) var available = ByteData.zero
-    public internal(set) var used = ByteData.zero
+    public internal(set) var percentage: Percentage
+    public internal(set) var total: ByteData
+    public internal(set) var available: ByteData
+    public internal(set) var used: ByteData
+    var language: Language
+
+    public var icon: String { type.icon }
 
     public var summary: String {
-        String(localized: "storage\(String(describing: percentage))", bundle: .module)
+        string(localized: "storage\(String(describing: percentage))")
     }
 
     public var details: [String] {
@@ -19,22 +21,35 @@ public struct StorageInfo: SystemInfo {
             ["\(used) / \(total)"]
         }
     }
-}
 
-extension StorageInfo {
-    public static func createMock(
+    init(
+        percentage: Percentage = .zero,
+        total: ByteData = .zero,
+        available: ByteData = .zero,
+        used: ByteData = .zero,
+        language: Language
+    ) {
+        self.percentage = percentage.localized(with: language)
+        self.total = total.localized(with: language)
+        self.available = available.localized(with: language)
+        self.used = used.localized(with: language)
+        self.language = language
+    }
+
+    public init(
         percentage: Percentage,
         total: ByteData,
         available: ByteData,
         used: ByteData
-    ) -> StorageInfo {
-        StorageInfo(
+    ) {
+        self.init(
             percentage: percentage,
             total: total,
             available: available,
-            used: used
+            used: used,
+            language: .automatic
         )
     }
 
-    public static let zero = StorageInfo()
+    public static let zero = StorageInfo(language: .automatic)
 }

@@ -3,14 +3,16 @@ import Foundation
 struct StorageRepository: SystemRepository {
     private var stateClient: StateClient
     private var urlResourceValuesClient: URLResourceValuesClient
+    var language: Language
 
-    init(_ dependencies: Dependencies) {
+    init(_ dependencies: Dependencies, language: Language) {
         stateClient = dependencies.stateClient
         urlResourceValuesClient = dependencies.urlResourceValuesClient
+        self.language = language
     }
 
     func update() {
-        var result = StorageInfo()
+        var result = StorageInfo(language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.storageInfo = result }
         }
@@ -23,13 +25,13 @@ struct StorageRepository: SystemRepository {
             return
         }
         let used = total - available
-        result.percentage = .init(rawValue: min(used / total, 0.999))
-        result.total = .init(byteCount: total)
-        result.available = .init(byteCount: available)
-        result.used = .init(byteCount: used)
+        result.percentage = .init(rawValue: min(used / total, 0.999), language: language)
+        result.total = .init(byteCount: total, language: language)
+        result.available = .init(byteCount: available, language: language)
+        result.used = .init(byteCount: used, language: language)
     }
 
     func reset() {
-        stateClient.withLock { $0.bundle.storageInfo = .init() }
+        stateClient.withLock { $0.bundle.storageInfo = .init(language: language) }
     }
 }

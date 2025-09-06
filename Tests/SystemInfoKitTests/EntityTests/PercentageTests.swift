@@ -5,35 +5,20 @@ import Testing
 
 struct PercentageTests {
     @Test(arguments: [
-        .init(
-            locale: Locale(languageCode: .english, languageRegion: .unitedStates),
-            expectedDescription: "88.9%"
-        ),
-        .init(
-            locale: Locale(languageCode: .chinese, script: .hanSimplified),
-            expectedDescription: "88.9%"
-        ),
-        .init(
-            locale: Locale(languageCode: .french, languageRegion: .france),
-            expectedDescription: "88,9%"
-        ),
-        .init(
-            locale: Locale(languageCode: .japanese, languageRegion: .japan),
-            expectedDescription: "88.9%"
-        ),
-        .init(
-            locale: Locale(languageCode: .korean, languageRegion: .southKorea),
-            expectedDescription: "88.9%"
-        ),
+        .init(language: .english, expectedDescription: "88.9%"),
+        .init(language: .french, expectedDescription: "88,9%"),
+        .init(language: .japanese, expectedDescription: "88.9%"),
+        .init(language: .korean, expectedDescription: "88.9%"),
+        .init(language: .simplifiedChinese, expectedDescription: "88.9%"),
     ] as [PercentageProperty])
     func initialize(_ property: PercentageProperty) {
-        let sut = Percentage(rawValue: 0.8888, locale: property.locale)
+        let sut = Percentage(rawValue: 0.8888, width: 4, language: property.language)
         #expect(sut.value == 88.9)
         #expect(sut.description == property.expectedDescription)
     }
 }
 
 struct PercentageProperty {
-    var locale: Locale
+    var language: Language
     var expectedDescription: String
 }

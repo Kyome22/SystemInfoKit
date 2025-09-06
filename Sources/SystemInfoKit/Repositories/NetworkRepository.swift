@@ -2,18 +2,20 @@ import Foundation
 import SystemConfiguration
 
 struct NetworkRepository: SystemRepository {
-    typealias TransmissionSpeed = (upload: ByteDataPerSecond, download: ByteDataPerSecond)
+    typealias TransmissionSpeed = (upload: ByteData, download: ByteData)
 
     private var posixClient: POSIXClient
     private var scDynamicStoreClient: SCDynamicStoreClient
     private var scNetworkInterfaceClient: SCNetworkInterfaceClient
     private var stateClient: StateClient
+    var language: Language
 
-    init(_ dependencies: Dependencies) {
+    init(_ dependencies: Dependencies, language: Language) {
         posixClient = dependencies.posixClient
         scDynamicStoreClient = dependencies.scDynamicStoreClient
         scNetworkInterfaceClient = dependencies.scNetworkInterfaceClient
         stateClient = dependencies.stateClient
+        self.language = language
     }
 
     private func getDefaultID() -> String? {
@@ -68,7 +70,10 @@ struct NetworkRepository: SystemRepository {
     }
 
     private func getTransmissionSpeed(_ id: String) -> TransmissionSpeed {
-        var result = TransmissionSpeed(.zero, .zero)
+        var result = TransmissionSpeed(
+            upload: .init(byteCount: .zero, language: language),
+            download: .init(byteCount: .zero, language: language)
+        )
         var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
         guard posixClient.getIfaddrs(&ifaddr) == .zero else { return result }
 
@@ -95,8 +100,8 @@ struct NetworkRepository: SystemRepository {
         let previousDataTraffic = stateClient.withLock(\.previousDataTraffic)
         if previousDataTraffic != .zero {
             let dataTrafficDiff = dataTraffic - previousDataTraffic
-            result.upload = ByteDataPerSecond(byteCount: dataTrafficDiff.upload / interval)
-            result.download = ByteDataPerSecond(byteCount: dataTrafficDiff.download / interval)
+            result.upload = ByteData(byteCount: dataTrafficDiff.upload / interval, language: language)
+            result.download = ByteData(byteCount: dataTrafficDiff.download / interval, language: language)
         }
         stateClient.withLock { [dataTraffic] in $0.previousDataTraffic = dataTraffic }
 
@@ -104,7 +109,7 @@ struct NetworkRepository: SystemRepository {
     }
 
     func update() {
-        var result = NetworkInfo()
+        var result = NetworkInfo(language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.networkInfo = result }
         }
@@ -120,7 +125,7 @@ struct NetworkRepository: SystemRepository {
 
     func reset() {
         stateClient.withLock {
-            $0.bundle.networkInfo = .init()
+            $0.bundle.networkInfo = .init(language: language)
             $0.latestIPAddress = .uninitialized
             $0.previousDataTraffic = .zero
         }

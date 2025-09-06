@@ -1,12 +1,15 @@
 import Darwin
+import Foundation
 
 struct CPURepository: SystemRepository {
     private var hostClient: HostClient
     private var stateClient: StateClient
+    var language: Language
 
-    init(_ dependencies: Dependencies) {
+    init(_ dependencies: Dependencies, language: Language) {
         hostClient = dependencies.hostClient
         stateClient = dependencies.stateClient
+        self.language = language
     }
 
     private func hostCPULoadInfo() -> host_cpu_load_info {
@@ -25,7 +28,7 @@ struct CPURepository: SystemRepository {
     }
 
     func update() {
-        var result = CPUInfo()
+        var result = CPUInfo(language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.cpuInfo = result }
         }
@@ -43,15 +46,15 @@ struct CPURepository: SystemRepository {
         let user = userDiff / totalTicks
         let idle = idleDiff / totalTicks
 
-        result.percentage = .init(rawValue: min(system + user, 0.999))
-        result.system = .init(rawValue: system)
-        result.user = .init(rawValue: user)
-        result.idle = .init(rawValue: idle)
+        result.percentage = .init(rawValue: min(system + user, 0.999), language: language)
+        result.system = .init(rawValue: system, language: language)
+        result.user = .init(rawValue: user, language: language)
+        result.idle = .init(rawValue: idle, language: language)
     }
 
     func reset() {
         stateClient.withLock {
-            $0.bundle.cpuInfo = .init()
+            $0.bundle.cpuInfo = .init(language: language)
             $0.previousLoadInfo = .init()
         }
     }

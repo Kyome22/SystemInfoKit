@@ -14,4 +14,23 @@ public enum SystemInfoType: Sendable, CaseIterable {
         case .network: NetworkRepository.self
         }
     }
+
+    var icon: String {
+        switch self {
+        case .cpu: 
+            "cpu"
+        case .memory: 
+            "memorychip"
+        case .storage: 
+            "internaldrive"
+        case .battery:
+            if #available(macOS 14.0, *) {
+                "battery.100percent"
+            } else {
+                "battery.100"
+            }
+        case .network: 
+            "network"
+        }
+    }
 }

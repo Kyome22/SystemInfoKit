@@ -6,40 +6,41 @@ import Testing
 struct ByteDataTests {
     @Test(arguments: [
         .init(
-            locale: Locale(languageCode: .english, languageRegion: .unitedStates),
+            language: .english,
             expectedValue: 888.889,
             expectedUnit: "GB",
             expectedDescription: "888.9 GB"
         ),
         .init(
-            locale: Locale(languageCode: .chinese, script: .hanSimplified),
-            expectedValue: 888.889,
-            expectedUnit: "GB",
-            expectedDescription: "888.9 GB"
-        ),
-        .init(
-            locale: Locale(languageCode: .french, languageRegion: .france),
+            language: .french,
             expectedValue: 888.889,
             expectedUnit: "Go",
             expectedDescription: "888,9 Go"
         ),
         .init(
-            locale: Locale(languageCode: .japanese, languageRegion: .japan),
+            language: .japanese,
             expectedValue: 888.889,
             expectedUnit: "GB",
             expectedDescription: "888.9 GB"
         ),
         .init(
-            locale: Locale(languageCode: .korean, languageRegion: .southKorea),
+            language: .korean,
             expectedValue: 888.889,
             expectedUnit: "GB",
             expectedDescription: "888.9 GB"
         ),
-    ] as [LocaleByteDataProperty])
-    func initialize(_ property: LocaleByteDataProperty) {
-        let sut = ByteData(byteCount: 888888888888, locale: property.locale)
-        #expect(sut.value == property.expectedValue)
-        #expect(sut.unit == property.expectedUnit)
+        .init(
+            language: .simplifiedChinese,
+            expectedValue: 888.889,
+            expectedUnit: "GB",
+            expectedDescription: "888.9 GB"
+        ),
+    ] as [ByteDataProperty])
+    func initialize(_ property: ByteDataProperty) {
+        let sut = ByteData(byteCount: 888888888888, language: property.language)
+        let readableValue = sut.readableValue
+        #expect(readableValue.value == property.expectedValue)
+        #expect(readableValue.unit == property.expectedUnit)
         #expect(sut.description == property.expectedDescription)
     }
 
@@ -54,17 +55,15 @@ struct ByteDataTests {
         .init(input: 888888800000000000000, expectedValue: 888.889, expectedUnit: "EB"),
     ] as [ScaleByteDataProperty])
     func scale(_ property: ScaleByteDataProperty) {
-        let sut = ByteData(
-            byteCount: property.input,
-            locale: Locale(languageCode: .english, languageRegion: .unitedStates)
-        )
-        #expect(sut.value == property.expectedValue)
-        #expect(sut.unit == property.expectedUnit)
+        let sut = ByteData(byteCount: property.input, language: .english)
+        let readableValue = sut.readableValue
+        #expect(readableValue.value == property.expectedValue)
+        #expect(readableValue.unit == property.expectedUnit)
     }
 }
 
-struct LocaleByteDataProperty {
-    var locale: Locale
+struct ByteDataProperty {
+    var language: Language
     var expectedValue: Double
     var expectedUnit: String
     var expectedDescription: String

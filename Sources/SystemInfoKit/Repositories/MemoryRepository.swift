@@ -1,12 +1,15 @@
 @preconcurrency import Darwin
+import Foundation
 
 struct MemoryRepository: SystemRepository {
     private var hostClient: HostClient
     private var stateClient: StateClient
+    var language: Language
 
-    init(_ dependencies: Dependencies) {
+    init(_ dependencies: Dependencies, language: Language) {
         hostClient = dependencies.hostClient
         stateClient = dependencies.stateClient
+        self.language = language
     }
 
     private var maxMemory: Double {
@@ -40,7 +43,7 @@ struct MemoryRepository: SystemRepository {
     }
 
     func update() {
-        var result = MemoryInfo()
+        var result = MemoryInfo(language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.memoryInfo = result }
         }
@@ -58,14 +61,14 @@ struct MemoryRepository: SystemRepository {
         let wired       = Double(load.wire_count) * page
         let compressed  = Double(load.compressor_page_count) * page
 
-        result.percentage = .init(rawValue: min((app + wired + compressed) / maxMem, 0.999))
-        result.pressure = .init(rawValue: (wired + compressed) / maxMem)
-        result.app = .init(byteCount: app)
-        result.wired = .init(byteCount: wired)
-        result.compressed = .init(byteCount: compressed)
+        result.percentage = .init(rawValue: min((app + wired + compressed) / maxMem, 0.999), language: language)
+        result.pressure = .init(rawValue: (wired + compressed) / maxMem, language: language)
+        result.app = .init(byteCount: app, language: language)
+        result.wired = .init(byteCount: wired, language: language)
+        result.compressed = .init(byteCount: compressed, language: language)
     }
 
     func reset() {
-        stateClient.withLock { $0.bundle.memoryInfo = .init() }
+        stateClient.withLock { $0.bundle.memoryInfo = .init(language: language) }
     }
 }

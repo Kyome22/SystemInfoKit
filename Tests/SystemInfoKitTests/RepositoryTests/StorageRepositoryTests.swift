@@ -8,13 +8,16 @@ struct StorageRepositoryTests {
     @Test
     func update() throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
-        let sut = StorageRepository(.testDependencies(
-            stateClient: .testDependency(state),
-            urlResourceValuesClient: testDependency(of: URLResourceValuesClient.self) {
-                $0.volumeTotalCapacity = { _ in 88888888 }
-                $0.volumeAvailableCapacityForImportantUsage = { _ in 44444444 }
-            }
-        ))
+        let sut = StorageRepository(
+            .testDependencies(
+                stateClient: .testDependency(state),
+                urlResourceValuesClient: testDependency(of: URLResourceValuesClient.self) {
+                    $0.volumeTotalCapacity = { _ in 88888888 }
+                    $0.volumeAvailableCapacityForImportantUsage = { _ in 44444444 }
+                }
+            ),
+            language: .english
+        )
         sut.update()
         let actual = try #require({ state.withLock(\.bundle.storageInfo) }())
         let expect = [
@@ -32,10 +35,11 @@ struct StorageRepositoryTests {
                 percentage: .init(rawValue: 0.4),
                 total: .init(byteCount: 1.0),
                 available: .init(byteCount: 0.6),
-                used: .init(byteCount: 0.4)
+                used: .init(byteCount: 0.4),
+                language: .english
             )
         }
-        let sut = StorageRepository(.testDependencies(stateClient: .testDependency(state)))
+        let sut = StorageRepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
         let expect = [
             "Storage:  0.0% used",

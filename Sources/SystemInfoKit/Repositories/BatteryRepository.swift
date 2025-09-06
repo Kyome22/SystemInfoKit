@@ -1,12 +1,15 @@
+import Foundation
 import IOKit
 
 struct BatteryRepository: SystemRepository {
     private var ioKitClient: IOKitClient
     private var stateClient: StateClient
+    var language: Language
 
-    init(_ dependencies: Dependencies) {
+    init(_ dependencies: Dependencies, language: Language) {
         ioKitClient = dependencies.ioKitClient
         stateClient = dependencies.stateClient
+        self.language = language
     }
 
     func update() {
@@ -28,7 +31,7 @@ struct BatteryRepository: SystemRepository {
 
         guard let installed = dict["BatteryInstalled"] as? Int else { return }
 
-        var result = BatteryInfo(isInstalled: installed == 1)
+        var result = BatteryInfo(isInstalled: installed == 1, language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.batteryInfo = result }
         }
@@ -36,8 +39,8 @@ struct BatteryRepository: SystemRepository {
         if let designCapacity = dict["DesignCapacity"] as? Double,
            let maxCapacity = dict["AppleRawMaxCapacity"] as? Double,
            let currentCapacity = dict["AppleRawCurrentCapacity"] as? Double {
-            result.percentage = .init(rawValue: min(currentCapacity / maxCapacity, 1), width: 5)
-            result.maxCapacity = .init(rawValue: min(maxCapacity / designCapacity, 1), width: 5)
+            result.percentage = .init(rawValue: min(currentCapacity / maxCapacity, 1), width: 5, language: language)
+            result.maxCapacity = .init(rawValue: min(maxCapacity / designCapacity, 1), width: 5, language: language)
         }
 
         if let isCharging = dict["IsCharging"] as? Int {
@@ -51,11 +54,11 @@ struct BatteryRepository: SystemRepository {
             result.cycleCount = cycleCount
         }
         if let temperature = dict["Temperature"] as? Double {
-            result.temperature = temperature / 100.0
+            result.temperature = .init(value: temperature / 100.0, language: language)
         }
     }
 
     func reset() {
-        stateClient.withLock { $0.bundle.batteryInfo = .init(isInstalled: false) }
+        stateClient.withLock { $0.bundle.batteryInfo = .init(isInstalled: false, language: language) }
     }
 }

@@ -7,7 +7,7 @@ import Testing
 struct SystemInfoObserverTests {
     @Test
     func ovservation() async {
-        let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
+        let observer = SystemInfoObserver.init(dependencies: .init(), monitorInterval: 3.0, language: .english)
         let task = Task {
             var count = 0
             for await systemInfoBundle in observer.systemInfoStream() {
@@ -34,7 +34,8 @@ struct SystemInfoObserverTests {
         }
         let observer = SystemInfoObserver(
             dependencies: .testDependencies(stateClient: .testDependency(state)),
-            monitorInterval: 1.0
+            monitorInterval: 1.0,
+            language: .english
         )
         observer.toggleActivation(requests: [.cpu: false, .memory: true])
         let actual = state.withLock(\.activationState)
