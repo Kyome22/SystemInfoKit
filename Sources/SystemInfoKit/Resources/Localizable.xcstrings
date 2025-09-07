@@ -241,42 +241,42 @@
         }
       }
     },
-    "batteryTemperature%lf" : {
+    "batteryTemperature%@" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Temperatur: %4.1f°C"
+            "value" : "Temperatur: %@"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Temperature: %4.1f°C"
+            "value" : "Temperature: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Température : %4.1f°C"
+            "value" : "Température : %@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "温度：%4.1f°C"
+            "value" : "温度：%@"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "온도: %4.1f°C"
+            "value" : "온도: %@"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "温度：%4.1f°C"
+            "value" : "温度：%@"
           }
         }
       }
@@ -732,31 +732,31 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Download: %@"
+            "value" : "Download: %@/s"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Réception : %@"
+            "value" : "Réception : %@/s"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ダウンロード：%@"
+            "value" : "ダウンロード：%@/s"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "다운로드: %@"
+            "value" : "다운로드: %@/s"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "下载：%@"
+            "value" : "下载：%@/s"
           }
         }
       }
@@ -892,31 +892,31 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upload: %@"
+            "value" : "Upload: %@/s"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Envoi : %@"
+            "value" : "Envoi : %@/s"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アップロード：%@"
+            "value" : "アップロード：%@/s"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "업로드: %@"
+            "value" : "업로드: %@/s"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "上传：%@"
+            "value" : "上传：%@/s"
           }
         }
       }

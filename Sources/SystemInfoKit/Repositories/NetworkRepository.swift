@@ -2,37 +2,47 @@ import Foundation
 import SystemConfiguration
 
 struct NetworkRepository: SystemRepository {
-    typealias TransmissionSpeed = (upload: ByteDataPerSecond, download: ByteDataPerSecond)
+    typealias TransmissionSpeed = (upload: ByteData, download: ByteData)
 
+    private var posixClient: POSIXClient
+    private var scDynamicStoreClient: SCDynamicStoreClient
+    private var scNetworkInterfaceClient: SCNetworkInterfaceClient
     private var stateClient: StateClient
+    var language: Language
 
-    init(_ stateClient: StateClient) {
-        self.stateClient = stateClient
+    init(_ dependencies: Dependencies, language: Language) {
+        posixClient = dependencies.posixClient
+        scDynamicStoreClient = dependencies.scDynamicStoreClient
+        scNetworkInterfaceClient = dependencies.scNetworkInterfaceClient
+        stateClient = dependencies.stateClient
+        self.language = language
     }
 
     private func getDefaultID() -> String? {
         let processName = ProcessInfo.processInfo.processName as CFString
-        let dynamicStore = SCDynamicStoreCreate(kCFAllocatorDefault, processName, nil, nil)
-        let ipv4Key = SCDynamicStoreKeyCreateNetworkGlobalEntity(kCFAllocatorDefault,
-                                                                 kSCDynamicStoreDomainState,
-                                                                 kSCEntNetIPv4)
-        guard let list = SCDynamicStoreCopyValue(dynamicStore, ipv4Key) as? [CFString: Any],
+        let dynamicStore = scDynamicStoreClient.create(kCFAllocatorDefault, processName, nil, nil)
+        let ipv4Key = scDynamicStoreClient.keyCreateNetworkGlobalEntity(
+            kCFAllocatorDefault,
+            kSCDynamicStoreDomainState,
+            kSCEntNetIPv4
+        )
+        guard let list = scDynamicStoreClient.copyValue(dynamicStore, ipv4Key) as? [CFString: Any],
               let interface = list[kSCDynamicStorePropNetPrimaryInterface] as? String else {
             return nil
         }
         return interface
     }
 
-    private func getHardwareName(_ id: String) -> String {
-        for interface in SCNetworkInterfaceCopyAll() as! [SCNetworkInterface] {
-            if let bsd = SCNetworkInterfaceGetBSDName(interface) {
-                if bsd as String != id { continue }
-                if let name = SCNetworkInterfaceGetLocalizedDisplayName(interface) {
-                    return name as String
-                }
-            }
+    private func getHardwareName(_ id: String) -> String? {
+        guard let interfaces = scNetworkInterfaceClient.copyAll() as? [SCNetworkInterface] else {
+            return nil
         }
-        return String(localized: "networkUnknown", bundle: .module)
+        return interfaces
+            .compactMap { interface -> String? in
+                guard scNetworkInterfaceClient.getBSDName(interface) as? String == id else { return nil }
+                return scNetworkInterfaceClient.getLocalizedDisplayName(interface) as? String
+            }
+            .first
     }
 
     private func getDataTraffic(_ id: String, _ pointer: UnsafeMutablePointer<ifaddrs>) -> DataTraffic? {
@@ -43,8 +53,8 @@ struct NetworkRepository: SystemRepository {
         var data: UnsafeMutablePointer<if_data>? = nil
         data = unsafeBitCast(pointer.pointee.ifa_data, to: UnsafeMutablePointer<if_data>.self)
         return DataTraffic(
-            upload: Int64(data?.pointee.ifi_obytes ?? .zero),
-            download: Int64(data?.pointee.ifi_ibytes ?? .zero)
+            upload: Double(data?.pointee.ifi_obytes ?? .zero),
+            download: Double(data?.pointee.ifi_ibytes ?? .zero)
         )
     }
 
@@ -53,15 +63,19 @@ struct NetworkRepository: SystemRepository {
         guard name == id else { return nil }
         var addr = pointer.pointee.ifa_addr.pointee
         guard addr.sa_family == UInt8(AF_INET) else { return nil }
-        var ip = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-        getnameinfo(&addr, socklen_t(addr.sa_len), &ip, socklen_t(ip.count), nil, socklen_t(0), NI_NUMERICHOST)
+        var ip = [CChar](repeating: .zero, count: Int(NI_MAXHOST))
+        let result = posixClient.getNameInfo(&addr, socklen_t(addr.sa_len), &ip, socklen_t(ip.count), nil, socklen_t.zero, NI_NUMERICHOST)
+        guard result == .zero else { return nil }
         return String(cString: ip, encoding: .utf8).map { IPAddress.v4($0) }
     }
 
     private func getTransmissionSpeed(_ id: String) -> TransmissionSpeed {
-        var result = TransmissionSpeed(.zero, .zero)
+        var result = TransmissionSpeed(
+            upload: .init(byteCount: .zero, language: language),
+            download: .init(byteCount: .zero, language: language)
+        )
         var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil
-        guard getifaddrs(&ifaddr) == .zero else { return result }
+        guard posixClient.getIfaddrs(&ifaddr) == .zero else { return result }
 
         var pointer = ifaddr
         var ipAddress = IPAddress.uninitialized
@@ -76,7 +90,7 @@ struct NetworkRepository: SystemRepository {
                 dataTraffic += value
             }
         }
-        freeifaddrs(ifaddr)
+        posixClient.freeIfaddrs(ifaddr)
 
         if ipAddress.isInitialized {
             stateClient.withLock { [ipAddress] in $0.latestIPAddress = ipAddress }
@@ -86,8 +100,8 @@ struct NetworkRepository: SystemRepository {
         let previousDataTraffic = stateClient.withLock(\.previousDataTraffic)
         if previousDataTraffic != .zero {
             let dataTrafficDiff = dataTraffic - previousDataTraffic
-            result.upload = ByteDataPerSecond(byteCount: Int64(Double(dataTrafficDiff.upload) / interval))
-            result.download = ByteDataPerSecond(byteCount: Int64(Double(dataTrafficDiff.download) / interval))
+            result.upload = ByteData(byteCount: dataTrafficDiff.upload / interval, language: language)
+            result.download = ByteData(byteCount: dataTrafficDiff.download / interval, language: language)
         }
         stateClient.withLock { [dataTraffic] in $0.previousDataTraffic = dataTraffic }
 
@@ -95,13 +109,13 @@ struct NetworkRepository: SystemRepository {
     }
 
     func update() {
-        var result = NetworkInfo()
+        var result = NetworkInfo(language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.networkInfo = result }
         }
 
         if let id = getDefaultID() {
-            result.name = getHardwareName(id)
+            result.name = getHardwareName(id) ?? String(localized: "networkUnknown", bundle: .module)
             let transmissionSpeed = getTransmissionSpeed(id)
             result.ipAddress = stateClient.withLock(\.latestIPAddress)
             result.upload = transmissionSpeed.upload
@@ -111,7 +125,7 @@ struct NetworkRepository: SystemRepository {
 
     func reset() {
         stateClient.withLock {
-            $0.bundle.networkInfo = .init()
+            $0.bundle.networkInfo = .init(language: language)
             $0.latestIPAddress = .uninitialized
             $0.previousDataTraffic = .zero
         }

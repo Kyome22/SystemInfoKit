@@ -1,77 +1,101 @@
+import Foundation
+
 public struct BatteryInfo: SystemInfo {
     public let type = SystemInfoType.battery
-    public internal(set) var percentage = Percentage.zero
-    public let isInstalled: Bool
-    public internal(set) var isCharging = false
+    public internal(set) var percentage: Percentage
+    public internal(set) var isInstalled: Bool
+    public internal(set) var isCharging: Bool
     public internal(set) var adapterName: String?
-    public internal(set) var maxCapacity = Percentage.zero
-    public internal(set) var cycleCount = Int.zero
-    public internal(set) var temperature = Double.zero
+    public internal(set) var maxCapacity: Percentage
+    public internal(set) var cycleCount: Int
+    public internal(set) var temperature: Temperature
+    var language: Language
+
+    private var roughValue: Int {
+        Int(min(max(percentage.value + 5, 0), 100) / 25) * 25
+    }
 
     public var icon: String {
         let suffix = if #available(macOS 14.0, *) { "percent" } else { "" }
-        switch (isInstalled, isCharging) {
+        return switch (isInstalled, isCharging) {
         case (true, true):
-            return "battery.100\(suffix).bolt"
+            "battery.100\(suffix).bolt"
         case (true, false):
-            return switch percentage.value {
-            case 0 ..< 20:  "battery.0\(suffix)"
-            case 20 ..< 45: "battery.25\(suffix)"
-            case 45 ..< 70: "battery.50\(suffix)"
-            case 70 ..< 95: "battery.75\(suffix)"
-            default:        "battery.100\(suffix)"
-            }
+            "battery.\(roughValue)\(suffix)"
         case (false, _):
-            return "powerplug"
+            "powerplug"
         }
     }
 
     public var summary: String {
         if isInstalled {
-            String(localized: "battery\(String(describing: percentage))", bundle: .module)
+            string(localized: "battery\(String(describing: percentage))")
         } else {
-            String(localized: "batteryIsNotInstalled", bundle: .module)
+            string(localized: "batteryIsNotInstalled")
         }
     }
 
     private var powerSource: String {
         if isCharging {
-            adapterName ?? String(localized: "batteryUnknown", bundle: .module)
+            adapterName ?? string(localized: "batteryUnknown")
         } else {
-            String(localized: "battery", bundle: .module)
+            string(localized: "battery")
         }
     }
 
     public var details: [String] {
         [
-            String(localized: "batteryPowerSource\(powerSource)", bundle: .module),
-            String(localized: "batteryMaxCapacity\(String(describing: maxCapacity))", bundle: .module),
-            String(localized: "batteryCycle\(cycleCount)", bundle: .module),
-            String(localized: "batteryTemperature\(temperature)", bundle: .module)
+            string(localized: "batteryPowerSource\(powerSource)"),
+            string(localized: "batteryMaxCapacity\(String(describing: maxCapacity))"),
+            string(localized: "batteryCycle\(cycleCount)"),
+            string(localized: "batteryTemperature\(String(describing: temperature))"),
         ]
     }
-}
 
-extension BatteryInfo {
-    public static func createMock(
+    public var description: String {
+        isInstalled ? _description : summary
+    }
+
+    init(
+        percentage: Percentage = .zero,
+        isInstalled: Bool = true,
+        isCharging: Bool = false,
+        adapterName: String? = nil,
+        maxCapacity: Percentage = .zero,
+        cycleCount: Int = .zero,
+        temperature: Temperature = .zero,
+        language: Language
+    ) {
+        self.percentage = percentage.localized(with: language)
+        self.isInstalled = isInstalled
+        self.isCharging = isCharging
+        self.adapterName = adapterName
+        self.maxCapacity = maxCapacity.localized(with: language)
+        self.cycleCount = cycleCount
+        self.temperature = temperature.localized(with: language)
+        self.language = language
+    }
+
+    public init(
         percentage: Percentage,
         isInstalled: Bool,
         isCharging: Bool,
         adapterName: String?,
         maxCapacity: Percentage,
         cycleCount: Int,
-        temperature: Double
-    ) -> BatteryInfo {
-        BatteryInfo(
+        temperature: Temperature,
+    ) {
+        self.init(
             percentage: percentage,
             isInstalled: isInstalled,
             isCharging: isCharging,
             adapterName: adapterName,
             maxCapacity: maxCapacity,
             cycleCount: cycleCount,
-            temperature: temperature
+            temperature: temperature,
+            language: .automatic
         )
     }
 
-    public static let zero = BatteryInfo(isInstalled: true)
+    public static let zero = BatteryInfo(language: .automatic)
 }
