@@ -51,25 +51,25 @@ Memory: 72.9%
     Compressed:  3.5 GB
 Storage: 58.7% used
     584.13 GB / 994.66 GB
-Battery: not installed
-    Power Source: Unknown
-    Max Capacity:   0.0%
-    Cycle Count: 0
-    Temperature:  0.0℃
+Battery:  98.2%
+    Power Source: SomeAdapter
+    Max Capacity:  95.7%
+    Cycle Count: 7
+    Temperature: 30.2°C
 Network: Ethernet
     Local IP: 192.0.2.1
-    Upload:  50.7 KB/s
-    Download:   1.7 KB/s
+    Upload:  50.7 kB/s
+    Download:   1.7 kB/s
 ```
 
 ## Supported languages
 
+- Chinese (Simplified)
 - English (primary)
-- Japanese
-- Korean
-- Simplified Chinese
 - French
 - German
+- Japanese
+- Korean
 
 ## Copyright and License
 
