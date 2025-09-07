@@ -646,7 +646,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Festverdrahteter Speicher: %@"
+            "value" : "Reservierter Speicher: %@"
           }
         },
         "en" : {
