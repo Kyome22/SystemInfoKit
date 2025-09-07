@@ -6,6 +6,12 @@ import Testing
 struct ByteDataTests {
     @Test(arguments: [
         .init(
+            language: .chineseSimplified,
+            expectedValue: 888.889,
+            expectedUnit: "GB",
+            expectedDescription: "888.9 GB"
+        ),
+        .init(
             language: .english,
             expectedValue: 888.889,
             expectedUnit: "GB",
@@ -18,6 +24,12 @@ struct ByteDataTests {
             expectedDescription: "888,9 Go"
         ),
         .init(
+            language: .german,
+            expectedValue: 888.889,
+            expectedUnit: "GB",
+            expectedDescription: "888,9 GB"
+        ),
+        .init(
             language: .japanese,
             expectedValue: 888.889,
             expectedUnit: "GB",
@@ -25,12 +37,6 @@ struct ByteDataTests {
         ),
         .init(
             language: .korean,
-            expectedValue: 888.889,
-            expectedUnit: "GB",
-            expectedDescription: "888.9 GB"
-        ),
-        .init(
-            language: .simplifiedChinese,
             expectedValue: 888.889,
             expectedUnit: "GB",
             expectedDescription: "888.9 GB"
