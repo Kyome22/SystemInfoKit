@@ -11,7 +11,7 @@ public struct BatteryInfo: SystemInfo {
     public internal(set) var temperature: Temperature
     var language: Language
 
-    var roughValue: Int {
+    private var roughValue: Int {
         Int(min(max(percentage.value + 5, 0), 100) / 25) * 25
     }
 
