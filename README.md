@@ -12,7 +12,7 @@ SystemInfoKit provides macOS system information.
 
 - Development with Xcode 16.4+
 - Written in Swift 6.1
-- Compatible with macOS 13.0+
+- Compatible with macOS 13.0+, iOS 18.0+
 
 ## Installation
 
@@ -64,7 +64,7 @@ Network: Ethernet
 
 ## Supported languages
 
-- Chinese (Simplified)
+- Chinese, Simplified
 - English (primary)
 - French
 - German

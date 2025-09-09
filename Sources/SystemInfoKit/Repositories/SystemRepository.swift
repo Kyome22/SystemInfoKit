@@ -2,7 +2,7 @@ import Foundation
 
 protocol SystemRepository: Sendable, Localizable {
     init(_ dependencies: Dependencies, language: Language)
-    func update()
+    func update() async
     func reset()
 }
 

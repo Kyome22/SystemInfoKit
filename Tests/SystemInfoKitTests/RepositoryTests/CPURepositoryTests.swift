@@ -5,7 +5,7 @@ import Testing
 
 struct CPURepositoryTests {
     @Test
-    func update() throws {
+    func update() async throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock {
             $0.previousLoadInfo.cpu_ticks = (62511937, 33202830, 859088048, 0)
@@ -25,7 +25,7 @@ struct CPURepositoryTests {
             ),
             language: .english
         )
-        sut.update()
+        await sut.update()
         let actual = try #require({ state.withLock(\.bundle.cpuInfo) }())
         let expect = [
             "CPU: 24.1%",

@@ -27,7 +27,7 @@ struct CPURepository: SystemRepository {
         return data
     }
 
-    func update() {
+    func update() async {
         var result = CPUInfo(language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.cpuInfo = result }

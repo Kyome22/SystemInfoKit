@@ -1,5 +1,6 @@
 import Foundation
 
+#if os(macOS)
 public struct BatteryInfo: SystemInfo {
     public let type = SystemInfoType.battery
     public internal(set) var percentage: Percentage
@@ -11,17 +12,13 @@ public struct BatteryInfo: SystemInfo {
     public internal(set) var temperature: Temperature
     var language: Language
 
-    private var roughValue: Int {
-        Int(min(max(percentage.value + 5, 0), 100) / 25) * 25
-    }
-
     public var icon: String {
         let suffix = if #available(macOS 14.0, *) { "percent" } else { "" }
         return switch (isInstalled, isCharging) {
         case (true, true):
             "battery.100\(suffix).bolt"
         case (true, false):
-            "battery.\(roughValue)\(suffix)"
+            "battery.\(percentage.batteryRoughValue)\(suffix)"
         case (false, _):
             "powerplug"
         }
@@ -58,7 +55,7 @@ public struct BatteryInfo: SystemInfo {
 
     init(
         percentage: Percentage = .zero,
-        isInstalled: Bool = true,
+        isInstalled: Bool = false,
         isCharging: Bool = false,
         adapterName: String? = nil,
         maxCapacity: Percentage = .zero,
@@ -98,4 +95,56 @@ public struct BatteryInfo: SystemInfo {
     }
 
     public static let zero = BatteryInfo(language: .automatic)
+}
+#elseif os(iOS)
+public struct BatteryInfo: SystemInfo {
+    public let type = SystemInfoType.battery
+    public internal(set) var percentage: Percentage
+    public internal(set) var isCharging: Bool
+    var language: Language
+
+    public var icon: String {
+        return switch isCharging {
+        case true:
+            "battery.100percent.bolt"
+        case false:
+            "battery.\(percentage.batteryRoughValue)percent"
+        }
+    }
+
+    public var summary: String {
+        string(localized: "battery\(String(describing: percentage))")
+    }
+
+    public let details = [String]()
+
+    init(
+        percentage: Percentage = .zero,
+        isCharging: Bool = false,
+        language: Language
+    ) {
+        self.percentage = percentage.localized(with: language)
+        self.isCharging = isCharging
+        self.language = language
+    }
+
+    public init(
+        percentage: Percentage,
+        isCharging: Bool
+    ) {
+        self.init(
+            percentage: percentage,
+            isCharging: isCharging,
+            language: .automatic
+        )
+    }
+
+    public static let zero = BatteryInfo(language: .automatic)
+}
+#endif
+
+extension Percentage {
+    var batteryRoughValue: Int {
+        Int(min(max(value + 5, 0), 100) / 25) * 25
+    }
 }

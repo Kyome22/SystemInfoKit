@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 import IOKit
 
@@ -12,7 +13,7 @@ struct BatteryRepository: SystemRepository {
         self.language = language
     }
 
-    func update() {
+    func update() async {
         // Open Connection
         let service = ioKitClient.getMatchingService(kIOMainPortDefault, IOServiceNameMatching("AppleSmartBattery"))
         guard service != IO_OBJECT_NULL else { return }
@@ -59,6 +60,46 @@ struct BatteryRepository: SystemRepository {
     }
 
     func reset() {
-        stateClient.withLock { $0.bundle.batteryInfo = .init(isInstalled: false, language: language) }
+        stateClient.withLock { $0.bundle.batteryInfo = .init(language: language) }
     }
 }
+#elseif os(iOS)
+import UIKit
+
+struct BatteryRepository: SystemRepository {
+    private var stateClient: StateClient
+    private var uiDeviceClient: UIDeviceClient
+    var language: Language
+
+    init(_ dependencies: Dependencies, language: Language) {
+        stateClient = dependencies.stateClient
+        uiDeviceClient = dependencies.uiDeviceClient
+        self.language = language
+    }
+
+    func update() async {
+        await MainActor.run {
+            uiDeviceClient.setIsBatteryMonitoringEnabled(true)
+        }
+
+        var result = BatteryInfo(language: language)
+        defer {
+            stateClient.withLock { [result] in $0.bundle.batteryInfo = result }
+        }
+
+        let batteryLevel = await MainActor.run {
+            uiDeviceClient.batteryLevel()
+        }
+        result.percentage = .init(rawValue: Double(batteryLevel), width: 5, language: language)
+
+        let batteryState = await MainActor.run {
+            uiDeviceClient.batteryState()
+        }
+        result.isCharging = [.charging, .full].contains(batteryState)
+    }
+
+    func reset() {
+        stateClient.withLock { $0.bundle.batteryInfo = .init(language: language) }
+    }
+}
+#endif
