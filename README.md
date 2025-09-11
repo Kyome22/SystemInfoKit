@@ -1,6 +1,6 @@
 # SystemInfoKit
 
-SystemInfoKit provides macOS system information.
+SystemInfoKit provides macOS/iOS system information.
 
 - CPU usage
 - Memory performance
