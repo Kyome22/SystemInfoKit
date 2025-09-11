@@ -1,13 +1,13 @@
 import Foundation
+import Network
 import os
-import SystemConfiguration
 import Testing
 
 @testable import SystemInfoKit
 
 struct NetworkRepositoryTests {
     @Test
-    func update() throws {
+    func update() async throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock {
             $0.interval = 1.0
@@ -15,6 +15,15 @@ struct NetworkRepositoryTests {
         }
         let sut = NetworkRepository(
             .testDependencies(
+                nwPathMonitorClient: testDependency(of: NWPathMonitorClient.self) {
+                    $0.currentStatus = { .satisfied }
+                    $0.currentAvailableInterfaceTypes = {
+                        [NWInterface.InterfaceType.wiredEthernet]
+                    }
+                    $0.currentGateways = {
+                        [NWEndpoint.hostPort(host: .ipv4(.any), port: .any)]
+                    }
+                },
                 posixClient: testDependency(of: POSIXClient.self) {
                     $0.getIfaddrs = { pointer in
                         pointer?.pointee =  NRMock.inetIfaddrsPointer(next: NRMock.linkIfaddrsPointer())
@@ -22,28 +31,14 @@ struct NetworkRepositoryTests {
                     }
                     $0.getNameInfo = { getnameinfo($0, $1, $2, $3, $4, $5, $6) }
                 },
-                scDynamicStoreClient: testDependency(of: SCDynamicStoreClient.self) {
-                    $0.create = { SCDynamicStoreCreate($0, $1, $2, $3) }
-                    $0.keyCreateNetworkGlobalEntity = { _, _, _ in "dummy" as CFString }
-                    $0.copyValue = { _, _ in
-                        let dict = NSDictionary(dictionary: [kSCDynamicStorePropNetPrimaryInterface : "dummy"])
-                        let data = try! PropertyListSerialization.data(fromPropertyList: dict, format: .xml, options: 0)
-                        return CFPropertyListCreateWithData(kCFAllocatorDefault, data as CFData, 0, nil, nil).takeUnretainedValue()
-                    }
-                },
-                scNetworkInterfaceClient: testDependency(of: SCNetworkInterfaceClient.self) {
-                    $0.copyAll = { SCNetworkInterfaceCopyAll() }
-                    $0.getBSDName = { _ in "dummy" as CFString }
-                    $0.getLocalizedDisplayName = { _ in "Some Hardware" as CFString }
-                },
                 stateClient: .testDependency(state)
             ),
             language: .english
         )
-        sut.update()
+        await sut.update()
         let actual = try #require({ state.withLock(\.bundle.networkInfo) }())
         let expect = [
-            "Network: Some Hardware",
+            "Network: Ethernet",
             "Local IP: 0.0.0.0",
             "Upload:  7.9 kB/s",
             "Download:  7.9 MB/s",
@@ -56,29 +51,27 @@ struct NetworkRepositoryTests {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock {
             $0.bundle.networkInfo = .init(
-                name: "Some Hardware",
-                ipAddress: .v4("0.0.0.0"),
+                hasConnection: true,
+                networkInterface: .ethernet,
+                ipAddress: "0.0.0.0",
                 upload: .init(byteCount: 7888),
                 download: .init(byteCount: 7888888),
                 language: .english
             )
-            $0.latestIPAddress = .v4("0.0.0.0")
             $0.previousDataTraffic = .init(upload: 8888, download: 8888888)
         }
         let sut = NetworkRepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
         let expect = [
-            "No Connection",
+            "Network: No Connection",
             "Local IP: -",
             "Upload:  0.0 B/s",
             "Download:  0.0 B/s",
         ].joined(separator: "\n\t")
         #expect(state.withLock(\.bundle.networkInfo)?.description == expect)
-        #expect(state.withLock(\.latestIPAddress) == .uninitialized)
         #expect(state.withLock(\.previousDataTraffic) == .zero)
     }
 }
-
 
 private enum NRMock {
     static func inetIfaddrsPointer(next: UnsafeMutablePointer<ifaddrs>? = nil) -> UnsafeMutablePointer<ifaddrs> {

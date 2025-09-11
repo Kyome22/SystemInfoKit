@@ -1,3 +1,4 @@
+#if os(macOS)
 import IOKit
 
 struct IOKitClient: DependencyClient {
@@ -20,3 +21,9 @@ struct IOKitClient: DependencyClient {
         registryEntryCreateCFProperties: { _, _, _, _ in kIOReturnError }
     )
 }
+#else
+struct IOKitClient: DependencyClient {
+    static let liveValue = Self()
+    static let testValue = Self()
+}
+#endif

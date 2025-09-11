@@ -1,13 +1,13 @@
 import Foundation
-import IOKit
 import os
 import Testing
 
 @testable import SystemInfoKit
 
 struct BatteryRepositoryTests {
+#if os(macOS)
     @Test
-    func update_with_battery() throws {
+    func update_with_battery() async throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         let sut = BatteryRepository(
             .testDependencies(
@@ -32,7 +32,7 @@ struct BatteryRepositoryTests {
             ),
             language: .english
         )
-        sut.update()
+        await sut.update()
         let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
         let expect = [
             "Battery:  98.2%",
@@ -45,7 +45,7 @@ struct BatteryRepositoryTests {
     }
 
     @Test
-    func update_without_battery() throws {
+    func update_without_battery() async throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         let sut = BatteryRepository(
             .testDependencies(
@@ -65,7 +65,7 @@ struct BatteryRepositoryTests {
             ),
             language: .english
         )
-        sut.update()
+        await sut.update()
         let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
         #expect(actual.description == "Battery: Not Installed")
     }
@@ -88,4 +88,39 @@ struct BatteryRepositoryTests {
         sut.reset()
         #expect(state.withLock(\.bundle.batteryInfo)?.description == "Battery: Not Installed")
     }
+#elseif os(iOS)
+    @Test
+    func update() async throws {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let sut = BatteryRepository(
+            .testDependencies(
+                stateClient: .testDependency(state),
+                uiDeviceClient: testDependency(of: UIDeviceClient.self) {
+                    $0.setIsBatteryMonitoringEnabled = { _ in }
+                    $0.batteryLevel = { 0.982 }
+                    $0.batteryState = { .full }
+                }
+            ),
+            language: .english
+        )
+        await sut.update()
+        let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
+        #expect(actual.description == "Battery:  98.2%")
+    }
+
+    @Test
+    func reset() {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        state.withLock {
+            $0.bundle.batteryInfo = .init(
+                percentage: .init(rawValue: 0.982),
+                isCharging: false,
+                language: .english
+            )
+        }
+        let sut = BatteryRepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
+        sut.reset()
+        #expect(state.withLock(\.bundle.batteryInfo)?.description == "Battery:  0.0%")
+    }
+#endif
 }

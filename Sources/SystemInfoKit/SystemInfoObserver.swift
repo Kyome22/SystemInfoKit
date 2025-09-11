@@ -34,6 +34,8 @@ public final class SystemInfoObserver: Sendable {
     }
 
     public func startMonitoring() {
+        let queue = DispatchQueue(label: "SystemInfoKit.NWPathMonitor", qos: .utility)
+        dependencies.nwPathMonitorClient.start(queue)
         let interval = dependencies.stateClient.withLock(\.interval)
         let timer = Timer
             .publish(every: interval, on: RunLoop.main, in: .common)
@@ -50,6 +52,7 @@ public final class SystemInfoObserver: Sendable {
             $0?.cancel()
             $0 = nil
         }
+        dependencies.nwPathMonitorClient.cancel()
     }
 
     public func toggleActivation(requests: [SystemInfoType: Bool]) {
@@ -59,14 +62,16 @@ public final class SystemInfoObserver: Sendable {
     }
 
     private func updateSystemInfo() {
-        SystemInfoType.allCases.forEach { type in
-            let repository = type.repositoryType.init(dependencies, language: language)
-            if dependencies.stateClient.withLock(\.activationState[type]) ?? false {
-                repository.update()
-            } else {
-                repository.reset()
+        Task {
+            for type in SystemInfoType.allCases {
+                let repository = type.repositoryType.init(dependencies, language: language)
+                if dependencies.stateClient.withLock(\.activationState[type]) ?? false {
+                    await repository.update()
+                } else {
+                    repository.reset()
+                }
             }
+            systemInfoSubject.send(dependencies.stateClient.withLock(\.bundle))
         }
-        systemInfoSubject.send(dependencies.stateClient.withLock(\.bundle))
     }
 }

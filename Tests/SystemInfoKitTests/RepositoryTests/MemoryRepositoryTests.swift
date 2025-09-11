@@ -5,16 +5,11 @@ import Testing
 
 struct MemoryRepositoryTests {
     @Test
-    func update() throws {
+    func update() async throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         let sut = MemoryRepository(
             .testDependencies(
                 hostClient: testDependency(of: HostClient.self) {
-                    $0.info = { _, _, pointer, _ in
-                        pointer?[10] = 0
-                        pointer?[11] = 4
-                        return KERN_SUCCESS
-                    }
                     $0.statistics64 = { _, _, pointer, _ in
                         pointer?[1] = 155022
                         pointer?[2] = 141526
@@ -25,12 +20,21 @@ struct MemoryRepositoryTests {
                         pointer?[34] = 138560
                         return KERN_SUCCESS
                     }
+                    $0.info = { _, _, pointer, _ in
+                        pointer?[10] = 0
+                        pointer?[11] = 4
+                        return KERN_SUCCESS
+                    }
+                    $0.pageSize = { _, pointer in
+                        pointer?[0] = 16384
+                        return KERN_SUCCESS
+                    }
                 },
                 stateClient: .testDependency(state)
             ),
             language: .english
         )
-        sut.update()
+        await sut.update()
         let actual = try #require({ state.withLock(\.bundle.memoryInfo) }())
         let expect = [
             "Memory: 81.9%",

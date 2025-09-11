@@ -6,7 +6,7 @@ import Testing
 
 struct StorageRepositoryTests {
     @Test
-    func update() throws {
+    func update() async throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         let sut = StorageRepository(
             .testDependencies(
@@ -18,7 +18,7 @@ struct StorageRepositoryTests {
             ),
             language: .english
         )
-        sut.update()
+        await sut.update()
         let actual = try #require({ state.withLock(\.bundle.storageInfo) }())
         let expect = [
             "Storage: 50.0% used",

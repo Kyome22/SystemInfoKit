@@ -11,7 +11,7 @@ struct StorageRepository: SystemRepository {
         self.language = language
     }
 
-    func update() {
+    func update() async {
         var result = StorageInfo(language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.storageInfo = result }

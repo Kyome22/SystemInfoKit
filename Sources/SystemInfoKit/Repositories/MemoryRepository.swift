@@ -1,4 +1,4 @@
-@preconcurrency import Darwin
+import Darwin
 import Foundation
 
 struct MemoryRepository: SystemRepository {
@@ -12,60 +12,65 @@ struct MemoryRepository: SystemRepository {
         self.language = language
     }
 
-    private var maxMemory: Double {
-        var size: mach_msg_type_number_t = UInt32(MemoryLayout<host_basic_info_data_t>.size / MemoryLayout<integer_t>.size)
-        let hostInfo = host_basic_info_t.allocate(capacity: 1)
-        let result = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { (pointer) -> kern_return_t in
-            hostClient.info(mach_host_self(), HOST_BASIC_INFO, pointer, &size)
-        }
-        let data = if result == KERN_SUCCESS {
-            hostInfo.move()
-        } else {
-            host_basic_info()
-        }
-        hostInfo.deallocate()
-        return Double(data.max_mem)
-    }
-
     private var vmStatistics64: vm_statistics64 {
-        var size: mach_msg_type_number_t = UInt32(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
-        let hostInfo = vm_statistics64_t.allocate(capacity: 1)
-        let result = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { (pointer) -> kern_return_t in
-            hostClient.statistics64(mach_host_self(), HOST_VM_INFO64, pointer, &size)
+        var size = mach_msg_type_number_t(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
+        var statistics = vm_statistics64()
+        _ = withUnsafeMutablePointer(to: &statistics) { pointer in
+            pointer.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { pointer in
+                hostClient.statistics64(mach_host_self(), HOST_VM_INFO64, pointer, &size)
+            }
         }
-        let data = if result == KERN_SUCCESS {
-            hostInfo.move()
-        } else {
-            vm_statistics64()
-        }
-        hostInfo.deallocate()
-        return data
+        return statistics
     }
 
-    func update() {
+    private var pageSize: vm_size_t {
+        var size = vm_size_t()
+        _ = withUnsafeMutablePointer(to: &size) { pointer in
+            hostClient.pageSize(mach_host_self(), pointer)
+        }
+        return size
+    }
+
+    private var basicInfo: host_basic_info {
+        var size = mach_msg_type_number_t(MemoryLayout<host_basic_info_data_t>.size / MemoryLayout<integer_t>.size)
+        var basicInfo = host_basic_info()
+        _ = withUnsafeMutablePointer(to: &basicInfo) { pointer in
+            pointer.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { pointer in
+                hostClient.info(mach_host_self(), HOST_BASIC_INFO, pointer, &size)
+            }
+        }
+        return basicInfo
+    }
+
+    func update() async {
         var result = MemoryInfo(language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.memoryInfo = result }
         }
 
-        let load = vmStatistics64
-        let maxMem = maxMemory
+        let statistics = vmStatistics64
 
-        let page        = Double(vm_kernel_page_size)
-        let active      = Double(load.active_count)
-        let inactive    = Double(load.inactive_count)
-        let speculative = Double(load.speculative_count)
-        let purgeable   = Double(load.purgeable_count)
-        let external    = Double(load.external_page_count)
-        let app         = (active + inactive + speculative - purgeable - external) * page
-        let wired       = Double(load.wire_count) * page
-        let compressed  = Double(load.compressor_page_count) * page
+        let active      = Double(statistics.active_count)
+        let inactive    = Double(statistics.inactive_count)
+        let speculative = Double(statistics.speculative_count)
+        let wired       = Double(statistics.wire_count)
+        let compressed  = Double(statistics.compressor_page_count)
+        let purgeable   = Double(statistics.purgeable_count)
+        let external    = Double(statistics.external_page_count)
 
-        result.percentage = .init(rawValue: min((app + wired + compressed) / maxMem, 0.999), language: language)
-        result.pressure = .init(rawValue: (wired + compressed) / maxMem, language: language)
-        result.app = .init(byteCount: app, language: language)
-        result.wired = .init(byteCount: wired, language: language)
-        result.compressed = .init(byteCount: compressed, language: language)
+        let cached = purgeable + external
+        let app = active + inactive + speculative - cached
+        let pressure = wired + compressed
+        let using = app + pressure
+
+        let size = Double(pageSize)
+        let maxMemory = Double(basicInfo.max_mem)
+
+        result.percentage = .init(rawValue: min((using * size) / maxMemory, 0.999), language: language)
+        result.pressure = .init(rawValue: (pressure * size) / maxMemory, language: language)
+        result.app = .init(byteCount: app * size, language: language)
+        result.wired = .init(byteCount: wired * size, language: language)
+        result.compressed = .init(byteCount: compressed * size, language: language)
     }
 
     func reset() {

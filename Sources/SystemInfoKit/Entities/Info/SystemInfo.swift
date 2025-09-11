@@ -8,9 +8,7 @@ protocol SystemInfo: Sendable, CustomStringConvertible, Localizable {
 
 extension SystemInfo {
     var _description: String {
-        var text = "\(summary)\n"
-        text += details.map { "\t\($0)" }.joined(separator: "\n")
-        return text
+        ([summary] + details).joined(separator: "\n\t")
     }
 
     public var description: String {
