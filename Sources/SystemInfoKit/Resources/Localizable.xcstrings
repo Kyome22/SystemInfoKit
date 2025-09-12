@@ -150,7 +150,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "배터리: 설치됨"
+            "value" : "배터리: 설치되지 않음"
           }
         },
         "zh-Hans" : {
