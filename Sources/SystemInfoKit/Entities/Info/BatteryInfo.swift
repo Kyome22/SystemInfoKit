@@ -1,7 +1,7 @@
 import Foundation
 
 #if os(macOS)
-public struct BatteryInfo: SystemInfo {
+public struct BatteryInfo: LocalizableSystemInfo {
     public let type = SystemInfoType.battery
     public internal(set) var percentage: Percentage
     public internal(set) var isInstalled: Bool
@@ -97,7 +97,7 @@ public struct BatteryInfo: SystemInfo {
     public static let zero = BatteryInfo(language: .automatic)
 }
 #elseif os(iOS)
-public struct BatteryInfo: SystemInfo {
+public struct BatteryInfo: LocalizableSystemInfo {
     public let type = SystemInfoType.battery
     public internal(set) var percentage: Percentage
     public internal(set) var isCharging: Bool

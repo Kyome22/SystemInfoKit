@@ -1,6 +1,6 @@
 import Foundation
 
-public struct StorageInfo: SystemInfo {
+public struct StorageInfo: LocalizableSystemInfo {
     public let type = SystemInfoType.storage
     public internal(set) var percentage: Percentage
     public internal(set) var total: ByteData

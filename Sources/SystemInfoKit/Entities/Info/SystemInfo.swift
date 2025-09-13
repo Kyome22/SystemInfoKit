@@ -1,4 +1,4 @@
-protocol SystemInfo: Sendable, CustomStringConvertible, Localizable {
+public protocol SystemInfo: Sendable, CustomStringConvertible {
     var type: SystemInfoType { get }
     var icon: String { get }
     var percentage: Percentage { get }
@@ -15,3 +15,5 @@ extension SystemInfo {
         _description
     }
 }
+
+protocol LocalizableSystemInfo: SystemInfo, Localizable {}

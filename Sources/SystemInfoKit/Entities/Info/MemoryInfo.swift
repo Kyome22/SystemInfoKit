@@ -1,6 +1,6 @@
 import Foundation
 
-public struct MemoryInfo: SystemInfo {
+public struct MemoryInfo: LocalizableSystemInfo {
     public let type = SystemInfoType.memory
     public internal(set) var percentage: Percentage
     public internal(set) var pressure: Percentage

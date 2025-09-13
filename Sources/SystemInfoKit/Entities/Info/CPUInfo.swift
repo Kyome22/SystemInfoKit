@@ -1,6 +1,6 @@
 import Foundation
 
-public struct CPUInfo: SystemInfo {
+public struct CPUInfo: LocalizableSystemInfo {
     public let type = SystemInfoType.cpu
     public internal(set) var percentage: Percentage
     public internal(set) var system: Percentage

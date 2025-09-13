@@ -1,6 +1,6 @@
 import Foundation
 
-public struct NetworkInfo: SystemInfo {
+public struct NetworkInfo: LocalizableSystemInfo {
     public let type = SystemInfoType.network
     public let percentage = Percentage.zero
     public internal(set) var hasConnection: Bool
