@@ -7,7 +7,7 @@ import Testing
 struct SystemInfoObserverTests {
     @Test
     func ovservation() async {
-        let observer = SystemInfoObserver.init(dependencies: .init(), monitorInterval: 3.0, language: .english)
+        let observer = SystemInfoObserver(dependencies: .init(), language: .english)
         let task = Task {
             var count = 0
             for await systemInfoBundle in observer.systemInfoStream() {
@@ -18,7 +18,7 @@ struct SystemInfoObserverTests {
                 }
             }
         }
-        observer.startMonitoring()
+        observer.startMonitoring(monitorInterval: 3.0)
         await task.value
         observer.stopMonitoring()
     }
@@ -31,7 +31,6 @@ struct SystemInfoObserverTests {
         }
         let observer = SystemInfoObserver(
             dependencies: .testDependencies(stateClient: .testDependency(state)),
-            monitorInterval: 1.0,
             language: .english
         )
         observer.toggleActivation(requests: [.cpu: false, .memory: true])

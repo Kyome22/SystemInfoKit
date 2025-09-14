@@ -24,14 +24,14 @@ SystemInfoKit supports Swift Package Manager.
 import SystemInfoKit
 
 // Get all system info per 3 seconds
-let observer = SystemInfoObserver.shared(monitorInterval: 3.0)
+let observer = SystemInfoObserver.shared
 
 Task {
     for await systemInfoBundle in observer.systemInfoStream() {
         Swift.print(systemInfoBundle)
     }
 }
-observer.startMonitoring()
+observer.startMonitoring(monitorInterval: 3.0)
 
 // Finish to get system info
 observer.stopMonitoring()

@@ -3,9 +3,7 @@ import Foundation
 import os
 
 public final class SystemInfoObserver: Sendable {
-    public static func shared(monitorInterval: Double = 5.0) -> SystemInfoObserver {
-        SystemInfoObserver(dependencies: .init(), monitorInterval: monitorInterval, language: .automatic)
-    }
+    public static let shared = SystemInfoObserver()
 
     private let dependencies: Dependencies
     private let language: Language
@@ -25,20 +23,22 @@ public final class SystemInfoObserver: Sendable {
 
     init(
         dependencies: Dependencies,
-        monitorInterval: Double,
         language: Language
     ) {
         self.dependencies = dependencies
-        dependencies.stateClient.withLock { $0.interval = max(monitorInterval, 1.0) }
         self.language = language
     }
 
-    public func startMonitoring() {
+    public convenience init() {
+        self.init(dependencies: .init(), language: .automatic)
+    }
+
+    public func startMonitoring(monitorInterval: Double = 5.0) {
+        dependencies.stateClient.withLock { $0.interval = max(monitorInterval, 1.0) }
         let queue = DispatchQueue(label: "SystemInfoKit.NWPathMonitor", qos: .utility)
         dependencies.nwPathMonitorClient.start(queue)
-        let interval = dependencies.stateClient.withLock(\.interval)
         let timer = Timer
-            .publish(every: interval, on: RunLoop.main, in: .common)
+            .publish(every: monitorInterval, on: RunLoop.main, in: .common)
             .autoconnect()
             .prepend(Date())
             .sink { [weak self] _ in
