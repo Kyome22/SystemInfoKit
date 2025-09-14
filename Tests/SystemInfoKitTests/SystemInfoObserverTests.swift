@@ -18,7 +18,6 @@ struct SystemInfoObserverTests {
                 }
             }
         }
-        defer { task.cancel() }
         observer.startMonitoring()
         await task.value
         observer.stopMonitoring()
@@ -28,9 +27,7 @@ struct SystemInfoObserverTests {
     func toggleActivation() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock {
-            $0.activationState = [
-                .cpu: true, .memory: false, .storage: true, .battery: false, .network: true
-            ]
+            $0.activationState = [.cpu: true, .memory: false, .storage: true, .battery: false, .network: true]
         }
         let observer = SystemInfoObserver(
             dependencies: .testDependencies(stateClient: .testDependency(state)),
