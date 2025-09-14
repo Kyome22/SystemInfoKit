@@ -40,24 +40,12 @@ struct CPURepositoryTests {
     func reset() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock {
-            $0.bundle.cpuInfo = .init(
-                percentage: .init(rawValue: 0.241),
-                system: .init(rawValue: 0.93),
-                user: .init(rawValue: 0.148),
-                idle: .init(rawValue: 0.759),
-                language: .english
-            )
+            $0.bundle.cpuInfo = .zero
             $0.previousLoadInfo.cpu_ticks = (62511937, 33202830, 859088048, 0)
         }
         let sut = CPURepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
-        let expect = [
-            "CPU:  0.0%",
-            "System:  0.0%",
-            "User:  0.0%",
-            "Idle:  0.0%",
-        ].joined(separator: "\n\t")
-        #expect(state.withLock(\.bundle.cpuInfo)?.description == expect)
+        #expect(state.withLock(\.bundle.cpuInfo) == nil)
         #expect(state.withLock(\.previousLoadInfo.cpu_ticks) == (0, 0, 0, 0))
     }
 }

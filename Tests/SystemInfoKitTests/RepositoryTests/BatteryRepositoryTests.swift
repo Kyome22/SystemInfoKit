@@ -73,20 +73,10 @@ struct BatteryRepositoryTests {
     @Test
     func reset() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
-        state.withLock {
-            $0.bundle.batteryInfo = .init(
-                percentage: .init(rawValue: 0.982),
-                isInstalled: true,
-                isCharging: false,
-                maxCapacity: .init(rawValue: 0.957),
-                cycleCount: 7,
-                temperature: .init(value: 30.2),
-                language: .english
-            )
-        }
+        state.withLock { $0.bundle.batteryInfo = .zero }
         let sut = BatteryRepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
-        #expect(state.withLock(\.bundle.batteryInfo)?.description == "Battery: Not Installed")
+        #expect(state.withLock(\.bundle.batteryInfo) == nil)
     }
 #elseif os(iOS)
     @Test
@@ -111,16 +101,10 @@ struct BatteryRepositoryTests {
     @Test
     func reset() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
-        state.withLock {
-            $0.bundle.batteryInfo = .init(
-                percentage: .init(rawValue: 0.982),
-                isCharging: false,
-                language: .english
-            )
-        }
+        state.withLock { $0.bundle.batteryInfo = .zero }
         let sut = BatteryRepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
-        #expect(state.withLock(\.bundle.batteryInfo)?.description == "Battery:  0.0%")
+        #expect(state.withLock(\.bundle.batteryInfo) == nil)
     }
 #endif
 }

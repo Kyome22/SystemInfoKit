@@ -50,25 +50,12 @@ struct NetworkRepositoryTests {
     func reset() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock {
-            $0.bundle.networkInfo = .init(
-                hasConnection: true,
-                networkInterface: .ethernet,
-                ipAddress: "0.0.0.0",
-                upload: .init(byteCount: 7888),
-                download: .init(byteCount: 7888888),
-                language: .english
-            )
+            $0.bundle.networkInfo = .zero
             $0.previousDataTraffic = .init(upload: 8888, download: 8888888)
         }
         let sut = NetworkRepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
-        let expect = [
-            "Network: No Connection",
-            "Local IP: -",
-            "Upload:  0.0 B/s",
-            "Download:  0.0 B/s",
-        ].joined(separator: "\n\t")
-        #expect(state.withLock(\.bundle.networkInfo)?.description == expect)
+        #expect(state.withLock(\.bundle.networkInfo) == nil)
         #expect(state.withLock(\.previousDataTraffic) == .zero)
     }
 }

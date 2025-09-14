@@ -74,6 +74,6 @@ struct MemoryRepository: SystemRepository {
     }
 
     func reset() {
-        stateClient.withLock { $0.bundle.memoryInfo = .init(language: language) }
+        stateClient.withLock { $0.bundle.memoryInfo = nil }
     }
 }

@@ -98,7 +98,7 @@ struct NetworkRepository: SystemRepository {
 
     func reset() {
         stateClient.withLock {
-            $0.bundle.networkInfo = .init(language: language)
+            $0.bundle.networkInfo = nil
             $0.previousDataTraffic = .zero
         }
     }

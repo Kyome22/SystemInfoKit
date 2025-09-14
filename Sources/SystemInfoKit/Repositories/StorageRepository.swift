@@ -32,6 +32,6 @@ struct StorageRepository: SystemRepository {
     }
 
     func reset() {
-        stateClient.withLock { $0.bundle.storageInfo = .init(language: language) }
+        stateClient.withLock { $0.bundle.storageInfo = nil }
     }
 }

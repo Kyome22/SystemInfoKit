@@ -54,7 +54,7 @@ struct CPURepository: SystemRepository {
 
     func reset() {
         stateClient.withLock {
-            $0.bundle.cpuInfo = .init(language: language)
+            $0.bundle.cpuInfo = nil
             $0.previousLoadInfo = .init()
         }
     }

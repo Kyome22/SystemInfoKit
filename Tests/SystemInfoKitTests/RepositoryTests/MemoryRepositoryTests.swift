@@ -49,25 +49,9 @@ struct MemoryRepositoryTests {
     @Test
     func reset() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
-        state.withLock {
-            $0.bundle.memoryInfo = .init(
-                percentage: .init(rawValue: 0.819),
-                pressure: .init(rawValue: 0.657),
-                app: .init(byteCount: 2800000000),
-                wired: .init(byteCount: 3900000000),
-                compressed: .init(byteCount: 7400000000),
-                language: .english
-            )
-        }
+        state.withLock { $0.bundle.memoryInfo = .zero }
         let sut = MemoryRepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
-        let expect = [
-            "Memory:  0.0%",
-            "Pressure:  0.0%",
-            "App Memory:  0.0 B",
-            "Wired Memory:  0.0 B",
-            "Compressed:  0.0 B",
-        ].joined(separator: "\n\t")
-        #expect(state.withLock(\.bundle.memoryInfo)?.description == expect)
+        #expect(state.withLock(\.bundle.memoryInfo) == nil)
     }
 }

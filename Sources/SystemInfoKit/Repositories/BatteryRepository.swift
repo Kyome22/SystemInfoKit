@@ -60,7 +60,7 @@ struct BatteryRepository: SystemRepository {
     }
 
     func reset() {
-        stateClient.withLock { $0.bundle.batteryInfo = .init(language: language) }
+        stateClient.withLock { $0.bundle.batteryInfo = nil }
     }
 }
 #elseif os(iOS)
@@ -99,7 +99,7 @@ struct BatteryRepository: SystemRepository {
     }
 
     func reset() {
-        stateClient.withLock { $0.bundle.batteryInfo = .init(language: language) }
+        stateClient.withLock { $0.bundle.batteryInfo = nil }
     }
 }
 #endif

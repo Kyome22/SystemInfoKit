@@ -30,21 +30,9 @@ struct StorageRepositoryTests {
     @Test
     func reset() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
-        state.withLock {
-            $0.bundle.storageInfo = .init(
-                percentage: .init(rawValue: 0.4),
-                total: .init(byteCount: 1.0),
-                available: .init(byteCount: 0.6),
-                used: .init(byteCount: 0.4),
-                language: .english
-            )
-        }
+        state.withLock { $0.bundle.storageInfo = .zero }
         let sut = StorageRepository(.testDependencies(stateClient: .testDependency(state)), language: .english)
         sut.reset()
-        let expect = [
-            "Storage:  0.0% used",
-            "--- / ---",
-        ].joined(separator: "\n\t")
-        #expect(state.withLock(\.bundle.storageInfo)?.description == expect)
+        #expect(state.withLock(\.bundle.storageInfo) == nil)
     }
 }
