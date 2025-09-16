@@ -37,12 +37,20 @@ struct BatteryRepository: SystemRepository {
             stateClient.withLock { [result] in $0.bundle.batteryInfo = result }
         }
 
-        if let designCapacity = dict["DesignCapacity"] as? Double,
-           let maxCapacity = dict["AppleRawMaxCapacity"] as? Double,
-           let currentCapacity = dict["AppleRawCurrentCapacity"] as? Double {
+#if arch(x86_64)
+        if let currentCapacity = dict["CurrentCapacity"] as? Double,
+           let maxCapacity = dict["MaxCapacity"] as? Double,
+           let designCapacity = dict["DesignCapacity"] as? Double {
             result.percentage = .init(rawValue: min(currentCapacity / maxCapacity, 1), width: 5, language: language)
             result.maxCapacity = .init(rawValue: min(maxCapacity / designCapacity, 1), width: 5, language: language)
         }
+#elseif arch(arm64)
+        if let currentCapacity = dict["CurrentCapacity"] as? Double,
+           let maxCapacity = dict["MaxCapacity"] as? Double {
+            result.percentage = .init(rawValue: currentCapacity / 100, width: 5, language: language)
+            result.maxCapacity = .init(rawValue: maxCapacity / 100, width: 5, language: language)
+        }
+#endif
 
         if let isCharging = dict["IsCharging"] as? Int {
             result.isCharging = isCharging == 1
