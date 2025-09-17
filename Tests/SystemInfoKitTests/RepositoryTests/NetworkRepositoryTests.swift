@@ -20,8 +20,8 @@ struct NetworkRepositoryTests {
                     $0.currentAvailableInterfaceTypes = {
                         [NWInterface.InterfaceType.wiredEthernet]
                     }
-                    $0.currentGateways = {
-                        [NWEndpoint.hostPort(host: .ipv4(.any), port: .any)]
+                    $0.currentAvailableInterfaceNames = {
+                        ["en0"]
                     }
                 },
                 posixClient: testDependency(of: POSIXClient.self) {
@@ -71,7 +71,7 @@ private enum NRMock {
 
         let value = ifaddrs(
             ifa_next: next,
-            ifa_name: strdup("dummy"),
+            ifa_name: strdup("en0"),
             ifa_flags: UInt32(IFF_UP | IFF_RUNNING),
             ifa_addr: addrPointer,
             ifa_netmask: nil,
@@ -102,7 +102,7 @@ private enum NRMock {
 
         let value = ifaddrs(
             ifa_next: next,
-            ifa_name: strdup("dummy"),
+            ifa_name: strdup("en0"),
             ifa_flags: UInt32(IFF_UP | IFF_RUNNING),
             ifa_addr: addrPointer,
             ifa_netmask: nil,
