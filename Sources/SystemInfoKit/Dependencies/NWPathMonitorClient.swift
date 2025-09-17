@@ -5,7 +5,7 @@ struct NWPathMonitorClient: DependencyClient {
     var cancel: @Sendable () -> Void
     var currentStatus: @Sendable () -> NWPath.Status
     var currentAvailableInterfaceTypes: @Sendable () -> [NWInterface.InterfaceType]
-    var currentGateways: @Sendable () -> [NWEndpoint]
+    var currentAvailableInterfaceNames: @Sendable () -> [String]
 
     static let liveValue: Self = {
         let monitor = NWPathMonitor()
@@ -14,7 +14,7 @@ struct NWPathMonitorClient: DependencyClient {
             cancel: { monitor.cancel() },
             currentStatus: { monitor.currentPath.status },
             currentAvailableInterfaceTypes: { monitor.currentPath.availableInterfaces.map(\.type) },
-            currentGateways: { monitor.currentPath.gateways }
+            currentAvailableInterfaceNames: { monitor.currentPath.availableInterfaces.map(\.name) }
         )
     }()
 
@@ -23,6 +23,6 @@ struct NWPathMonitorClient: DependencyClient {
         cancel: {},
         currentStatus: { NWPath.Status.unsatisfied },
         currentAvailableInterfaceTypes: { [] },
-        currentGateways: { [] }
+        currentAvailableInterfaceNames: { [] }
     )
 }

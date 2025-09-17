@@ -25,14 +25,44 @@ struct NetworkRepository: SystemRepository {
         }
     }
 
+    private func getValueFromIfaddrs<Value>(
+        into initialValue: Value,
+        updateValue: (inout Value, UnsafeMutablePointer<ifaddrs>) -> Void
+    ) -> Value {
+        var value = initialValue
+        var ifaddrsPointer: UnsafeMutablePointer<ifaddrs>? = nil
+        guard posixClient.getIfaddrs(&ifaddrsPointer) == .zero else { return value }
+
+        var pointer = ifaddrsPointer
+        while pointer != nil {
+            defer { pointer = pointer?.pointee.ifa_next }
+            updateValue(&value, pointer!)
+        }
+
+        posixClient.freeIfaddrs(ifaddrsPointer)
+
+        return value
+    }
+
+    private func getIPAddress(_ id: String, _ pointer: UnsafeMutablePointer<ifaddrs>) -> String? {
+        let name = String(cString: pointer.pointee.ifa_name)
+        guard name == id else { return nil }
+        var addr = pointer.pointee.ifa_addr.pointee
+        guard addr.sa_family == UInt8(AF_INET) else { return nil }
+        var ip = [CChar](repeating: .zero, count: Int(NI_MAXHOST))
+        let result = posixClient.getNameInfo(&addr, socklen_t(addr.sa_len), &ip, socklen_t(ip.count), nil, socklen_t.zero, NI_NUMERICHOST)
+        guard result == .zero else { return nil }
+        return String(cString: ip, encoding: .utf8)
+    }
+
     private func getPrimaryIPAddress() -> String? {
-        return nwPathMonitorClient.currentGateways().compactMap { endpoint -> String? in
-            guard case let .hostPort(host: host, port: _) = endpoint,
-                  case let .ipv4(ipv4Address) = host else {
-                return nil
-            }
-            return String(describing: ipv4Address)
-        }.first
+        guard let id = nwPathMonitorClient.currentAvailableInterfaceNames().first else {
+            return nil
+        }
+        return getValueFromIfaddrs(into: String?.none) { value, pointer in
+            guard let ipAddress = getIPAddress(id, pointer) else { return }
+            value = ipAddress
+        }
     }
 
     private func getDataTraffic(_ pointer: UnsafeMutablePointer<ifaddrs>) -> DataTraffic? {
@@ -46,27 +76,14 @@ struct NetworkRepository: SystemRepository {
     }
 
     private func getTransmissionSpeed() -> TransmissionSpeed {
+        let dataTraffic = getValueFromIfaddrs(into: DataTraffic.zero) { value, pointer in
+            guard let dataTraffic = getDataTraffic(pointer) else { return }
+            value += dataTraffic
+        }
         var result = TransmissionSpeed(
             upload: .init(byteCount: .zero, language: language),
             download: .init(byteCount: .zero, language: language)
         )
-
-        var ifaddrsPointer: UnsafeMutablePointer<ifaddrs>? = nil
-        guard posixClient.getIfaddrs(&ifaddrsPointer) == .zero else { return result }
-
-        var pointer = ifaddrsPointer
-        var dataTraffics = [DataTraffic]()
-
-        while pointer != nil {
-            defer { pointer = pointer?.pointee.ifa_next }
-            if let dataTraffic = getDataTraffic(pointer!) {
-                dataTraffics.append(dataTraffic)
-            }
-        }
-
-        posixClient.freeIfaddrs(ifaddrsPointer)
-
-        let dataTraffic = dataTraffics.reduce(into: DataTraffic.zero) { $0 += $1 }
         let interval = stateClient.withLock(\.interval)
         let previousDataTraffic = stateClient.withLock(\.previousDataTraffic)
         if previousDataTraffic != .zero {
