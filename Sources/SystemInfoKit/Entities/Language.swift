@@ -3,6 +3,7 @@ import Foundation
 enum Language {
     case automatic
     case chineseSimplified
+    case chineseTraditional
     case english
     case french
     case german
@@ -15,6 +16,8 @@ enum Language {
             Locale.current
         case .chineseSimplified:
             Locale(languageCode: .chinese, script: .hanSimplified)
+        case .chineseTraditional:
+            Locale(languageCode: .chinese, script: .hanTraditional)
         case .english:
             Locale(languageCode: .english)
         case .french:

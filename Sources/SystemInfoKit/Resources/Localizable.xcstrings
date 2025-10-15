@@ -38,6 +38,12 @@
             "state" : "translated",
             "value" : "电池"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電池"
+          }
         }
       }
     },
@@ -77,6 +83,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "电池：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電池：%@"
           }
         }
       }
@@ -118,6 +130,12 @@
             "state" : "translated",
             "value" : "循环计数：%lld"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "循環次數：%lld"
+          }
         }
       }
     },
@@ -158,6 +176,12 @@
             "state" : "translated",
             "value" : "电池：未安装"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電池：未安裝"
+          }
         }
       }
     },
@@ -194,6 +218,12 @@
           }
         },
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最大容量：%@"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "最大容量：%@"
@@ -238,6 +268,12 @@
             "state" : "translated",
             "value" : "电源：%@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電源：%@"
+          }
         }
       }
     },
@@ -278,6 +314,12 @@
             "state" : "translated",
             "value" : "温度：%@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "溫度：%@"
+          }
         }
       }
     },
@@ -314,6 +356,12 @@
           }
         },
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未知"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "未知"
@@ -358,6 +406,12 @@
             "state" : "translated",
             "value" : "CPU：%@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU：%@"
+          }
         }
       }
     },
@@ -397,6 +451,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "闲置：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閒置：%@"
           }
         }
       }
@@ -438,6 +498,12 @@
             "state" : "translated",
             "value" : "系统：%@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "系統：%@"
+          }
         }
       }
     },
@@ -477,6 +543,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "用户：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用者：%@"
           }
         }
       }
@@ -518,6 +590,12 @@
             "state" : "translated",
             "value" : "内存：%@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記憶體：%@"
+          }
         }
       }
     },
@@ -557,6 +635,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App 内存：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App 記憶體：%@"
           }
         }
       }
@@ -598,6 +682,12 @@
             "state" : "translated",
             "value" : "被压缩：%@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已壓縮：%@"
+          }
         }
       }
     },
@@ -637,6 +727,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "压力：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "壓力：%@"
           }
         }
       }
@@ -678,6 +774,12 @@
             "state" : "translated",
             "value" : "联动内存：%@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "系統核心記憶體：%@"
+          }
         }
       }
     },
@@ -717,6 +819,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "网络：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "網路：%@"
           }
         }
       }
@@ -758,6 +866,12 @@
             "state" : "translated",
             "value" : "蜂窝网络"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行動網路"
+          }
         }
       }
     },
@@ -798,6 +912,12 @@
             "state" : "translated",
             "value" : "下载：%@/s"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下載：%@/s"
+          }
         }
       }
     },
@@ -834,6 +954,12 @@
           }
         },
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本地 IP：%@"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "本地 IP：%@"
@@ -878,6 +1004,12 @@
             "state" : "translated",
             "value" : "未连接"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有連線"
+          }
         }
       }
     },
@@ -914,6 +1046,12 @@
           }
         },
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未知"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "未知"
@@ -958,6 +1096,12 @@
             "state" : "translated",
             "value" : "上传：%@/s"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上傳：%@/s"
+          }
         }
       }
     },
@@ -997,6 +1141,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "储存：%@ 已使用"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "儲存空間：%@已使用"
           }
         }
       }
