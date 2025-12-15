@@ -1,16 +1,21 @@
 import Foundation
+import SystemConfiguration
 
 struct NetworkRepository: SystemRepository {
     typealias TransmissionSpeed = (upload: ByteData, download: ByteData)
 
     private var nwPathMonitorClient: NWPathMonitorClient
     private var posixClient: POSIXClient
+    private var scDynamicStoreClient: SCDynamicStoreClient
+    private var scNetworkInterfaceClient: SCNetworkInterfaceClient
     private var stateClient: StateClient
     var language: Language
 
     init(_ dependencies: Dependencies, language: Language) {
         nwPathMonitorClient = dependencies.nwPathMonitorClient
         posixClient = dependencies.posixClient
+        scDynamicStoreClient = dependencies.scDynamicStoreClient
+        scNetworkInterfaceClient = dependencies.scNetworkInterfaceClient
         stateClient = dependencies.stateClient
         self.language = language
     }
@@ -31,16 +36,15 @@ struct NetworkRepository: SystemRepository {
     ) -> Value {
         var value = initialValue
         var ifaddrsPointer: UnsafeMutablePointer<ifaddrs>? = nil
-        guard posixClient.getIfaddrs(&ifaddrsPointer) == .zero else { return value }
-
+        guard posixClient.getIfaddrs(&ifaddrsPointer) == .zero else {
+            return value
+        }
         var pointer = ifaddrsPointer
         while pointer != nil {
             defer { pointer = pointer?.pointee.ifa_next }
             updateValue(&value, pointer!)
         }
-
         posixClient.freeIfaddrs(ifaddrsPointer)
-
         return value
     }
 
@@ -56,9 +60,7 @@ struct NetworkRepository: SystemRepository {
     }
 
     private func getPrimaryIPAddress() -> String? {
-        guard let id = nwPathMonitorClient.currentAvailableInterfaceNames().first else {
-            return nil
-        }
+        guard let id = getDefaultID() else { return nil }
         return getValueFromIfaddrs(into: String?.none) { value, pointer in
             guard let ipAddress = getIPAddress(id, pointer) else { return }
             value = ipAddress
@@ -76,14 +78,14 @@ struct NetworkRepository: SystemRepository {
     }
 
     private func getTransmissionSpeed() -> TransmissionSpeed {
-        let dataTraffic = getValueFromIfaddrs(into: DataTraffic.zero) { value, pointer in
-            guard let dataTraffic = getDataTraffic(pointer) else { return }
-            value += dataTraffic
-        }
         var result = TransmissionSpeed(
             upload: .init(byteCount: .zero, language: language),
             download: .init(byteCount: .zero, language: language)
         )
+        let dataTraffic = getValueFromIfaddrs(into: DataTraffic.zero) { value, pointer in
+            guard let dataTraffic = getDataTraffic(pointer) else { return }
+            value += dataTraffic
+        }
         let interval = stateClient.withLock(\.interval)
         let previousDataTraffic = stateClient.withLock(\.previousDataTraffic)
         if previousDataTraffic != .zero {
@@ -120,3 +122,28 @@ struct NetworkRepository: SystemRepository {
         }
     }
 }
+
+#if os(macOS)
+extension NetworkRepository {
+    private func getDefaultID() -> String? {
+        let processName = ProcessInfo.processInfo.processName as CFString
+        let dynamicStore = scDynamicStoreClient.create(kCFAllocatorDefault, processName, nil, nil)
+        let ipv4Key = scDynamicStoreClient.keyCreateNetworkGlobalEntity(
+            kCFAllocatorDefault,
+            kSCDynamicStoreDomainState,
+            kSCEntNetIPv4
+        )
+        guard let list = scDynamicStoreClient.copyValue(dynamicStore, ipv4Key) as? [CFString: Any],
+              let interface = list[kSCDynamicStorePropNetPrimaryInterface] as? String else {
+            return nil
+        }
+        return interface
+    }
+}
+#elseif os(iOS)
+extension NetworkRepository {
+    private func getDefaultID() -> String? {
+        nwPathMonitorClient.currentAvailableInterfaceNames().first
+    }
+}
+#endif
