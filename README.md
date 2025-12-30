@@ -12,7 +12,7 @@ SystemInfoKit provides macOS/iOS system information.
 
 - Development with Xcode 16.4+
 - Written in Swift 6.1
-- Compatible with macOS 13.0+, iOS 18.0+
+- Compatible with macOS 13.0+, iOS 16.0+
 
 ## Installation
 
