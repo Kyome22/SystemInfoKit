@@ -65,6 +65,7 @@ Network: Ethernet
 ## Supported languages
 
 - Chinese, Simplified
+- Chinese, Traditional
 - English (primary)
 - French
 - German
