@@ -6,6 +6,7 @@ import Testing
 struct PercentageTests {
     @Test(arguments: [
         .init(language: .chineseSimplified, expectedDescription: "88.9%"),
+        .init(language: .chineseTraditional, expectedDescription: "88.9%"),
         .init(language: .english, expectedDescription: "88.9%"),
         .init(language: .french, expectedDescription: "88,9%"),
         .init(language: .german, expectedDescription: "88,9%"),

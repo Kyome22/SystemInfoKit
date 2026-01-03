@@ -12,6 +12,12 @@ struct ByteDataTests {
             expectedDescription: "888.9 GB"
         ),
         .init(
+            language: .chineseTraditional,
+            expectedValue: 888.889,
+            expectedUnit: "GB",
+            expectedDescription: "888.9 GB"
+        ),
+        .init(
             language: .english,
             expectedValue: 888.889,
             expectedUnit: "GB",
