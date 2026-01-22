@@ -16,9 +16,9 @@ public struct ByteData: Sendable, CustomStringConvertible, Localizable {
         nf.locale = language.locale
         nf.numberStyle = .decimal
 
-        let measurment = Measurement<UnitInformationStorage>(value: Double(byteCount), unit: .bytes)
+        let measurement = Measurement<UnitInformationStorage>(value: Double(byteCount), unit: .bytes)
 
-        return if let (count, unit) = mf.string(from: measurment).separete(),
+        return if let (count, unit) = mf.string(from: measurement).separate(),
            let value = nf.number(from: count)?.doubleValue {
             (value, unit)
         } else {
