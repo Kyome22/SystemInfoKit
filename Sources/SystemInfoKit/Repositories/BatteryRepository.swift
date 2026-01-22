@@ -78,23 +78,17 @@ struct BatteryRepository: SystemRepository {
     }
 
     func update() async {
-        await MainActor.run {
-            uiDeviceClient.setIsBatteryMonitoringEnabled(true)
-        }
-
+        await uiDeviceClient.setIsBatteryMonitoringEnabled(true)
+        
         var result = BatteryInfo(language: language)
         defer {
             stateClient.withLock { [result] in $0.bundle.batteryInfo = result }
         }
 
-        let batteryLevel = await MainActor.run {
-            uiDeviceClient.batteryLevel()
-        }
+        let batteryLevel = await uiDeviceClient.batteryLevel()
         result.percentage = .init(rawValue: Double(batteryLevel), width: 5, language: language)
 
-        let batteryState = await MainActor.run {
-            uiDeviceClient.batteryState()
-        }
+        let batteryState = await uiDeviceClient.batteryState()
         result.isCharging = [.charging, .full].contains(batteryState)
     }
 
