@@ -6,7 +6,7 @@ import Testing
 
 struct SystemInfoObserverTests {
     @Test
-    func ovservation() async {
+    func observation() async {
         let observer = SystemInfoObserver(dependencies: .init(), language: .english)
         let task = Task {
             var count = 0

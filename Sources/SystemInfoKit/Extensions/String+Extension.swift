@@ -1,7 +1,7 @@
 import RegexBuilder
 
 extension String {
-    func separete() -> (count: String, unit: String)? {
+    func separate() -> (count: String, unit: String)? {
         let count = Reference(Substring.self)
         let unit = Reference(Substring.self)
         let regex = Regex {
