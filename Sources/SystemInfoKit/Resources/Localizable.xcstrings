@@ -880,7 +880,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Memoria reservada: %@"
+            "value" : "Memoria física: %@"
           }
         }
       }
