@@ -71,6 +71,7 @@ Network: Ethernet
 - German
 - Japanese
 - Korean
+- Spanish
 
 ## Copyright and License
 
