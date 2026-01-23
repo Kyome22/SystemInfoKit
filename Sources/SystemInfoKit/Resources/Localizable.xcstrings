@@ -724,7 +724,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Memoria de la app: %@"
+            "value" : "Memoria de apps: %@"
           }
         }
       }
