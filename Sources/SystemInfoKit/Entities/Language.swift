@@ -9,6 +9,7 @@ enum Language {
     case german
     case japanese
     case korean
+    case spanish
 
     var locale: Locale {
         switch self {
@@ -28,6 +29,8 @@ enum Language {
             Locale(languageCode: .japanese)
         case .korean:
             Locale(languageCode: .korean)
+        case .spanish:
+            Locale(languageCode: .spanish)
         }
     }
 

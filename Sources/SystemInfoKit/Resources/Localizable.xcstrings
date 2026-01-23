@@ -44,6 +44,12 @@
             "state" : "translated",
             "value" : "電池"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batería"
+          }
         }
       }
     },
@@ -89,6 +95,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "電池：%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batería: %@"
           }
         }
       }
@@ -136,6 +148,12 @@
             "state" : "translated",
             "value" : "循環次數：%lld"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ciclos: %lld"
+          }
         }
       }
     },
@@ -181,6 +199,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "電池：未安裝"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batería: No instalada"
           }
         }
       }
@@ -228,6 +252,12 @@
             "state" : "translated",
             "value" : "最大容量：%@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capacidad máxima: %@"
+          }
         }
       }
     },
@@ -273,6 +303,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "電源：%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuente de energía: %@"
           }
         }
       }
@@ -320,6 +356,12 @@
             "state" : "translated",
             "value" : "溫度：%@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperatura: %@"
+          }
         }
       }
     },
@@ -365,6 +407,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未知"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconocido"
           }
         }
       }
@@ -412,6 +460,12 @@
             "state" : "translated",
             "value" : "CPU：%@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU: %@"
+          }
         }
       }
     },
@@ -457,6 +511,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "閒置：%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inactivo: %@"
           }
         }
       }
@@ -504,6 +564,12 @@
             "state" : "translated",
             "value" : "系統：%@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistema: %@"
+          }
         }
       }
     },
@@ -549,6 +615,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用者：%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuario: %@"
           }
         }
       }
@@ -596,6 +668,12 @@
             "state" : "translated",
             "value" : "記憶體：%@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memoria: %@"
+          }
         }
       }
     },
@@ -641,6 +719,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App 記憶體：%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memoria de apps: %@"
           }
         }
       }
@@ -688,6 +772,12 @@
             "state" : "translated",
             "value" : "已壓縮：%@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprimida: %@"
+          }
         }
       }
     },
@@ -733,6 +823,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "壓力：%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presión: %@"
           }
         }
       }
@@ -780,6 +876,12 @@
             "state" : "translated",
             "value" : "系統核心記憶體：%@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memoria física: %@"
+          }
         }
       }
     },
@@ -825,6 +927,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "網路：%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Red: %@"
           }
         }
       }
@@ -872,6 +980,12 @@
             "state" : "translated",
             "value" : "行動網路"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celular"
+          }
         }
       }
     },
@@ -917,6 +1031,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "下載：%@/s"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descarga: %@/s"
           }
         }
       }
@@ -964,6 +1084,12 @@
             "state" : "translated",
             "value" : "本地 IP：%@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP local: %@"
+          }
         }
       }
     },
@@ -1009,6 +1135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "沒有連線"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin conexión"
           }
         }
       }
@@ -1056,6 +1188,12 @@
             "state" : "translated",
             "value" : "未知"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconocido"
+          }
         }
       }
     },
@@ -1102,6 +1240,12 @@
             "state" : "translated",
             "value" : "上傳：%@/s"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carga: %@/s"
+          }
         }
       }
     },
@@ -1147,6 +1291,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "儲存空間：%@已使用"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almacenamiento: %@ usado"
           }
         }
       }
