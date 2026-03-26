@@ -72,6 +72,7 @@ Network: Ethernet
 - Japanese
 - Korean
 - Spanish
+- Vietnamese
 
 ## Copyright and License
 
