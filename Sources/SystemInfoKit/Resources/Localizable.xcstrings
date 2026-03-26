@@ -982,7 +982,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bộ nhớ cố định: %@"
+            "value" : "Bộ nhớ lõi hệ thống: %@"
           }
         }
       }
