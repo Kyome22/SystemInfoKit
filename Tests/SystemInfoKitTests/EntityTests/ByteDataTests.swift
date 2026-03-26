@@ -53,6 +53,12 @@ struct ByteDataTests {
             expectedUnit: "GB",
             expectedDescription: "888,9 GB"
         ),
+        .init(
+            language: .vietnamese,
+            expectedValue: 888.889,
+            expectedUnit: "GB",
+            expectedDescription: "888,9 GB"
+        ),
     ] as [ByteDataProperty])
     func initialize(_ property: ByteDataProperty) {
         let sut = ByteData(byteCount: 888888888888, language: property.language)

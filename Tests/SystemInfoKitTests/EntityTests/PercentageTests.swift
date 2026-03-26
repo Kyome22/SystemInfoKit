@@ -13,6 +13,7 @@ struct PercentageTests {
         .init(language: .japanese, expectedDescription: "88.9%"),
         .init(language: .korean, expectedDescription: "88.9%"),
         .init(language: .spanish, expectedDescription: "88,9%"),
+        .init(language: .vietnamese, expectedDescription: "88,9%"),
     ] as [PercentageProperty])
     func initialize(_ property: PercentageProperty) {
         let sut = Percentage(rawValue: 0.8888, width: 4, language: property.language)
