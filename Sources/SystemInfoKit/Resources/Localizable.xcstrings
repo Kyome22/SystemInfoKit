@@ -1002,7 +1002,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Напряжение: %@"
+            "value" : "Нагрузка: %@"
           }
         },
         "vi" : {
