@@ -618,7 +618,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "свободно: %@"
+            "value" : "Свободно: %@"
           }
         },
         "vi" : {
