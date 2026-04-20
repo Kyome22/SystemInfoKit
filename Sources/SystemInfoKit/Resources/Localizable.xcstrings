@@ -15,6 +15,12 @@
             "value" : "Battery"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batería"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33,6 +39,18 @@
             "value" : "배터리"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Батарея"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43,18 +61,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "電池"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Batería"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pin"
           }
         }
       }
@@ -71,6 +77,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Battery: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batería: %@"
           }
         },
         "fr" : {
@@ -91,6 +103,18 @@
             "value" : "배터리: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Батарея: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -101,18 +125,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "電池：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Batería: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pin: %@"
           }
         }
       }
@@ -129,6 +141,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cycle Count: %lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ciclos: %lld"
           }
         },
         "fr" : {
@@ -149,6 +167,18 @@
             "value" : "사이클 수: %lld"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Количество циклов: %lld"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Số chu kỳ: %lld"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -159,18 +189,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "循環次數：%lld"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ciclos: %lld"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Số chu kỳ: %lld"
           }
         }
       }
@@ -187,6 +205,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Battery: Not Installed"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batería: No instalada"
           }
         },
         "fr" : {
@@ -207,6 +231,18 @@
             "value" : "배터리: 설치되지 않음"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Батарея: Не установлена"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pin: Chưa lắp"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -217,18 +253,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "電池：未安裝"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Batería: No instalada"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pin: Chưa lắp"
           }
         }
       }
@@ -245,6 +269,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Max Capacity: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capacidad máxima: %@"
           }
         },
         "fr" : {
@@ -265,6 +295,18 @@
             "value" : "성능 최대치: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Максимальная ёмкость: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dung lượng tối đa: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -275,18 +317,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "最大容量：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Capacidad máxima: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dung lượng tối đa: %@"
           }
         }
       }
@@ -303,6 +333,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Power Source: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuente de energía: %@"
           }
         },
         "fr" : {
@@ -323,6 +359,18 @@
             "value" : "전원 공급원: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Источник заряда: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nguồn điện: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -333,18 +381,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "電源：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fuente de energía: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nguồn điện: %@"
           }
         }
       }
@@ -361,6 +397,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Temperature: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperatura: %@"
           }
         },
         "fr" : {
@@ -381,6 +423,18 @@
             "value" : "온도: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Температура: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhiệt độ: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -391,18 +445,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "溫度：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Temperatura: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhiệt độ: %@"
           }
         }
       }
@@ -419,6 +461,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unknown"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconocido"
           }
         },
         "fr" : {
@@ -439,6 +487,18 @@
             "value" : "알 수 없음"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неизвестно"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không xác định"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -449,18 +509,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未知"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desconocido"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Không xác định"
           }
         }
       }
@@ -474,6 +522,12 @@
           }
         },
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU: %@"
+          }
+        },
+        "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "CPU: %@"
@@ -497,6 +551,18 @@
             "value" : "CPU: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Процессор: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -507,18 +573,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "CPU：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CPU: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CPU: %@"
           }
         }
       }
@@ -535,6 +589,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Idle: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inactivo: %@"
           }
         },
         "fr" : {
@@ -555,6 +615,18 @@
             "value" : "대기: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Свободно: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhàn rỗi: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -565,18 +637,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "閒置：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inactivo: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nhàn rỗi: %@"
           }
         }
       }
@@ -593,6 +653,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "System: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistema: %@"
           }
         },
         "fr" : {
@@ -613,6 +679,18 @@
             "value" : "시스템: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Система: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hệ thống: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -623,18 +701,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "系統：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sistema: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hệ thống: %@"
           }
         }
       }
@@ -651,6 +717,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "User: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuario: %@"
           }
         },
         "fr" : {
@@ -671,6 +743,18 @@
             "value" : "사용자: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пользователь: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Người dùng: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -681,18 +765,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "使用者：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usuario: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Người dùng: %@"
           }
         }
       }
@@ -709,6 +781,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Memory: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memoria: %@"
           }
         },
         "fr" : {
@@ -729,6 +807,18 @@
             "value" : "메모리: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Память: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bộ nhớ: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -739,18 +829,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "記憶體：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Memoria: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bộ nhớ: %@"
           }
         }
       }
@@ -767,6 +845,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App Memory: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memoria de apps: %@"
           }
         },
         "fr" : {
@@ -787,6 +871,18 @@
             "value" : "앱 메모리: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Память приложения: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bộ nhớ ứng dụng: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -797,18 +893,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App 記憶體：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Memoria de apps: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bộ nhớ ứng dụng: %@"
           }
         }
       }
@@ -825,6 +909,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compressed: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprimida: %@"
           }
         },
         "fr" : {
@@ -845,6 +935,18 @@
             "value" : "압축됨: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сжато: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã nén: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -855,18 +957,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已壓縮：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Comprimida: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Đã nén: %@"
           }
         }
       }
@@ -883,6 +973,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pressure: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presión: %@"
           }
         },
         "fr" : {
@@ -903,6 +999,18 @@
             "value" : "압력: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нагрузка: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Áp lực bộ nhớ: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -913,18 +1021,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "壓力：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Presión: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Áp lực bộ nhớ: %@"
           }
         }
       }
@@ -941,6 +1037,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wired Memory: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memoria física: %@"
           }
         },
         "fr" : {
@@ -961,6 +1063,18 @@
             "value" : "와이어드 메모리: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зарезервированная память: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bộ nhớ lõi hệ thống: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -971,18 +1085,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "系統核心記憶體：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Memoria física: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bộ nhớ lõi hệ thống: %@"
           }
         }
       }
@@ -999,6 +1101,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Network: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Red: %@"
           }
         },
         "fr" : {
@@ -1019,6 +1127,18 @@
             "value" : "네트워크: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сеть: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mạng: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1029,18 +1149,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "網路：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Red: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mạng: %@"
           }
         }
       }
@@ -1057,6 +1165,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cellular"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celular"
           }
         },
         "fr" : {
@@ -1077,6 +1191,18 @@
             "value" : "셀룰러"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сотовая"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Di động"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1087,18 +1213,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "行動網路"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Celular"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Di động"
           }
         }
       }
@@ -1115,6 +1229,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Download: %@/s"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descarga: %@/s"
           }
         },
         "fr" : {
@@ -1135,6 +1255,18 @@
             "value" : "다운로드: %@/s"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загрузка: %@/s"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tải xuống: %@/s"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1145,18 +1277,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "下載：%@/s"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Descarga: %@/s"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tải xuống: %@/s"
           }
         }
       }
@@ -1173,6 +1293,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Local IP: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP local: %@"
           }
         },
         "fr" : {
@@ -1193,6 +1319,18 @@
             "value" : "로컬 IP: %@"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Локальный IP: %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP nội bộ: %@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1203,18 +1341,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "本地 IP：%@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IP local: %@"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IP nội bộ: %@"
           }
         }
       }
@@ -1231,6 +1357,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Connection"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin conexión"
           }
         },
         "fr" : {
@@ -1251,6 +1383,18 @@
             "value" : "연결 없음"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет соединения"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không có kết nối"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1261,18 +1405,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "沒有連線"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sin conexión"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Không có kết nối"
           }
         }
       }
@@ -1289,6 +1421,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unknown"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconocido"
           }
         },
         "fr" : {
@@ -1309,6 +1447,18 @@
             "value" : "알 수 없음"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неизвестно"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không xác định"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1319,18 +1469,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未知"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desconocido"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Không xác định"
           }
         }
       }
@@ -1347,6 +1485,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upload: %@/s"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carga: %@/s"
           }
         },
         "fr" : {
@@ -1367,6 +1511,18 @@
             "value" : "업로드: %@/s"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выгрузка: %@/s"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tải lên: %@/s"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1377,18 +1533,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "上傳：%@/s"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Carga: %@/s"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tải lên: %@/s"
           }
         }
       }
@@ -1405,6 +1549,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Storage: %@ used"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almacenamiento: %@ usado"
           }
         },
         "fr" : {
@@ -1425,6 +1575,18 @@
             "value" : "저장 용량: %@ 사용됨"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хранилище: %@ использовано"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bộ nhớ lưu trữ: %@ đã dùng"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1435,18 +1597,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "儲存空間：%@已使用"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Almacenamiento: %@ usado"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bộ nhớ lưu trữ: %@ đã dùng"
           }
         }
       }

@@ -12,6 +12,7 @@ struct PercentageTests {
         .init(language: .german, expectedDescription: "88,9%"),
         .init(language: .japanese, expectedDescription: "88.9%"),
         .init(language: .korean, expectedDescription: "88.9%"),
+        .init(language: .russian, expectedDescription: "88,9%"),
         .init(language: .spanish, expectedDescription: "88,9%"),
         .init(language: .vietnamese, expectedDescription: "88,9%"),
     ] as [PercentageProperty])
