@@ -71,6 +71,7 @@ Network: Ethernet
 - German
 - Japanese
 - Korean
+- Russian
 - Spanish
 - Vietnamese
 
