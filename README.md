@@ -37,6 +37,41 @@ observer.startMonitoring(monitorInterval: 3.0)
 observer.stopMonitoring()
 ```
 
+### Broadcasting to multiple consumers
+
+`systemInfoStream()` returns a single-consumer `AsyncStream`. If two `for await` loops iterate the same stream, they will compete for values rather than each receiving every update. SystemInfoKit intentionally does not own the multi-broadcast concern — wrap the stream with [`swift-async-algorithms`](https://github.com/apple/swift-async-algorithms)' `share()` on the consumer side.
+
+```swift
+import AsyncAlgorithms
+import SystemInfoKit
+
+let observer = SystemInfoObserver.shared
+let shared = observer.systemInfoStream().share()
+
+Task {
+    for await systemInfoBundle in shared {
+        Swift.print("subscriber A:", systemInfoBundle)
+    }
+}
+Task {
+    for await systemInfoBundle in shared {
+        Swift.print("subscriber B:", systemInfoBundle)
+    }
+}
+observer.startMonitoring(monitorInterval: 3.0)
+```
+
+### Reading the latest snapshot synchronously
+
+If you only need the most recent values without subscribing to the stream, use `currentSystemInfo`:
+
+```swift
+let snapshot = observer.currentSystemInfo
+Swift.print(snapshot.cpuInfo, snapshot.memoryInfo)
+```
+
+Fields corresponding to a `SystemInfoType` that has not yet been updated (or has been disabled via `toggleActivation`) remain `nil`.
+
 ## Sample Output
 
 ```console

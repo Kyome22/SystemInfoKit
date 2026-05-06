@@ -1,4 +1,3 @@
-@preconcurrency import Combine
 import Foundation
 import os
 
@@ -7,18 +6,16 @@ public final class SystemInfoObserver: Sendable {
 
     private let dependencies: Dependencies
     private let language: Language
-    private let protectedTimer = OSAllocatedUnfairLock<AnyCancellable?>(initialState: nil)
+    private let stream: AsyncStream<SystemInfoBundle>
+    private let continuation: AsyncStream<SystemInfoBundle>.Continuation
+    private let monitoringTask = OSAllocatedUnfairLock<Task<Void, Never>?>(initialState: nil)
 
-    private let systemInfoSubject = PassthroughSubject<SystemInfoBundle, Never>()
     public func systemInfoStream() -> AsyncStream<SystemInfoBundle> {
-        AsyncStream { continuation in
-            let cancellable = systemInfoSubject.sink { value in
-                continuation.yield(value)
-            }
-            continuation.onTermination = { _ in
-                cancellable.cancel()
-            }
-        }
+        stream
+    }
+
+    public var currentSystemInfo: SystemInfoBundle {
+        dependencies.stateClient.withLock(\.bundle)
     }
 
     init(
@@ -27,6 +24,11 @@ public final class SystemInfoObserver: Sendable {
     ) {
         self.dependencies = dependencies
         self.language = language
+        let (stream, continuation) = AsyncStream<SystemInfoBundle>.makeStream(
+            bufferingPolicy: .bufferingNewest(1)
+        )
+        self.stream = stream
+        self.continuation = continuation
     }
 
     public convenience init() {
@@ -34,21 +36,32 @@ public final class SystemInfoObserver: Sendable {
     }
 
     public func startMonitoring(monitorInterval: Double = 5.0) {
-        dependencies.stateClient.withLock { $0.interval = max(monitorInterval, 1.0) }
+        let interval = max(monitorInterval, 1.0)
+        dependencies.stateClient.withLock { $0.interval = interval }
         let queue = DispatchQueue(label: "SystemInfoKit.NWPathMonitor", qos: .utility)
         dependencies.nwPathMonitorClient.start(queue)
-        let timer = Timer
-            .publish(every: monitorInterval, on: RunLoop.main, in: .common)
-            .autoconnect()
-            .prepend(Date())
-            .sink { [weak self] _ in
-                self?.updateSystemInfo()
+
+        let task = Task { [weak self] in
+            guard let self else { return }
+            await self.updateSystemInfo()
+            while !Task.isCancelled {
+                do {
+                    try await Task.sleep(for: .seconds(interval))
+                } catch {
+                    return
+                }
+                await self.updateSystemInfo()
             }
-        protectedTimer.withLock { $0 = timer }
+        }
+
+        monitoringTask.withLock {
+            $0?.cancel()
+            $0 = task
+        }
     }
 
     public func stopMonitoring() {
-        protectedTimer.withLock {
+        monitoringTask.withLock {
             $0?.cancel()
             $0 = nil
         }
@@ -61,17 +74,15 @@ public final class SystemInfoObserver: Sendable {
         }
     }
 
-    private func updateSystemInfo() {
-        Task {
-            for type in SystemInfoType.allCases {
-                let repository = type.repositoryType.init(dependencies, language: language)
-                if dependencies.stateClient.withLock(\.activationState[type]) ?? false {
-                    await repository.update()
-                } else {
-                    repository.reset()
-                }
+    private func updateSystemInfo() async {
+        for type in SystemInfoType.allCases {
+            let repository = type.repositoryType.init(dependencies, language: language)
+            if dependencies.stateClient.withLock(\.activationState[type]) ?? false {
+                await repository.update()
+            } else {
+                repository.reset()
             }
-            systemInfoSubject.send(dependencies.stateClient.withLock(\.bundle))
         }
+        continuation.yield(dependencies.stateClient.withLock(\.bundle))
     }
 }
