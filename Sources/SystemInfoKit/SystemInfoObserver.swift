@@ -31,7 +31,7 @@ public final class SystemInfoObserver: Sendable {
         self.continuation = continuation
     }
 
-    public convenience init() {
+    convenience init() {
         self.init(dependencies: .init(), language: .automatic)
     }
 
