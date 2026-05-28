@@ -2,11 +2,11 @@
 
 SystemInfoKit provides macOS/iOS system information.
 
-- CPU usage
-- Memory performance
-- Storage capacity
-- Battery state
-- Network connection
+- CPU Usage
+- Memory Pressure
+- Storage Capacity
+- Battery Status
+- Network Connectivity
 
 ## Requirements
 
