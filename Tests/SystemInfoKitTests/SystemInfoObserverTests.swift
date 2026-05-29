@@ -28,13 +28,20 @@ struct SystemInfoObserverTests {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock {
             $0.activationState = [.cpu: true, .memory: false, .storage: true, .battery: false, .network: true]
+            $0.bundle.cpuInfo = .zero
+            $0.bundle.storageInfo = .zero
         }
         let observer = SystemInfoObserver(
             dependencies: .testDependencies(stateClient: .testDependency(state)),
             language: .english
         )
-        observer.toggleActivation(requests: [.cpu: false, .memory: true])
-        let actual = state.withLock(\.activationState)
-        #expect(actual == [.cpu: false, .memory: true, .storage: true, .battery: false, .network: true])
+        observer.toggleActivation(requests: [.cpu: false, .memory: true, .storage: true])
+        let actualActivation = state.withLock(\.activationState)
+        #expect(actualActivation == [.cpu: false, .memory: true, .storage: true, .battery: false, .network: true])
+        #expect(state.withLock(\.bundle.cpuInfo) == nil)
+        #expect(state.withLock(\.bundle.memoryInfo) != nil)
+        #expect(state.withLock(\.bundle.storageInfo) != nil)
+        #expect(state.withLock(\.bundle.batteryInfo) == nil)
+        #expect(state.withLock(\.bundle.networkInfo) == nil)
     }
 }

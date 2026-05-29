@@ -113,6 +113,12 @@ struct NetworkRepository: SystemRepository {
         result.download = transmissionSpeed.download
     }
 
+    func setInitial() {
+        stateClient.withLock {
+            $0.bundle.networkInfo = .init(language: language)
+        }
+    }
+
     func reset() {
         stateClient.withLock {
             $0.bundle.networkInfo = nil

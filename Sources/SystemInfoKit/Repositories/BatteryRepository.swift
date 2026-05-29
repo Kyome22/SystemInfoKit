@@ -59,8 +59,16 @@ struct BatteryRepository: SystemRepository {
         }
     }
 
+    func setInitial() {
+        stateClient.withLock {
+            $0.bundle.batteryInfo = .init(language: language)
+        }
+    }
+
     func reset() {
-        stateClient.withLock { $0.bundle.batteryInfo = nil }
+        stateClient.withLock {
+            $0.bundle.batteryInfo = nil
+        }
     }
 }
 #elseif os(iOS)
@@ -92,8 +100,16 @@ struct BatteryRepository: SystemRepository {
         result.isCharging = [.charging, .full].contains(batteryState)
     }
 
+    func setInitial() {
+        stateClient.withLock {
+            $0.bundle.batteryInfo = .init(language: language)
+        }
+    }
+
     func reset() {
-        stateClient.withLock { $0.bundle.batteryInfo = nil }
+        stateClient.withLock {
+            $0.bundle.batteryInfo = nil
+        }
     }
 }
 #endif

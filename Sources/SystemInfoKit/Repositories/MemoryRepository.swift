@@ -73,7 +73,15 @@ struct MemoryRepository: SystemRepository {
         result.compressed = .init(byteCount: compressed * size, language: language)
     }
 
+    func setInitial() {
+        stateClient.withLock {
+            $0.bundle.memoryInfo = .init(language: language)
+        }
+    }
+
     func reset() {
-        stateClient.withLock { $0.bundle.memoryInfo = nil }
+        stateClient.withLock {
+            $0.bundle.memoryInfo = nil
+        }
     }
 }

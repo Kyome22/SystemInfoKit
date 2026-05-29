@@ -69,9 +69,22 @@ public final class SystemInfoObserver: Sendable {
     }
 
     public func toggleActivation(requests: [SystemInfoType: Bool]) {
-        dependencies.stateClient.withLock {
-            $0.activationState.merge(requests) { _, new in new }
+        let changes = dependencies.stateClient.withLock { state in
+            let changes = requests.filter { (state.activationState[$0.key] ?? false) != $0.value }
+            state.activationState.merge(requests) { _, new in new }
+            return changes
         }
+
+        changes.forEach { type, isActive in
+            let repository = type.repositoryType.init(dependencies, language: language)
+            if isActive {
+                repository.setInitial()
+            } else {
+                repository.reset()
+            }
+        }
+
+        continuation.yield(dependencies.stateClient.withLock(\.bundle))
     }
 
     private func updateSystemInfo() async {

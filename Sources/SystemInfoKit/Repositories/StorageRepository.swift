@@ -31,7 +31,15 @@ struct StorageRepository: SystemRepository {
         result.used = .init(byteCount: used, language: language)
     }
 
+    func setInitial() {
+        stateClient.withLock {
+            $0.bundle.storageInfo = .init(language: language)
+        }
+    }
+
     func reset() {
-        stateClient.withLock { $0.bundle.storageInfo = nil }
+        stateClient.withLock {
+            $0.bundle.storageInfo = nil
+        }
     }
 }

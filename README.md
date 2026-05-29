@@ -72,6 +72,25 @@ Swift.print(snapshot.cpuInfo, snapshot.memoryInfo)
 
 Fields corresponding to a `SystemInfoType` that has not yet been updated (or has been disabled via `toggleActivation`) remain `nil`.
 
+### Enabling / disabling specific info types
+
+Use `toggleActivation` to turn individual `SystemInfoType` values on or off at runtime. Only the types whose state actually changes are touched — other entries in the bundle keep their existing measurements.
+
+```swift
+observer.toggleActivation(requests: [
+    .battery: false,  // stop collecting battery info
+    .network: true,   // resume collecting network info
+])
+```
+
+When the activation state changes, the corresponding fields in the bundle are updated immediately and the new bundle is re-emitted through `systemInfoStream()`:
+
+- Newly disabled types → the field is set to `nil`.
+- Newly enabled types → the field is filled with a zero placeholder (a localized `XxxInfo` with default values), so subscribers see a non-`nil` value right away. The real measurement replaces it on the next monitoring tick.
+- Types whose activation did not change are left untouched (their last measured value is preserved).
+
+If a type is disabled, `update()` is skipped at the next monitoring tick and its field stays `nil` until it is enabled again.
+
 ## Sample Output
 
 ```console

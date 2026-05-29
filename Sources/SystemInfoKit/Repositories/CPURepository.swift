@@ -52,6 +52,12 @@ struct CPURepository: SystemRepository {
         result.idle = .init(rawValue: idle, language: language)
     }
 
+    func setInitial() {
+        stateClient.withLock {
+            $0.bundle.cpuInfo = .init(language: language)
+        }
+    }
+
     func reset() {
         stateClient.withLock {
             $0.bundle.cpuInfo = nil
