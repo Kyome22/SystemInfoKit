@@ -78,3 +78,13 @@ public struct NetworkInfo: LocalizableSystemInfo {
 
     public static let zero = NetworkInfo(language: .automatic)
 }
+
+extension NetworkInfo {
+    public func masked(with ipAddress: String, isEnabled: Bool) -> NetworkInfo {
+        var copy = self
+        if isEnabled {
+            copy.ipAddress = ipAddress
+        }
+        return copy
+    }
+}
