@@ -10,18 +10,11 @@ public final class SystemInfoObserver: Sendable {
     private let continuation: AsyncStream<SystemInfoBundle>.Continuation
     private let monitoringTask = OSAllocatedUnfairLock<Task<Void, Never>?>(initialState: nil)
 
-    public func systemInfoStream() -> AsyncStream<SystemInfoBundle> {
-        stream
-    }
-
     public var currentSystemInfo: SystemInfoBundle {
         dependencies.stateClient.withLock(\.bundle)
     }
 
-    init(
-        dependencies: Dependencies,
-        language: Language
-    ) {
+    init(dependencies: Dependencies, language: Language) {
         self.dependencies = dependencies
         self.language = language
         let (stream, continuation) = AsyncStream<SystemInfoBundle>.makeStream(
@@ -35,7 +28,13 @@ public final class SystemInfoObserver: Sendable {
         self.init(dependencies: .init(), language: .automatic)
     }
 
+    public func systemInfoStream() -> AsyncStream<SystemInfoBundle> {
+        stream
+    }
+
     public func startMonitoring(monitorInterval: Double = 5.0) {
+        guard monitoringTask.withLock({ $0 == nil }) else { return }
+
         let interval = max(monitorInterval, 1.0)
         dependencies.stateClient.withLock { $0.interval = interval }
         let queue = DispatchQueue(label: "SystemInfoKit.NWPathMonitor", qos: .utility)

@@ -17,7 +17,7 @@ let package = Package(
         .library(
             name: "SystemInfoKit",
             targets: ["SystemInfoKit"]
-        )
+        ),
     ],
     targets: [
         .target(
@@ -29,6 +29,6 @@ let package = Package(
             name: "SystemInfoKitTests",
             dependencies: ["SystemInfoKit"],
             swiftSettings: swiftSettings
-        )
+        ),
     ]
 )
