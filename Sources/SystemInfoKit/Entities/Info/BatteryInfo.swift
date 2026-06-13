@@ -143,6 +143,41 @@ public struct BatteryInfo: LocalizableSystemInfo {
 }
 #endif
 
+extension BatteryInfo {
+    public struct Placeholder: Sendable {
+        var percentage: Percentage
+        var maxCapacity: Percentage
+        var cycleCount: Int
+        var temperature: Temperature
+
+        public init(
+            percentage: Percentage,
+            maxCapacity: Percentage,
+            cycleCount: Int,
+            temperature: Temperature
+        ) {
+            self.percentage = percentage
+            self.maxCapacity = maxCapacity
+            self.cycleCount = cycleCount
+            self.temperature = temperature
+        }
+    }
+
+    public func simulated(with placeholder: Placeholder, isEnabled: Bool) -> BatteryInfo {
+        var copy = self
+        if isEnabled {
+            copy.percentage = placeholder.percentage
+            copy.isInstalled = true
+            copy.isCharging = false
+            copy.adapterName = string(localized: "battery")
+            copy.maxCapacity = placeholder.maxCapacity
+            copy.cycleCount = placeholder.cycleCount
+            copy.temperature = placeholder.temperature
+        }
+        return copy
+    }
+}
+
 extension Percentage {
     var batteryRoughValue: Int {
         Int(min(max(value + 5, 0), 100) / 25) * 25
