@@ -9,7 +9,7 @@ public struct BatteryInfo: LocalizableSystemInfo {
     public internal(set) var adapterName: String?
     public internal(set) var maxCapacity: Percentage
     public internal(set) var cycleCount: Int
-    public internal(set) var temperature: Temperature?
+    public internal(set) var temperature: Temperature
     var language: Language
 
     public var icon: String {
@@ -45,8 +45,8 @@ public struct BatteryInfo: LocalizableSystemInfo {
             string(localized: "batteryPowerSource\(powerSource)"),
             string(localized: "batteryMaxCapacity\(String(describing: maxCapacity))"),
             string(localized: "batteryCycle\(cycleCount)"),
-            temperature.map { string(localized: "batteryTemperature\(String(describing: $0))") },
-        ].compactMap(\.self)
+            string(localized: "batteryTemperature\(String(describing: temperature))"),
+        ]
     }
 
     public var description: String {
@@ -60,7 +60,7 @@ public struct BatteryInfo: LocalizableSystemInfo {
         adapterName: String? = nil,
         maxCapacity: Percentage = .zero,
         cycleCount: Int = .zero,
-        temperature: Temperature? = nil,
+        temperature: Temperature = .zero,
         language: Language
     ) {
         self.percentage = percentage.localized(with: language)
@@ -69,7 +69,7 @@ public struct BatteryInfo: LocalizableSystemInfo {
         self.adapterName = adapterName
         self.maxCapacity = maxCapacity.localized(with: language)
         self.cycleCount = cycleCount
-        self.temperature = temperature?.localized(with: language)
+        self.temperature = temperature.localized(with: language)
         self.language = language
     }
 
@@ -80,7 +80,7 @@ public struct BatteryInfo: LocalizableSystemInfo {
         adapterName: String?,
         maxCapacity: Percentage,
         cycleCount: Int,
-        temperature: Temperature?,
+        temperature: Temperature,
     ) {
         self.init(
             percentage: percentage,
@@ -102,13 +102,13 @@ extension BatteryInfo {
         var percentage: Percentage
         var maxCapacity: Percentage
         var cycleCount: Int
-        var temperature: Temperature?
+        var temperature: Temperature
 
         public init(
             percentage: Percentage,
             maxCapacity: Percentage,
             cycleCount: Int,
-            temperature: Temperature?
+            temperature: Temperature
         ) {
             self.percentage = percentage
             self.maxCapacity = maxCapacity

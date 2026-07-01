@@ -13,24 +13,32 @@ struct BatteryRepository: SystemRepository {
         self.language = language
     }
 
-    func update() async {
+    private func fetchIOServiceProperties(name: String) -> [String: AnyObject]? {
         // Open Connection
-        let service = ioKitClient.getMatchingService(kIOMainPortDefault, IOServiceNameMatching("AppleSmartBattery"))
-        guard service != IO_OBJECT_NULL else { return }
+        let service = ioKitClient.getMatchingService(kIOMainPortDefault, IOServiceNameMatching(name))
+        guard service != IO_OBJECT_NULL else {
+            return nil
+        }
         defer {
             _ = ioKitClient.close(service)
             _ = ioKitClient.release(service)
         }
-
         // Read Dictionary Data
         var props: Unmanaged<CFMutableDictionary>? = nil
         guard ioKitClient.registryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, .zero) == kIOReturnSuccess,
               let dict = props?.takeUnretainedValue() as? [String: AnyObject] else {
-            return
+            return nil
         }
         props?.release()
+        return dict
+    }
 
-        guard let installed = dict["BatteryInstalled"] as? Int else { return }
+    func update() async {
+        guard let batteryDict = fetchIOServiceProperties(name: "AppleSmartBattery"),
+              let installed = batteryDict["BatteryInstalled"] as? Int,
+              let batteryPackDict = fetchIOServiceProperties(name: "AppleSmartBatteryPack") else {
+            return
+        }
 
         var result = BatteryInfo(isInstalled: installed == 1, language: language)
         defer {
@@ -38,35 +46,38 @@ struct BatteryRepository: SystemRepository {
         }
 
         if #available(macOS 27.0, *) {
-            if let batteryData = dict["BatteryData"] as? [String: AnyObject],
+            if let batteryData = batteryDict["BatteryData"] as? [String: AnyObject],
                let currentCapacity = batteryData["CurrentCapacity"] as? Double,
                let maxCapacity = batteryData["MaxCapacity"] as? Double
             {
                 result.percentage = .init(rawValue: currentCapacity / 100, width: 5, language: language)
                 result.maxCapacity = .init(rawValue: maxCapacity / 100, width: 5, language: language)
             }
+            if let batteryData = batteryPackDict["BatteryData"] as? [String: AnyObject],
+                let temperature = batteryData["Temperature"] as? Double {
+                result.temperature = .init(value: temperature / 100.0, language: language)
+            }
         } else {
-            if let currentCapacity = dict["AppleRawCurrentCapacity"] as? Double,
-               let maxCapacity = dict["AppleRawMaxCapacity"] as? Double,
-               let designCapacity = dict["DesignCapacity"] as? Double {
+            if let currentCapacity = batteryDict["AppleRawCurrentCapacity"] as? Double,
+               let maxCapacity = batteryDict["AppleRawMaxCapacity"] as? Double,
+               let designCapacity = batteryDict["DesignCapacity"] as? Double {
                 result.percentage = .init(rawValue: min(currentCapacity / maxCapacity, 1), width: 5, language: language)
                 result.maxCapacity = .init(rawValue: min(maxCapacity / designCapacity, 1), width: 5, language: language)
             }
+            if let temperature = batteryDict["Temperature"] as? Double {
+                result.temperature = .init(value: temperature / 100.0, language: language)
+            }
         }
 
-        if let isCharging = dict["IsCharging"] as? Int {
+        if let isCharging = batteryDict["IsCharging"] as? Int {
             result.isCharging = isCharging == 1
         }
-        if let adapter = dict["AdapterDetails"] as? [String: AnyObject],
+        if let adapter = batteryDict["AdapterDetails"] as? [String: AnyObject],
            let name = adapter["Name"] as? String {
             result.adapterName = name
         }
-        if let cycleCount = dict["CycleCount"] as? Int {
+        if let cycleCount = batteryDict["CycleCount"] as? Int {
             result.cycleCount = cycleCount
-        }
-        // ❌
-        if let temperature = dict["Temperature"] as? Double {
-            result.temperature = .init(value: temperature / 100.0, language: language)
         }
     }
 
