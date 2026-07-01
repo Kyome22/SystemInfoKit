@@ -37,11 +37,21 @@ struct BatteryRepository: SystemRepository {
             stateClient.withLock { [result] in $0.bundle.batteryInfo = result }
         }
 
-        if let currentCapacity = dict["AppleRawCurrentCapacity"] as? Double,
-           let maxCapacity = dict["AppleRawMaxCapacity"] as? Double,
-           let designCapacity = dict["DesignCapacity"] as? Double {
-            result.percentage = .init(rawValue: min(currentCapacity / maxCapacity, 1), width: 5, language: language)
-            result.maxCapacity = .init(rawValue: min(maxCapacity / designCapacity, 1), width: 5, language: language)
+        if #available(macOS 27.0, *) {
+            if let batteryData = dict["BatteryData"] as? [String: AnyObject],
+               let currentCapacity = batteryData["CurrentCapacity"] as? Double,
+               let maxCapacity = batteryData["MaxCapacity"] as? Double
+            {
+                result.percentage = .init(rawValue: currentCapacity / 100, width: 5, language: language)
+                result.maxCapacity = .init(rawValue: maxCapacity / 100, width: 5, language: language)
+            }
+        } else {
+            if let currentCapacity = dict["AppleRawCurrentCapacity"] as? Double,
+               let maxCapacity = dict["AppleRawMaxCapacity"] as? Double,
+               let designCapacity = dict["DesignCapacity"] as? Double {
+                result.percentage = .init(rawValue: min(currentCapacity / maxCapacity, 1), width: 5, language: language)
+                result.maxCapacity = .init(rawValue: min(maxCapacity / designCapacity, 1), width: 5, language: language)
+            }
         }
 
         if let isCharging = dict["IsCharging"] as? Int {
@@ -54,6 +64,7 @@ struct BatteryRepository: SystemRepository {
         if let cycleCount = dict["CycleCount"] as? Int {
             result.cycleCount = cycleCount
         }
+        // ❌
         if let temperature = dict["Temperature"] as? Double {
             result.temperature = .init(value: temperature / 100.0, language: language)
         }
