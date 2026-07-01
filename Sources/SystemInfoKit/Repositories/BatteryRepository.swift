@@ -1,6 +1,7 @@
 #if os(macOS)
 import Foundation
 import IOKit
+import IOKit.ps
 
 struct BatteryRepository: SystemRepository {
     private var ioKitClient: IOKitClient
@@ -35,8 +36,7 @@ struct BatteryRepository: SystemRepository {
 
     func update() async {
         guard let batteryDict = fetchIOServiceProperties(name: "AppleSmartBattery"),
-              let installed = batteryDict["BatteryInstalled"] as? Int,
-              let batteryPackDict = fetchIOServiceProperties(name: "AppleSmartBatteryPack") else {
+              let installed = batteryDict["BatteryInstalled"] as? Int else {
             return
         }
 
@@ -53,16 +53,18 @@ struct BatteryRepository: SystemRepository {
                 result.percentage = .init(rawValue: currentCapacity / 100, width: 5, language: language)
                 result.maxCapacity = .init(rawValue: maxCapacity / 100, width: 5, language: language)
             }
-            if let batteryData = batteryPackDict["BatteryData"] as? [String: AnyObject],
+            if let batteryPackDict = fetchIOServiceProperties(name: "AppleSmartBatteryPack"),
+                let batteryData = batteryPackDict["BatteryData"] as? [String: AnyObject],
                 let temperature = batteryData["Temperature"] as? Double {
                 result.temperature = .init(value: temperature / 100.0, language: language)
             }
         } else {
-            if let currentCapacity = batteryDict["AppleRawCurrentCapacity"] as? Double,
-               let maxCapacity = batteryDict["AppleRawMaxCapacity"] as? Double,
+            if let currentCapacity = batteryDict["CurrentCapacity"] as? Double,
+               let maxCapacity = batteryDict["MaxCapacity"] as? Double,
+               let rawMaxCapacity = batteryDict["AppleRawMaxCapacity"] as? Double,
                let designCapacity = batteryDict["DesignCapacity"] as? Double {
                 result.percentage = .init(rawValue: min(currentCapacity / maxCapacity, 1), width: 5, language: language)
-                result.maxCapacity = .init(rawValue: min(maxCapacity / designCapacity, 1), width: 5, language: language)
+                result.maxCapacity = .init(rawValue: min(rawMaxCapacity / designCapacity, 1), width: 5, language: language)
             }
             if let temperature = batteryDict["Temperature"] as? Double {
                 result.temperature = .init(value: temperature / 100.0, language: language)
