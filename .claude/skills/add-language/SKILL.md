@@ -26,7 +26,7 @@ Ask the user (or infer from their message and confirm) these four values before 
 | Variable | Example | Notes |
 |----------|---------|-------|
 | Language name (English, capitalized) | `Italian` | Used in README's "Supported languages" list |
-| Enum case name | `italian` | lowerCamelCase; must sort alphabetically among existing cases (`chineseSimplified` / `chineseTraditional` / `english` / `french` / `german` / `japanese` / `korean` / `russian` / `spanish` / `vietnamese`) |
+| Enum case name | `italian` | lowerCamelCase. Place it near its alphabetical neighbours in `Language.swift`, but the existing enum is not strictly alphabetical (`russian` sits after `vietnamese`), so "near enough to be readable" is the real rule — mirror the same position in both the `enum` body and the `switch` block. |
 | `Locale` initializer | `Locale(languageCode: .italian)` | Pick one form:<br>• `Locale(languageCode: .xxx)` — most languages<br>• `Locale(languageCode: .chinese, script: .hanSimplified)` — scripts<br>• `Locale(languageCode: .portuguese, script: nil, languageRegion: .brazil)` — regional variants |
 | Locale identifier | `it` | The **runtime value** of `<the Locale>.identifier`. Xcstrings uses this string as the block key, and SPM emits the compiled `.lproj` folder with this name. Verify it against Step 1's `Locale`. |
 
@@ -43,7 +43,7 @@ Existing coverage — do not duplicate:
 
 Two edits, both in the same `enum Language`:
 
-**1a. Add the case** in the `enum` body (lines 3–15), preserving alphabetical order. For a new `.italian`, it goes between `.german` and `.japanese`:
+**1a. Add the case** in the `enum` body (lines 3–15), placed near its alphabetical neighbours (the existing enum is close to but not strictly alphabetical). For a new `.italian`, it goes between `.german` and `.japanese`:
 
 ```swift
 case german
@@ -51,7 +51,7 @@ case italian    // ← new
 case japanese
 ```
 
-**1b. Add the `switch` arm** in the `var locale: Locale` block (lines 16–41), same alphabetical position:
+**1b. Add the `switch` arm** in the `var locale: Locale` block (lines 16–41), **at the same relative position** you chose in 1a (Swift 6 checks exhaustiveness, but keeping the order aligned across the two lists is a readability rule):
 
 ```swift
 case .german:
@@ -91,11 +91,17 @@ Rules:
 Generate translations in this order:
 
 1. Read `references/keys.md` for the 25 key list and format constraints.
-2. Read a few existing entries from a linguistically similar language (e.g. for Italian, look at the existing `fr` and `es` blocks) to match the punctuation convention.
-3. Produce all 25 translations at once in a single message, formatted as `key → value` pairs, and ask the user to confirm before writing the file.
-4. Only after confirmation, edit the xcstrings file.
+2. Look up the target-language terminology **Apple actually uses** in the shipping OS UI — Activity Monitor (`Etkinlik Monitörü`, `活动监视器`, `アクティビティモニタ`, …) for `cpu*` / `memory*` / `network*` / `storage*` keys, and System Settings → Battery for `battery*` keys. Apple's own translations are the authoritative reference for this project — align with them when they exist. (Concrete example from the Turkish trial: `Kablolu Bellek` for `memoryWired%@` matches Activity Monitor; `Şarj Döngüsü` / `Boşta` / `Yükleme` / `İndirme` / `Pil` all come straight from Apple's macOS/iOS Turkish UI.)
+3. Read a few existing entries from a linguistically similar language (e.g. for Italian, look at the existing `fr` and `es` blocks) to match punctuation conventions.
+4. Produce all 25 translations at once in a single message, formatted as `key → value` pairs, and ask the user to confirm before writing the file. Flag any keys where you fell back to a general-purpose translation because you could not find Apple's rendering — those are the ones most likely to get corrected.
+5. Only after confirmation, edit the xcstrings file.
 
-Editing approach for the xcstrings file: prefer `Edit` (or many small `Edit` calls) over `Write` — the file is large JSON and a full rewrite risks reordering or reformatting existing entries.
+Editing approach for the xcstrings file. Two viable paths:
+
+- **Many small `Edit` calls** — one per key. Safe for a small changeset, but 25 keys × one Edit each is a lot.
+- **A validated Python script** — read the file with `json.load`, add each new locale block preserving the existing block ordering, dump it back, then convert the JSON `": "` separator back to the Xcode `" : "` style, and round-trip with `json.load` to confirm the result parses and every 25 entries are present with `state: "translated"`. This is what the Turkish trial used; the diff came out to `+151 -1` (25 blocks × 6 lines + a trailing newline) with zero touched existing entries.
+
+Both approaches must preserve the Xcode `" : "` separator. Avoid `Write` on the whole file without validation — it will silently reformat existing entries and produce an unreviewable diff.
 
 ---
 
@@ -194,19 +200,41 @@ swift build
 
 Must succeed with no warnings introduced by the diff.
 
-### 6c. Test the affected suites first, then the full suite
+### 6c. Run tests — **`xcodebuild`, not `swift test`**
+
+This is the single non-obvious step in the whole recipe: for a Swift Package that ships `.xcstrings` or `.xcassets` resources, `swift test` from the CLI does **not** compile the string catalog into per-locale `.strings` files. `Bundle.module` at test time therefore has no localized strings at all, and every `String(localized:)` call returns the key itself (e.g. `"batteryIsNotInstalled"` instead of `"Battery: Not Installed"`). Every Repository test whose assertions include translated text will fail — and it will fail the same way on `main` too, so it is not a signal that your change broke anything.
+
+Use `xcodebuild`:
+
+```bash
+xcodebuild test \
+  -scheme SystemInfoKit \
+  -destination 'platform=macOS' \
+  -skipPackagePluginValidation \
+  -skipMacroValidation \
+  2>&1 | xcpretty
+```
+
+For iOS coverage of the platform-gated code paths:
+
+```bash
+xcodebuild test \
+  -scheme SystemInfoKit \
+  -destination 'platform=iOS Simulator,name=iPhone 16'
+```
+
+All 16 tests across 8 suites must pass. If any Repository test fails with translated strings on both sides, you inadvertently edited an existing translation in `.xcstrings` — revert that change.
+
+### 6d. Fast pre-check with `swift test` (optional)
+
+`swift test --filter ByteDataTests` and `swift test --filter PercentageTests` will still pass under `swift test` because they use `MeasurementFormatter` and `%f` formatting directly, not xcstrings. Use them as a fast sanity check that the new locale case, unit, and decimal separator behave correctly before spinning up `xcodebuild` for the full suite:
 
 ```bash
 swift test --filter ByteDataTests
 swift test --filter PercentageTests
-swift test
 ```
 
-If the two filtered runs fail, cross-check the actual `MeasurementFormatter` / `%.1f` output against your Step 6a scratch output — those are the truth.
-
-### 6d. Repository tests (regression)
-
-Repository tests (`BatteryRepositoryTests` etc.) hard-code English string expectations. They should stay green — if any fail, you inadvertently edited an English translation in `.xcstrings`. Revert that change.
+Do NOT run bare `swift test` and read anything into a Repository-suite failure — it is the environmental issue described in 6c.
 
 ---
 
@@ -216,6 +244,7 @@ Repository tests (`BatteryRepositoryTests` etc.) hard-code English string expect
 - Do NOT edit `Sources/SystemInfoKit/Entities/Values/Temperature.swift`. The `°C` unit is currently hard-coded; localizing it (e.g., Fahrenheit for `en-US`) is a separate feature.
 - Do NOT edit `Package.swift`. Resources are auto-processed via `.process("Resources")`.
 - Do NOT add CI, lint, or translation-completeness scripts. That's a separate infrastructure task.
+- Do NOT swap `xcodebuild` for `swift test` in Step 6c "because it's slower". `swift test` will report Repository suites as failing even when the localization is perfect — see Step 6c.
 - Do NOT edit `Repositories/`, `Entities/Info/`, `SystemInfoObserver.swift`, or `Localizable.swift`.
 
 ---
@@ -226,6 +255,6 @@ Repository tests (`BatteryRepositoryTests` etc.) hard-code English string expect
 - [ ] `Localizable.xcstrings` has the new locale block on all 25 keys, `state: "translated"`.
 - [ ] `ByteDataTests.swift` and `PercentageTests.swift` each gained exactly one `.init(...)` row.
 - [ ] `README.md` "Supported languages" list gained exactly one bullet.
-- [ ] `swift build` clean, `swift test` all green.
+- [ ] `swift build` clean; `xcodebuild test -scheme SystemInfoKit -destination 'platform=macOS'` all green (NOT `swift test` — see Step 6c).
 - [ ] `Package.swift` unchanged (verify with `git diff Package.swift`).
 - [ ] User has approved the 25 translations verbatim before the xcstrings edit.

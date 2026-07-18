@@ -33,7 +33,7 @@ Every key below must be present under a new locale, with `state: "translated"`. 
 | `memory%@` | `Memory: %@` | `%@` = percentage |
 | `memoryPressure%@` | `Pressure: %@` | `%@` = percentage |
 | `memoryApp%@` | `App Memory: %@` | `%@` = byte string like `"6.4 GB"` |
-| `memoryWired%@` | `Wired Memory: %@` | `%@` = byte string |
+| `memoryWired%@` | `Wired Memory: %@` | `%@` = byte string. **Apple-UI cross-check strongly recommended** — this is technical macOS jargon (kernel-reserved memory that can't be swapped) and existing translations vary widely (de: `Reservierter Speicher`, es: `Memoria física`, fr: `Mémoire résidente`, ja: `確保されているメモリ`, tr: `Kablolu Bellek`). Follow whatever Apple's Activity Monitor uses in the target language rather than translating literally. |
 | `memoryCompressed%@` | `Compressed: %@` | `%@` = byte string |
 
 ## Category: Storage

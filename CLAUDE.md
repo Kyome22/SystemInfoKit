@@ -12,11 +12,18 @@ A Swift Package that streams macOS/iOS system telemetry (CPU, memory, storage, b
 
 ```bash
 swift build
-swift test
+
+# Use xcodebuild — NOT `swift test` — for the full test suite.
+xcodebuild test \
+  -scheme SystemInfoKit \
+  -destination 'platform=macOS' \
+  -skipPackagePluginValidation \
+  -skipMacroValidation
 ```
 
 - Test framework is **swift-testing** (`import Testing`, `@Test`, `#expect`, `#require`) — not XCTest.
-- `swift test` on macOS only exercises the macOS branch. iOS-guarded code (`#if os(iOS)` in `BatteryRepository`, `UIDeviceClient`, etc.) needs `xcodebuild -destination 'platform=iOS Simulator,name=<simulator>'`.
+- **Why `xcodebuild` and not `swift test`.** `swift build`/`swift test` from the CLI copies `Localizable.xcstrings` into the bundle but does not compile it into per-locale `.strings`. `Bundle.module` at test time therefore has no localized strings, and every `String(localized:)` call returns the key itself (e.g. `"batteryIsNotInstalled"` instead of `"Battery: Not Installed"`). All Repository suites fail as a result, on `main` too — it is an environmental issue, not a regression. Same rule applies to any Swift Package that ships `.xcstrings` or `.xcassets`. Fast pre-checks that only touch `MeasurementFormatter` / `%f` (e.g. `swift test --filter ByteDataTests`) still work under `swift test`.
+- For iOS-guarded code (`#if os(iOS)` in `BatteryRepository`, `UIDeviceClient`, etc.), swap the destination to `'platform=iOS Simulator,name=<simulator>'`.
 - There is no CI, lint config, formatter, or Makefile. Verification is entirely local.
 
 ## Platforms & Swift version
