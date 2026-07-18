@@ -26,7 +26,7 @@ Ask the user (or infer from their message and confirm) these four values before 
 | Variable | Example | Notes |
 |----------|---------|-------|
 | Language name (English, capitalized) | `Italian` | Used in README's "Supported languages" list |
-| Enum case name | `italian` | lowerCamelCase. Place it near its alphabetical neighbours in `Language.swift`, but the existing enum is not strictly alphabetical (`russian` sits after `vietnamese`), so "near enough to be readable" is the real rule — mirror the same position in both the `enum` body and the `switch` block. |
+| Enum case name | `italian` | lowerCamelCase. Insert it in **strict alphabetical order** among the existing cases (`chineseSimplified` / `chineseTraditional` / `english` / `french` / `german` / `japanese` / `korean` / `russian` / `spanish` / `vietnamese`), and mirror the same position in the `switch` block. |
 | `Locale` initializer | `Locale(languageCode: .italian)` | Pick one form:<br>• `Locale(languageCode: .xxx)` — most languages<br>• `Locale(languageCode: .chinese, script: .hanSimplified)` — scripts<br>• `Locale(languageCode: .portuguese, script: nil, languageRegion: .brazil)` — regional variants |
 | Locale identifier | `it` | The **runtime value** of `<the Locale>.identifier`. Xcstrings uses this string as the block key, and SPM emits the compiled `.lproj` folder with this name. Verify it against Step 1's `Locale`. |
 
@@ -43,7 +43,7 @@ Existing coverage — do not duplicate:
 
 Two edits, both in the same `enum Language`:
 
-**1a. Add the case** in the `enum` body (lines 3–15), placed near its alphabetical neighbours (the existing enum is close to but not strictly alphabetical). For a new `.italian`, it goes between `.german` and `.japanese`:
+**1a. Add the case** in the `enum` body (lines 3–15), preserving strict alphabetical order. For a new `.italian`, it goes between `.german` and `.japanese`:
 
 ```swift
 case german
@@ -51,7 +51,7 @@ case italian    // ← new
 case japanese
 ```
 
-**1b. Add the `switch` arm** in the `var locale: Locale` block (lines 16–41), **at the same relative position** you chose in 1a (Swift 6 checks exhaustiveness, but keeping the order aligned across the two lists is a readability rule):
+**1b. Add the `switch` arm** in the `var locale: Locale` block (lines 16–41), at the same alphabetical position as 1a:
 
 ```swift
 case .german:
