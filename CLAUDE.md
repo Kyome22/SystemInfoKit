@@ -74,7 +74,8 @@ Follow `.claude/skills/add-language/SKILL.md` — 5 files change (`Language.swif
 - **`monitorInterval` is clamped to `max(interval, 1.0)`** in `SystemInfoObserver.startMonitoring`.
 - **`toggleActivation` re-emits immediately.** Newly enabled types get a zero-placeholder `*Info` right away; newly disabled types get `nil`; unchanged types are untouched.
 - **Two singletons.** `SystemInfoObserver.shared` and `StateClient.liveValue` are independent. A hand-built `SystemInfoObserver(dependencies: .init(), language: ...)` still shares state with `.shared` unless the test also overrides `stateClient`.
-- **Battery has a macOS 27+ / pre-27 split** in `Sources/SystemInfoKit/Repositories/BatteryRepository.swift` (`BatteryData` dict + `AppleSmartBatteryPack` on 27+, flat keys + `AppleRawMaxCapacity` before). Tests only cover the pre-27 branch.
+- **Battery has a macOS 27+ / pre-27 split** in `Sources/SystemInfoKit/Repositories/BatteryRepository.swift` (`BatteryData` dict + `AppleSmartBatteryPack` on 27+, flat keys + `AppleRawMaxCapacity` before). `update_with_battery` feeds both key sets at once and picks values that yield the same `description` either way, so the suite passes whatever the host runs — but the branch not taken by the host is never exercised. `getMatchingService` also returns one dictionary regardless of the service name, so `AppleSmartBattery` and `AppleSmartBatteryPack` are not distinguished.
+- **Real-device dumps live in `MeasuredValues/`** — the evidence behind that split, contributed per machine and macOS version. `MeasuredValues/KeyMatrix.md` shows which key exists where; `MeasuredValues/README.md` explains the naming and the pruning. Consult them before assuming a key is available on every machine: `AdapterDetails.Name` in particular is missing both when unplugged and when the PMU cannot identify the charger.
 - **`Temperature` is hard-coded to `°C`** — no Fahrenheit / locale awareness.
 - **`Percentage.width`** (default 4, batteries use 5) is a formatting concern threaded through the model; changing it shifts golden strings in README and repo tests.
 - **`_description` on `SystemInfo`** is intentionally accessible package-wide despite the underscore — `BatteryInfo` uses it to compose `description` conditionally on `isInstalled`.
@@ -104,4 +105,10 @@ Tests/SystemInfoKitTests/
 ├── SystemInfoObserverTests.swift
 ├── EntityTests/                    ByteData, Percentage.
 └── RepositoryTests/                One per repository.
+
+MeasuredValues/                     Reference data only — not built, not bundled.
+├── AppleSmartBattery/              <Model>_macOS_<Major>_<State>.json per contributed machine.
+├── AppleSmartBatteryPack/          Same, for the pack service (macOS 27+ temperature).
+├── KeyMatrix.md                    Which key exists where — generated.
+└── normalize.py                    Tree dump -> JSON, and --matrix.
 ```
