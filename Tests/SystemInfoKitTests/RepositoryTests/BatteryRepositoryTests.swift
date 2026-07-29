@@ -22,7 +22,9 @@ struct BatteryRepositoryTests {
                             "MaxCapacity" : NSNumber(value: 100.0),
                             "IsCharging" : NSNumber(booleanLiteral: true),
                             "ExternalConnected" : NSNumber(booleanLiteral: true),
-                            "AdapterDetails" : NSDictionary(dictionary: ["Name" : "SomeAdapter"]),
+                            "AdapterDetails" : NSDictionary(dictionary: [
+                                "Name" : "140W USB-C Power Adapter",
+                            ]),
                             "CycleCount" : NSNumber(integerLiteral: 7),
                             "Temperature" : NSNumber(integerLiteral: 3019),
                             "BatteryData" : NSDictionary(dictionary: [
@@ -44,7 +46,7 @@ struct BatteryRepositoryTests {
         let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
         let expect = [
             "Battery:  98.2%",
-            "Power Source: SomeAdapter",
+            "Power Source: 140W USB-C Power Adapter",
             "Max Capacity:  95.7%",
             "Cycle Count: 7",
             "Temperature: 30.2°C",
