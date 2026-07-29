@@ -16,7 +16,9 @@ struct CPURepository: SystemRepository {
         var size: mach_msg_type_number_t = UInt32(MemoryLayout<host_cpu_load_info_data_t>.size / MemoryLayout<integer_t>.size)
         let hostInfo = host_cpu_load_info_t.allocate(capacity: 1)
         let result = hostInfo.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { pointer in
-            hostClient.statistics64(mach_host_self(), HOST_CPU_LOAD_INFO, pointer, &size)
+            hostClient.withHostPort { host in
+                hostClient.statistics64(host, HOST_CPU_LOAD_INFO, pointer, &size)
+            }
         }
         let data = if result == KERN_SUCCESS {
             hostInfo.move()

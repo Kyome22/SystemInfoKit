@@ -17,7 +17,9 @@ struct MemoryRepository: SystemRepository {
         var statistics = vm_statistics64()
         _ = withUnsafeMutablePointer(to: &statistics) { pointer in
             pointer.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { pointer in
-                hostClient.statistics64(mach_host_self(), HOST_VM_INFO64, pointer, &size)
+                hostClient.withHostPort { host in
+                    hostClient.statistics64(host, HOST_VM_INFO64, pointer, &size)
+                }
             }
         }
         return statistics
@@ -26,7 +28,9 @@ struct MemoryRepository: SystemRepository {
     private var pageSize: vm_size_t {
         var size = vm_size_t()
         _ = withUnsafeMutablePointer(to: &size) { pointer in
-            hostClient.pageSize(mach_host_self(), pointer)
+            hostClient.withHostPort { host in
+                hostClient.pageSize(host, pointer)
+            }
         }
         return size
     }
@@ -36,7 +40,9 @@ struct MemoryRepository: SystemRepository {
         var basicInfo = host_basic_info()
         _ = withUnsafeMutablePointer(to: &basicInfo) { pointer in
             pointer.withMemoryRebound(to: integer_t.self, capacity: Int(size)) { pointer in
-                hostClient.info(mach_host_self(), HOST_BASIC_INFO, pointer, &size)
+                hostClient.withHostPort { host in
+                    hostClient.info(host, HOST_BASIC_INFO, pointer, &size)
+                }
             }
         }
         return basicInfo
