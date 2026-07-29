@@ -12,18 +12,41 @@ They are reference data only: nothing here is compiled, bundled, or read at runt
 
 ```
 MeasuredValues/
-├── AppleSmartBattery/<Model>_macOS_<Version>.json
-├── AppleSmartBatteryPack/<Model>_macOS_<Version>.json
+├── AppleSmartBattery/<Model>_macOS_<Version>_<State>.json
+├── AppleSmartBatteryPack/<Model>_macOS_<Version>_<State>.json
 ├── KeyMatrix.md      Which key exists on which machine — generated
 └── normalize.py      Dump -> JSON converter
 ```
 
 `<Version>` uses underscores for the minor component, so macOS 26.4 becomes `macOS_26_4`.
-Machines without a battery (`Mac_mini_M4`, `Mac_Studio_M4_Max`) are kept on purpose — they are the `BatteryInstalled == 0` case.
+
+`<State>` records how the machine was powered when the dump was taken, because that decides how much of
+`AdapterDetails` exists:
+
+| State | Condition | `AdapterDetails` |
+| --- | --- | --- |
+| `appleAdapter` | `ExternalConnected == 1`, `AdapterDetails.AdapterID != 0` | 16-17 keys, including `Name`, `Manufacturer`, `Model` |
+| `unknownAdapter` | `ExternalConnected == 1`, `AdapterDetails.AdapterID == 0` | 10-11 keys. `Watts` is there, `Name` is not |
+| `onBattery` | `ExternalConnected == 0` | `FamilyCode` only |
+| `noBattery` | `BatteryInstalled == 0` | `FamilyCode` only |
+
+So `adapterName` comes back nil in two different situations, not one: unplugged, and plugged into a charger
+the PMU could not identify. `AdapterDetails.Watts` survives the second case and `Name` does not.
+
+An `AppleSmartBatteryPack` dump carries the state of its `AppleSmartBattery` counterpart, so the two files
+of one capture session keep the same name.
+
+Machines without a battery (`Mac_mini_M4`, `Mac_Studio_M4_Max`) are kept on purpose — they are the
+`BatteryInstalled == 0` case.
+
+Two dumps sharing a model name are not necessarily the same machine. `MacBook_Pro_M4_Max_macOS_26_4` and
+`MacBook_Pro_M4_Max_macOS_26_5` differ in `DesignCapacity` (8579 vs 6249 mAh), `ChemID` and
+`ManufactureDate` — they are the 16-inch and the 14-inch configuration from two contributors.
 
 ## Contributing a dump
 
-Run this on the machine to collect, and save the output as `<Model>_macOS_<Version>.json`:
+Run this on the machine to collect, and save the output as `<Model>_macOS_<Version>_<State>.json`
+using the state table above:
 
 ```bash
 ioreg -arw0 -c AppleSmartBattery     | plutil -convert json -r -o - -

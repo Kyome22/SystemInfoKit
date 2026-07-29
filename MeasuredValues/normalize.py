@@ -189,6 +189,9 @@ def write_matrix_file():
         "`o` = the key is present in that dump, `-` = absent. Only keys up to two levels deep are listed;",
         "keys present in every dump of a service are collected in a separate list instead of filling the table.",
         "",
+        "A gap is not always an OS difference. The `AdapterDetails.*` rows follow the power state in the file",
+        "name — see the state table in README.md — not the macOS version.",
+        "",
     ]
     for directory_name in SERVICE_DIRECTORY_NAMES:
         paths = sorted((MEASURED_VALUES_DIRECTORY / directory_name).glob("*.json"))
