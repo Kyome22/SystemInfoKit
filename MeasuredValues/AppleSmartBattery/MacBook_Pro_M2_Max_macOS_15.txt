@@ -1,0 +1,671 @@
+.
+├── AbsoluteCapacity
+│   └── 0
+├── AdapterDetails
+│   └── FamilyCode
+│       └── 0
+├── AdapterInfo
+│   └── 0
+├── Amperage
+│   └── -540
+├── AppleRawAdapterDetails
+│   └── empty
+├── AppleRawBatteryVoltage
+│   └── 10948
+├── AppleRawCurrentCapacity
+│   └── 443
+├── AppleRawExternalConnected
+│   └── 0
+├── AppleRawMaxCapacity
+│   └── 5664
+├── AtCriticalLevel
+│   └── 0
+├── AvgTimeToEmpty
+│   └── 35
+├── AvgTimeToFull
+│   └── 65535
+├── BatteryCellDisconnectCount
+│   └── 0
+├── BatteryData
+│   ├── AdapterPower
+│   │   └── 0.0003949935
+│   ├── AlgoChemID
+│   │   └── 20882
+│   ├── BatteryHealthMetric
+│   │   └── 0
+│   ├── BatteryState
+│   │   └── {length = 17, bytes = 0x000000000000000000c7e4000288020010}
+│   ├── CellCurrentAccumulator
+│   │   ├── 0
+│   │   └── 0
+│   ├── CellCurrentAccumulatorCount
+│   │   └── 0
+│   ├── CellVoltage
+│   │   ├── 3615
+│   │   ├── 3615
+│   │   └── 3627
+│   ├── CellWom
+│   │   ├── 0
+│   │   └── 0
+│   ├── ChargeAccum
+│   │   └── 0
+│   ├── ChemID
+│   │   └── 20882
+│   ├── ChemicalWeightedRa
+│   │   └── 0
+│   ├── CurrentSenseMonitorStatus
+│   │   └── 0
+│   ├── CycleCount
+│   │   └── 141
+│   ├── DOD0
+│   │   ├── 544
+│   │   ├── 556
+│   │   └── 560
+│   ├── DailyMaxSoc
+│   │   └── 13
+│   ├── DailyMinSoc
+│   │   └── 8
+│   ├── DataFlashWriteCount
+│   │   └── 12156
+│   ├── DateOfFirstUse
+│   │   └── 0
+│   ├── DesignCapacity
+│   │   └── 6075
+│   ├── Dod0AtQualifiedQmax
+│   │   └── 0
+│   ├── FccComp1
+│   │   └── 5674
+│   ├── FccComp2
+│   │   └── 5649
+│   ├── FilteredCurrent
+│   │   └── 0
+│   ├── Flags
+│   │   └── 16777217
+│   ├── GaugeFlagRaw
+│   │   └── 192
+│   ├── ISS
+│   │   └── -745
+│   ├── ITMiscStatus
+│   │   └── 0
+│   ├── LifetimeData
+│   │   ├── AverageTemperature
+│   │   │   └── 248
+│   │   ├── CycleCountLastQmax
+│   │   │   └── 140
+│   │   ├── MaximumChargeCurrent
+│   │   │   └── 6468
+│   │   ├── MaximumDischargeCurrent
+│   │   │   └── -8193
+│   │   ├── MaximumPackVoltage
+│   │   │   └── 12998
+│   │   ├── MaximumTemperature
+│   │   │   └── 42
+│   │   ├── MinimumPackVoltage
+│   │   │   └── 8817
+│   │   ├── MinimumTemperature
+│   │   │   └── 11
+│   │   ├── RDISCnt
+│   │   │   └── 0
+│   │   ├── Raw
+│   │   │   └── {length = 64, bytes = 0x0686291c 0002ced9 00000000 00000000 ... 00f80007 6f7700d3 }
+│   │   ├── ResistanceUpdatedDisabledCount
+│   │   │   └── 0
+│   │   ├── TemperatureSamples
+│   │   │   └── 487287
+│   │   ├── TimeAtHighSoc
+│   │   │   └── {length = 112, bytes = 0x00000000 321d0000 ba0d0000 19000000 ... 00000000 00000000 }
+│   │   ├── TotalOperatingTime
+│   │   │   └── 30455
+│   │   └── UpdateTime
+│   │       └── 1785328736
+│   ├── ManufactureDate
+│   │   └── 52996426707251
+│   ├── MaxCapacity
+│   │   └── 100
+│   ├── MfgData
+│   │   └── {length = 32, bytes = 0x00000000 0b000100 48140000 04313931 ... 4c000000 00000000 }
+│   ├── MiscStatus
+│   │   └── 136
+│   ├── PMUConfigured
+│   │   └── 0
+│   ├── PackCurrentAccumulator
+│   │   └── 14628807
+│   ├── PackCurrentAccumulatorCount
+│   │   └── 1835611
+│   ├── PassedCharge
+│   │   └── 5210
+│   ├── PresentDOD
+│   │   ├── 88
+│   │   ├── 87
+│   │   └── 88
+│   ├── Qmax
+│   │   ├── 6120
+│   │   ├── 6173
+│   │   └── 6122
+│   ├── QmaxDisqualificationReason
+│   │   └── 0
+│   ├── Qstart
+│   │   └── 0
+│   ├── RSS
+│   │   └── 0
+│   ├── Ra00
+│   │   └── 246
+│   ├── Ra01
+│   │   └── 63
+│   ├── Ra02
+│   │   └── 59
+│   ├── Ra03
+│   │   └── 69
+│   ├── Ra04
+│   │   └── 98
+│   ├── Ra05
+│   │   └── 63
+│   ├── Ra06
+│   │   └── 77
+│   ├── Ra07
+│   │   └── 86
+│   ├── Ra08
+│   │   └── 95
+│   ├── Ra09
+│   │   └── 105
+│   ├── Ra10
+│   │   └── 106
+│   ├── Ra11
+│   │   └── 143
+│   ├── Ra12
+│   │   └── 234
+│   ├── Ra13
+│   │   └── 573
+│   ├── Ra14
+│   │   └── 958
+│   ├── RaTableRaw
+│   │   ├── {length = 32, bytes = 0x01040043 003c0045 0060003d 00500058 ... 00f50261 03f70000 }
+│   │   ├── {length = 32, bytes = 0x00f0003b 0038003f 0061003c 004b0050 ... 00e2021e 03860000 }
+│   │   └── {length = 32, bytes = 0x00f6003f 003b0045 0062003f 004d0056 ... 00ea023d 03be0000 }
+│   ├── ResScale
+│   │   └── 0
+│   ├── Serial
+│   │   └── F8Y3046HAPUQ1LTAW
+│   ├── SimRate
+│   │   └── 0
+│   ├── Soc1Voltage
+│   │   └── 0
+│   ├── StateOfCharge
+│   │   └── 8
+│   ├── SystemPower
+│   │   └── 6.479512
+│   ├── TrueRemainingCapacity
+│   │   └── 0
+│   ├── Voltage
+│   │   └── 10918
+│   ├── WeightedRa
+│   │   ├── 87
+│   │   ├── 81
+│   │   └── 85
+│   └── iMaxAndSocSmoothTable
+│       └── {length = 32, bytes = 0x00000000 00000000 00000000 00000000 ... 00000000 00000000 }
+├── BatteryInstalled
+│   └── 1
+├── BatteryInvalidWakeSeconds
+│   └── 30
+├── BatteryShutdownReason
+│   ├── ShutDownAverageCurrent
+│   │   └── 0
+│   ├── ShutDownDOD0
+│   │   └── 0
+│   ├── ShutDownDataError
+│   │   └── 1
+│   ├── ShutDownFilteredCurrent
+│   │   └── 0
+│   ├── ShutDownFullChargeCapacity
+│   │   └── 0
+│   ├── ShutDownMaxDischargeCurrent
+│   │   └── 0
+│   ├── ShutDownNominalChargeCapacity
+│   │   └── 0
+│   ├── ShutDownPassedCharge
+│   │   └── 0
+│   ├── ShutDownPresentDOD
+│   │   └── 0
+│   ├── ShutDownPrevAverageCurrent
+│   │   └── 0
+│   ├── ShutDownPrevFullChargeCapacity
+│   │   └── 0
+│   ├── ShutDownPrevNominalChargeCapacity
+│   │   └── 0
+│   ├── ShutDownPrevRemainingCapacity
+│   │   └── 0
+│   ├── ShutDownPrevVoltage
+│   │   └── 0
+│   ├── ShutDownRSS
+│   │   └── 0
+│   ├── ShutDownRaTableRaw
+│   │   └── {length = 32, bytes = 0x00000000 00000000 00000000 00000000 ... 00000000 00000000 }
+│   ├── ShutDownRemainingCapacity
+│   │   └── 0
+│   ├── ShutDownResScale
+│   │   └── 0
+│   ├── ShutDownTemperature
+│   │   └── 0
+│   ├── ShutDownTimestamp
+│   │   └── -8404341007126625438
+│   ├── ShutDownUISoc
+│   │   └── 0
+│   ├── ShutDownUpoReboot
+│   │   └── 0
+│   ├── ShutDownVoltage
+│   │   └── 0
+│   └── ShutdownDataCriticalFlagsKey
+│       └── 0
+├── BestAdapterIndex
+│   └── 0
+├── BootPathUpdated
+│   └── 1768130496
+├── BootVoltage
+│   └── 0
+├── CarrierMode
+│   ├── CarrierModeHighVoltage
+│   │   └── 4100
+│   ├── CarrierModeLowVoltage
+│   │   └── 3600
+│   └── CarrierModeStatus
+│       └── 0
+├── ChargerConfiguration
+│   └── 0
+├── ChargerData
+│   ├── ChargerID
+│   │   └── 13
+│   ├── ChargerInhibitReason
+│   │   └── 0
+│   ├── ChargerResetCounter
+│   │   └── 0
+│   ├── ChargerStatus
+│   │   └── {length = 64, bytes = 0x0600021c 00009800 00000000 00000000 ... 00000000 00000000 }
+│   ├── ChargingCurrent
+│   │   └── 0
+│   ├── ChargingVoltage
+│   │   └── 3879
+│   ├── NotChargingReason
+│   │   └── 128
+│   ├── SlowChargingReason
+│   │   └── 0
+│   ├── TimeChargingThermallyLimited
+│   │   └── 0
+│   └── VacVoltageLimit
+│       └── 4320
+├── CurrentCapacity
+│   └── 8
+├── CycleCount
+│   └── 141
+├── DeadBatteryBootData
+│   └── ActivePayloads
+│       └── 0
+├── DesignCapacity
+│   └── 6075
+├── DesignCycleCount9C
+│   └── 1000
+├── DeviceName
+│   └── bq40z651
+├── ExternalChargeCapable
+│   └── 0
+├── ExternalConnected
+│   └── 0
+├── FedDetails
+│   ├── .
+│   │   ├── FedDesignCapacity
+│   │   │   └── 0
+│   │   ├── FedDualRolePower
+│   │   │   └── 1
+│   │   ├── FedExternalConnected
+│   │   │   └── 1
+│   │   ├── FedPdSpecRevision
+│   │   │   └── 0
+│   │   ├── FedPortPowerRole
+│   │   │   └── 0
+│   │   ├── FedProductID
+│   │   │   └── 0
+│   │   ├── FedPwrPolicySt
+│   │   │   └── 0
+│   │   ├── FedRemainingCapacity
+│   │   │   └── 0
+│   │   ├── FedSnkConfReason
+│   │   │   └── 0
+│   │   ├── FedSrcConfReason
+│   │   │   └── 0
+│   │   ├── FedStateOfCharge
+│   │   │   └── 0
+│   │   └── FedVendorID
+│   │       └── 0
+│   ├── .
+│   │   ├── FedDesignCapacity
+│   │   │   └── 0
+│   │   ├── FedDualRolePower
+│   │   │   └── 1
+│   │   ├── FedExternalConnected
+│   │   │   └── 1
+│   │   ├── FedPdSpecRevision
+│   │   │   └── 0
+│   │   ├── FedPortPowerRole
+│   │   │   └── 0
+│   │   ├── FedProductID
+│   │   │   └── 0
+│   │   ├── FedPwrPolicySt
+│   │   │   └── 0
+│   │   ├── FedRemainingCapacity
+│   │   │   └── 0
+│   │   ├── FedSnkConfReason
+│   │   │   └── 0
+│   │   ├── FedSrcConfReason
+│   │   │   └── 0
+│   │   ├── FedStateOfCharge
+│   │   │   └── 0
+│   │   └── FedVendorID
+│   │       └── 0
+│   ├── .
+│   │   ├── FedDesignCapacity
+│   │   │   └── 0
+│   │   ├── FedDualRolePower
+│   │   │   └── 0
+│   │   ├── FedExternalConnected
+│   │   │   └── 0
+│   │   ├── FedPdSpecRevision
+│   │   │   └── 0
+│   │   ├── FedPortPowerRole
+│   │   │   └── 0
+│   │   ├── FedProductID
+│   │   │   └── 0
+│   │   ├── FedPwrPolicySt
+│   │   │   └── 0
+│   │   ├── FedRemainingCapacity
+│   │   │   └── 0
+│   │   ├── FedSnkConfReason
+│   │   │   └── 0
+│   │   ├── FedSrcConfReason
+│   │   │   └── 0
+│   │   ├── FedStateOfCharge
+│   │   │   └── 0
+│   │   └── FedVendorID
+│   │       └── 0
+│   └── .
+│       ├── FedDesignCapacity
+│       │   └── 0
+│       ├── FedDualRolePower
+│       │   └── 0
+│       ├── FedExternalConnected
+│       │   └── 0
+│       ├── FedPdSpecRevision
+│       │   └── 0
+│       ├── FedPortPowerRole
+│       │   └── 0
+│       ├── FedProductID
+│       │   └── 0
+│       ├── FedPwrPolicySt
+│       │   └── 0
+│       ├── FedRemainingCapacity
+│       │   └── 0
+│       ├── FedSnkConfReason
+│       │   └── 0
+│       ├── FedSrcConfReason
+│       │   └── 0
+│       ├── FedStateOfCharge
+│       │   └── 0
+│       └── FedVendorID
+│           └── 0
+├── FullPathUpdated
+│   └── 1785328618
+├── FullyCharged
+│   └── 0
+├── GasGaugeFirmwareVersion
+│   └── 2
+├── IOGeneralInterest
+│   └── IOCommand is not serializable
+├── IOReportLegend
+│   └── .
+│       ├── IOReportChannelInfo
+│       │   └── IOReportChannelUnit
+│       │       └── 0
+│       ├── IOReportChannels
+│       │   └── .
+│       │       ├── 7167869599145487988
+│       │       ├── 6460407809
+│       │       └── BatteryCycleCount
+│       └── IOReportGroupName
+│           └── Battery
+├── IOReportLegendPublic
+│   └── 1
+├── InstantAmperage
+│   └── -540
+├── IsCharging
+│   └── 0
+├── Location
+│   └── 0
+├── ManufacturerData
+│   └── {length = 32, bytes = 0x00000000 0b000100 48140000 04313931 ... 4c000000 00000000 }
+├── MaxCapacity
+│   └── 100
+├── NominalChargeCapacity
+│   └── 5814
+├── PackReserve
+│   └── 150
+├── PermanentFailureStatus
+│   └── 0
+├── PortControllerInfo
+│   ├── .
+│   │   ├── PortControllerEvtBuffer
+│   │   │   └── {length = 120, bytes = 0x00f203f0 19f1015e 00f203f0 19f1015e ... 0003021a 023f025f }
+│   │   ├── PortControllerIrqCntAlert
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntAppLd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntConSrc
+│   │   │   └── 2
+│   │   ├── PortControllerIrqCntHrdRst
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntPdStsUpd
+│   │   │   └── 5
+│   │   ├── PortControllerIrqCntPlg
+│   │   │   └── 2
+│   │   ├── PortControllerIrqCntPwrStsUpd
+│   │   │   └── 5
+│   │   ├── PortControllerIrqCntRxIdSop
+│   │   │   └── 1
+│   │   ├── PortControllerIrqCntRxRdo
+│   │   │   └── 2
+│   │   ├── PortControllerIrqCntRxSnkCap
+│   │   │   └── 1
+│   │   ├── PortControllerIrqCntRxSrcCap
+│   │   │   └── 1
+│   │   ├── PortControllerIrqCntStsUpd
+│   │   │   └── 50
+│   │   ├── PortControllerIrqCntUsb2Plg
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUsb2Wak
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUvdmEnum
+│   │   │   └── 129
+│   │   ├── PortControllerIrqCntUvdmStsUpd
+│   │   │   └── 4
+│   │   ├── PortControllerIrqCntldcm
+│   │   │   └── 0
+│   │   └── PortControllerMaxPower
+│   │       └── 0
+│   ├── .
+│   │   ├── PortControllerEvtBuffer
+│   │   │   └── {length = 120, bytes = 0xf1015e00 f203f019 f1015e00 f203f019 ... 5f020302 1a023f02 }
+│   │   ├── PortControllerIrqCntAlert
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntAppLd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntConSrc
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntHrdRst
+│   │   │   └── 3
+│   │   ├── PortControllerIrqCntPdStsUpd
+│   │   │   └── 5
+│   │   ├── PortControllerIrqCntPlg
+│   │   │   └── 3
+│   │   ├── PortControllerIrqCntPwrStsUpd
+│   │   │   └── 4
+│   │   ├── PortControllerIrqCntRxIdSop
+│   │   │   └── 1
+│   │   ├── PortControllerIrqCntRxRdo
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxSnkCap
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxSrcCap
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntStsUpd
+│   │   │   └── 75
+│   │   ├── PortControllerIrqCntUsb2Plg
+│   │   │   └── 1
+│   │   ├── PortControllerIrqCntUsb2Wak
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUvdmEnum
+│   │   │   └── 185
+│   │   ├── PortControllerIrqCntUvdmStsUpd
+│   │   │   └── 8
+│   │   ├── PortControllerIrqCntldcm
+│   │   │   └── 0
+│   │   └── PortControllerMaxPower
+│   │       └── 0
+│   ├── .
+│   │   ├── PortControllerEvtBuffer
+│   │   │   └── {length = 120, bytes = 0x00000000 00000000 00000000 00000000 ... 5f020302 1a023f02 }
+│   │   ├── PortControllerIrqCntAlert
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntAppLd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntConSrc
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntHrdRst
+│   │   │   └── 9
+│   │   ├── PortControllerIrqCntPdStsUpd
+│   │   │   └── 8
+│   │   ├── PortControllerIrqCntPlg
+│   │   │   └── 6
+│   │   ├── PortControllerIrqCntPwrStsUpd
+│   │   │   └── 9
+│   │   ├── PortControllerIrqCntRxIdSop
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxRdo
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxSnkCap
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxSrcCap
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntStsUpd
+│   │   │   └── 15
+│   │   ├── PortControllerIrqCntUsb2Plg
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUsb2Wak
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUvdmEnum
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUvdmStsUpd
+│   │   │   └── 15
+│   │   ├── PortControllerIrqCntldcm
+│   │   │   └── 0
+│   │   └── PortControllerMaxPower
+│   │       └── 0
+│   └── .
+│       ├── PortControllerEvtBuffer
+│       │   └── {length = 120, bytes = 0x00000000 00000000 00000000 00000000 ... f01bf023 f01bf023 }
+│       ├── PortControllerIrqCntAlert
+│       │   └── 0
+│       ├── PortControllerIrqCntAppLd
+│       │   └── 0
+│       ├── PortControllerIrqCntConSrc
+│       │   └── 0
+│       ├── PortControllerIrqCntHrdRst
+│       │   └── 0
+│       ├── PortControllerIrqCntPdStsUpd
+│       │   └── 0
+│       ├── PortControllerIrqCntPlg
+│       │   └── 0
+│       ├── PortControllerIrqCntPwrStsUpd
+│       │   └── 0
+│       ├── PortControllerIrqCntRxIdSop
+│       │   └── 0
+│       ├── PortControllerIrqCntRxRdo
+│       │   └── 0
+│       ├── PortControllerIrqCntRxSnkCap
+│       │   └── 0
+│       ├── PortControllerIrqCntRxSrcCap
+│       │   └── 0
+│       ├── PortControllerIrqCntStsUpd
+│       │   └── 0
+│       ├── PortControllerIrqCntUsb2Plg
+│       │   └── 0
+│       ├── PortControllerIrqCntUsb2Wak
+│       │   └── 0
+│       ├── PortControllerIrqCntUvdmEnum
+│       │   └── 0
+│       ├── PortControllerIrqCntUvdmStsUpd
+│       │   └── 0
+│       ├── PortControllerIrqCntldcm
+│       │   └── 0
+│       └── PortControllerMaxPower
+│           └── 0
+├── PostChargeWaitSeconds
+│   └── 120
+├── PostDischargeWaitSeconds
+│   └── 120
+├── PowerTelemetryData
+│   ├── AccumulatedAdapterEfficiencyLoss
+│   │   └── 129377304007277
+│   ├── AccumulatedBatteryDischarge
+│   │   └── -285618355
+│   ├── AccumulatedBatteryPower
+│   │   └── 132023420
+│   ├── AccumulatedSystemEnergyConsumed
+│   │   └── 643227561921526
+│   ├── AccumulatedSystemLoad
+│   │   └── 500339084
+│   ├── AccumulatedSystemPowerIn
+│   │   └── 2315619079480661
+│   ├── AccumulatedWallEnergyEstimate
+│   │   └── 100063504
+│   ├── AdapterEfficiencyLoss
+│   │   └── 0
+│   ├── AdapterEfficiencyLossAccumulatorCount
+│   │   └── 46415
+│   ├── BatteryDischargeAccumulatorCount
+│   │   └── 570009
+│   ├── BatteryPower
+│   │   └── -6479
+│   ├── BatteryPowerAccumulatorCount
+│   │   └── 14517
+│   ├── PowerTelemetryErrorCount
+│   │   └── 0
+│   ├── SystemCurrentIn
+│   │   └── 0
+│   ├── SystemEnergyConsumed
+│   │   └── 0
+│   ├── SystemLoad
+│   │   └── 6479
+│   ├── SystemLoadAccumulatorCount
+│   │   └── 1830408
+│   ├── SystemPowerIn
+│   │   └── 0
+│   ├── SystemPowerInAccumulatorCount
+│   │   └── 595630
+│   ├── SystemVoltageIn
+│   │   └── 0
+│   └── WallEnergyEstimate
+│       └── 0
+├── Serial
+│   └── F8Y3046HAPUQ1LTAW
+├── Temperature
+│   └── 3087
+├── TimeRemaining
+│   └── 35
+├── UpdateTime
+│   └── 1785328736
+├── UserVisiblePathUpdated
+│   └── 1785328736
+├── VirtualTemperature
+│   └── 3550
+├── Voltage
+│   └── 10948
+└── built-in
+    └── 1

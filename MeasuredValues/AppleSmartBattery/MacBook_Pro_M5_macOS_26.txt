@@ -1,0 +1,1148 @@
+.
+├── AbsoluteCapacity
+│   └── 0
+├── AdapterDetails
+│   ├── AdapterID
+│   │   └── 28700
+│   ├── AdapterPowerTier
+│   │   └── 2
+│   ├── AdapterVoltage
+│   │   └── 20000
+│   ├── Current
+│   │   └── 3390
+│   ├── Description
+│   │   └── pd charger
+│   ├── FamilyCode
+│   │   └── -536854518
+│   ├── FwVersion
+│   │   └── 01030030
+│   ├── HwVersion
+│   │   └── 1.0
+│   ├── IsWireless
+│   │   └── 0
+│   ├── Manufacturer
+│   │   └── Apple Inc.
+│   ├── Model
+│   │   └── 0x701C
+│   ├── Name
+│   │   └── 70W USB-C Power Adapter
+│   ├── PMUConfiguration
+│   │   └── 3390
+│   ├── SerialString
+│   │   └── F16HST066ZP000000P
+│   ├── UsbHvcHvcIndex
+│   │   └── 3
+│   ├── UsbHvcMenu
+│   │   ├── .
+│   │   │   ├── Index
+│   │   │   │   └── 0
+│   │   │   ├── MaxCurrent
+│   │   │   │   └── 2960
+│   │   │   └── MaxVoltage
+│   │   │       └── 5000
+│   │   ├── .
+│   │   │   ├── Index
+│   │   │   │   └── 1
+│   │   │   ├── MaxCurrent
+│   │   │   │   └── 2980
+│   │   │   └── MaxVoltage
+│   │   │       └── 9000
+│   │   ├── .
+│   │   │   ├── Index
+│   │   │   │   └── 2
+│   │   │   ├── MaxCurrent
+│   │   │   │   └── 2990
+│   │   │   └── MaxVoltage
+│   │   │       └── 15000
+│   │   └── .
+│   │       ├── Index
+│   │       │   └── 3
+│   │       ├── MaxCurrent
+│   │       │   └── 3390
+│   │       └── MaxVoltage
+│   │           └── 20000
+│   └── Watts
+│       └── 68
+├── AdapterInfo
+│   └── 0
+├── Amperage
+│   └── 0
+├── AppleRawAdapterDetails
+│   └── .
+│       ├── AdapterID
+│       │   └── 28700
+│       ├── AdapterPowerTier
+│       │   └── 2
+│       ├── AdapterVoltage
+│       │   └── 20000
+│       ├── Current
+│       │   └── 3390
+│       ├── Description
+│       │   └── pd charger
+│       ├── FamilyCode
+│       │   └── -536854518
+│       ├── FwVersion
+│       │   └── 01030030
+│       ├── HwVersion
+│       │   └── 1.0
+│       ├── IsWireless
+│       │   └── 0
+│       ├── Manufacturer
+│       │   └── Apple Inc.
+│       ├── Model
+│       │   └── 0x701C
+│       ├── Name
+│       │   └── 70W USB-C Power Adapter
+│       ├── PMUConfiguration
+│       │   └── 3390
+│       ├── SerialString
+│       │   └── F16HST066ZP000000P
+│       ├── UsbHvcHvcIndex
+│       │   └── 3
+│       ├── UsbHvcMenu
+│       │   ├── .
+│       │   │   ├── Index
+│       │   │   │   └── 0
+│       │   │   ├── MaxCurrent
+│       │   │   │   └── 2960
+│       │   │   └── MaxVoltage
+│       │   │       └── 5000
+│       │   ├── .
+│       │   │   ├── Index
+│       │   │   │   └── 1
+│       │   │   ├── MaxCurrent
+│       │   │   │   └── 2980
+│       │   │   └── MaxVoltage
+│       │   │       └── 9000
+│       │   ├── .
+│       │   │   ├── Index
+│       │   │   │   └── 2
+│       │   │   ├── MaxCurrent
+│       │   │   │   └── 2990
+│       │   │   └── MaxVoltage
+│       │   │       └── 15000
+│       │   └── .
+│       │       ├── Index
+│       │       │   └── 3
+│       │       ├── MaxCurrent
+│       │       │   └── 3390
+│       │       └── MaxVoltage
+│       │           └── 20000
+│       └── Watts
+│           └── 68
+├── AppleRawBatteryVoltage
+│   └── 12296
+├── AppleRawCurrentCapacity
+│   └── 4732
+├── AppleRawExternalConnected
+│   └── 1
+├── AppleRawMaxCapacity
+│   └── 6351
+├── AtCriticalLevel
+│   └── 0
+├── AvgTimeToEmpty
+│   └── 65535
+├── AvgTimeToFull
+│   └── 65535
+├── BatteryCellDisconnectCount
+│   └── 0
+├── BatteryData
+│   ├── AdapterPower
+│   │   └── 13.6557
+│   ├── AlgoChemID
+│   │   └── 29795
+│   ├── BatteryHealthMetric
+│   │   └── 0
+│   ├── BatteryRsenseOpenCount
+│   │   └── 0
+│   ├── BatteryState
+│   │   └── {length = 17, bytes = 0x000000000000000000c3e4000248000100}
+│   ├── CellCurrentAccumulator
+│   │   ├── 0
+│   │   └── 0
+│   ├── CellCurrentAccumulatorCount
+│   │   └── 0
+│   ├── CellVoltage
+│   │   ├── 4099
+│   │   ├── 4099
+│   │   └── 4099
+│   ├── CellWom
+│   │   ├── 0
+│   │   └── 0
+│   ├── ChargeAccum
+│   │   └── 0
+│   ├── ChemID
+│   │   └── 29795
+│   ├── ChemicalWeightedRa
+│   │   └── 0
+│   ├── CurrentSenseMonitorStatus
+│   │   └── 0
+│   ├── CycleCount
+│   │   └── 5
+│   ├── DOD0
+│   │   ├── 4384
+│   │   ├── 4360
+│   │   └── 4368
+│   ├── DailyMaxSoc
+│   │   └── 75
+│   ├── DailyMinSoc
+│   │   └── 75
+│   ├── DataFlashWriteCount
+│   │   └── 1808
+│   ├── DateOfFirstUse
+│   │   └── 0
+│   ├── DesignCapacity
+│   │   └── 6249
+│   ├── Dod0AtQualifiedQmax
+│   │   └── 0
+│   ├── FccComp1
+│   │   └── 6351
+│   ├── FccComp2
+│   │   └── 6351
+│   ├── FilteredCurrent
+│   │   └── 0
+│   ├── Flags
+│   │   └── 16777217
+│   ├── GaugeFlagRaw
+│   │   └── 192
+│   ├── ISS
+│   │   └── 0
+│   ├── ITMiscStatus
+│   │   └── 0
+│   ├── IdealCRate
+│   │   └── 0
+│   ├── LifetimeData
+│   │   ├── AverageTemperature
+│   │   │   └── 268
+│   │   ├── CycleCountLastQmax
+│   │   │   └── 3
+│   │   ├── MaximumChargeCurrent
+│   │   │   └── 6996
+│   │   ├── MaximumDischargeCurrent
+│   │   │   └── -4146
+│   │   ├── MaximumPackVoltage
+│   │   │   └── 13300
+│   │   ├── MaximumTemperature
+│   │   │   └── 41
+│   │   ├── MinimumPackVoltage
+│   │   │   └── 8984
+│   │   ├── MinimumTemperature
+│   │   │   └── 21
+│   │   ├── RDISCnt
+│   │   │   └── 0
+│   │   ├── Raw
+│   │   │   └── {length = 64, bytes = 0x0069867c 0003cc83 00000000 00000000 ... 010c0000 7c630000 }
+│   │   ├── ResistanceUpdatedDisabledCount
+│   │   │   └── 0
+│   │   ├── TemperatureSamples
+│   │   │   └── 31843
+│   │   ├── TimeAtHighSoc
+│   │   │   └── {length = 112, bytes = 0x00000000 71000000 4e000000 06000000 ... 00000000 00000000 }
+│   │   ├── TotalOperatingTime
+│   │   │   └── 1990
+│   │   └── UpdateTime
+│   │       └── 1785317977
+│   ├── ManufactureDate
+│   │   └── 60680190309427
+│   ├── MaxCapacity
+│   │   └── 100
+│   ├── MfgData
+│   │   └── {length = 32, bytes = 0x00000000 0b000100 271d0000 04333531 ... 4c000000 00000000 }
+│   ├── MiscStatus
+│   │   └── 72
+│   ├── PMUConfigured
+│   │   └── 3392
+│   ├── PackCurrentAccumulator
+│   │   └── -5395046
+│   ├── PackCurrentAccumulatorCount
+│   │   └── 978671
+│   ├── PassedCharge
+│   │   └── 3
+│   ├── PresentDOD
+│   │   ├── 26
+│   │   ├── 26
+│   │   └── 26
+│   ├── Qmax
+│   │   ├── 6755
+│   │   ├── 6770
+│   │   └── 6759
+│   ├── QmaxDisqualificationReason
+│   │   └── 0
+│   ├── Qstart
+│   │   └── 0
+│   ├── RSS
+│   │   └── 0
+│   ├── Ra00
+│   │   └── 153
+│   ├── Ra01
+│   │   └── 26
+│   ├── Ra02
+│   │   └── 26
+│   ├── Ra03
+│   │   └── 37
+│   ├── Ra04
+│   │   └── 54
+│   ├── Ra05
+│   │   └── 38
+│   ├── Ra06
+│   │   └── 44
+│   ├── Ra07
+│   │   └── 43
+│   ├── Ra08
+│   │   └── 43
+│   ├── Ra09
+│   │   └── 48
+│   ├── Ra10
+│   │   └── 48
+│   ├── Ra11
+│   │   └── 50
+│   ├── Ra12
+│   │   └── 80
+│   ├── Ra13
+│   │   └── 201
+│   ├── Ra14
+│   │   └── 363
+│   ├── RaTableRaw
+│   │   ├── {length = 32, bytes = 0x00a7001d 001d0026 00390028 0031002d ... 005900de 017b0000 }
+│   │   ├── {length = 32, bytes = 0x009f001c 001a0021 002f0023 002a0027 ... 005100d1 016c0000 }
+│   │   └── {length = 32, bytes = 0x0099001a 001a0025 00360026 002c002b ... 005000c9 016b0000 }
+│   ├── ResScale
+│   │   └── 0
+│   ├── Serial
+│   │   └── F8YHT1000Z20000VD5
+│   ├── SimRate
+│   │   └── 0
+│   ├── Soc1Voltage
+│   │   └── 0
+│   ├── StateOfCharge
+│   │   └── 75
+│   ├── SystemPower
+│   │   └── 11.8738
+│   ├── TrueRemainingCapacity
+│   │   └── 0
+│   ├── Voltage
+│   │   └── 12297
+│   ├── WeightedRa
+│   │   ├── 49
+│   │   ├── 44
+│   │   └── 46
+│   └── iMaxAndSocSmoothTable
+│       └── {length = 32, bytes = 0x00000000 00000000 00000000 00000000 ... 00000000 00000000 }
+├── BatteryInstalled
+│   └── 1
+├── BatteryInvalidWakeSeconds
+│   └── 30
+├── BestAdapterIndex
+│   └── 0
+├── BootPathUpdated
+│   └── 1784339386
+├── BootVoltage
+│   └── 0
+├── CarrierMode
+│   ├── CarrierModeHighVoltage
+│   │   └── 4100
+│   ├── CarrierModeLowVoltage
+│   │   └── 3600
+│   └── CarrierModeStatus
+│       └── 0
+├── ChargerConfiguration
+│   └── 3392
+├── ChargerData
+│   ├── ChargerID
+│   │   └── 14
+│   ├── ChargerInhibitReason
+│   │   └── 0
+│   ├── ChargerResetCounter
+│   │   └── 0
+│   ├── ChargerStatus
+│   │   └── {length = 64, bytes = 0x07008ab8 a0069820 444f0000 00000000 ... 00000000 00000000 }
+│   ├── ChargingCurrent
+│   │   └── 0
+│   ├── ChargingVoltage
+│   │   └── 4149
+│   ├── NotChargingReason
+│   │   └── 16777216
+│   ├── SlowChargingReason
+│   │   └── 0
+│   ├── TimeChargingThermallyLimited
+│   │   └── 0
+│   └── VacVoltageLimit
+│       └── 4435
+├── CurrentCapacity
+│   └── 79
+├── CycleCount
+│   └── 5
+├── DeadBatteryBootData
+│   └── ActivePayloads
+│       └── 0
+├── DesignCapacity
+│   └── 6249
+├── DesignCycleCount9C
+│   └── 1000
+├── DeviceName
+│   └── bq40z651
+├── ExternalChargeCapable
+│   └── 1
+├── ExternalConnected
+│   └── 1
+├── FedDetails
+│   ├── .
+│   │   ├── FedDesignCapacity
+│   │   │   └── 0
+│   │   ├── FedDualRolePower
+│   │   │   └── 1
+│   │   ├── FedExternalConnected
+│   │   │   └── 0
+│   │   ├── FedPdSpecRevision
+│   │   │   └── 0
+│   │   ├── FedPortPowerRole
+│   │   │   └── 0
+│   │   ├── FedProductID
+│   │   │   └── 0
+│   │   ├── FedPwrPolicySt
+│   │   │   └── 0
+│   │   ├── FedRemainingCapacity
+│   │   │   └── 0
+│   │   ├── FedSnkConfReason
+│   │   │   └── 0
+│   │   ├── FedSrcConfReason
+│   │   │   └── 0
+│   │   ├── FedStateOfCharge
+│   │   │   └── 0
+│   │   └── FedVendorID
+│   │       └── 0
+│   ├── .
+│   │   ├── FedDesignCapacity
+│   │   │   └── 0
+│   │   ├── FedDualRolePower
+│   │   │   └── 0
+│   │   ├── FedExternalConnected
+│   │   │   └── 0
+│   │   ├── FedPdSpecRevision
+│   │   │   └── 0
+│   │   ├── FedPortPowerRole
+│   │   │   └── 0
+│   │   ├── FedProductID
+│   │   │   └── 0
+│   │   ├── FedPwrPolicySt
+│   │   │   └── 0
+│   │   ├── FedRemainingCapacity
+│   │   │   └── 0
+│   │   ├── FedSnkConfReason
+│   │   │   └── 0
+│   │   ├── FedSrcConfReason
+│   │   │   └── 0
+│   │   ├── FedStateOfCharge
+│   │   │   └── 0
+│   │   └── FedVendorID
+│   │       └── 0
+│   ├── .
+│   │   ├── FedDesignCapacity
+│   │   │   └── 0
+│   │   ├── FedDualRolePower
+│   │   │   └── 0
+│   │   ├── FedExternalConnected
+│   │   │   └── 0
+│   │   ├── FedPdSpecRevision
+│   │   │   └── 0
+│   │   ├── FedPortPowerRole
+│   │   │   └── 0
+│   │   ├── FedProductID
+│   │   │   └── 0
+│   │   ├── FedPwrPolicySt
+│   │   │   └── 0
+│   │   ├── FedRemainingCapacity
+│   │   │   └── 0
+│   │   ├── FedSnkConfReason
+│   │   │   └── 0
+│   │   ├── FedSrcConfReason
+│   │   │   └── 0
+│   │   ├── FedStateOfCharge
+│   │   │   └── 0
+│   │   └── FedVendorID
+│   │       └── 0
+│   └── .
+│       ├── FedDesignCapacity
+│       │   └── 0
+│       ├── FedDualRolePower
+│       │   └── 0
+│       ├── FedExternalConnected
+│       │   └── 1
+│       ├── FedPdSpecRevision
+│       │   └── 2
+│       ├── FedPortPowerRole
+│       │   └── 0
+│       ├── FedProductID
+│       │   └── 0
+│       ├── FedPwrPolicySt
+│       │   └── 0
+│       ├── FedRemainingCapacity
+│       │   └── 0
+│       ├── FedSnkConfReason
+│       │   └── 0
+│       ├── FedSrcConfReason
+│       │   └── 0
+│       ├── FedStateOfCharge
+│       │   └── 0
+│       └── FedVendorID
+│           └── 0
+├── FullPathUpdated
+│   └── 1785317677
+├── FullyCharged
+│   └── 0
+├── GasGaugeFirmwareVersion
+│   └── 2
+├── IOGeneralInterest
+│   └── IOCommand is not serializable
+├── IOReportLegend
+│   └── .
+│       ├── IOReportChannelInfo
+│       │   └── IOReportChannelUnit
+│       │       └── 0
+│       ├── IOReportChannels
+│       │   └── .
+│       │       ├── 7167869599145487988
+│       │       ├── 6460407809
+│       │       └── BatteryCycleCount
+│       └── IOReportGroupName
+│           └── Battery
+├── IOReportLegendPublic
+│   └── 1
+├── InstantAmperage
+│   └── 0
+├── IsCharging
+│   └── 0
+├── Location
+│   └── 0
+├── ManufacturerData
+│   └── {length = 32, bytes = 0x00000000 0b000100 271d0000 04333531 ... 4c000000 00000000 }
+├── MaxCapacity
+│   └── 100
+├── NominalChargeCapacity
+│   └── 6503
+├── PackReserve
+│   └── 152
+├── PermanentFailureStatus
+│   └── 0
+├── PortControllerInfo
+│   ├── .
+│   │   ├── PortControllerActiveContractRdo
+│   │   │   └── 0
+│   │   ├── PortControllerAttachCount
+│   │   │   └── 15
+│   │   ├── PortControllerBootFlags
+│   │   │   └── 0
+│   │   ├── PortControllerCapMismatch
+│   │   │   └── 1
+│   │   ├── PortControllerDataRoleSwapCount
+│   │   │   └── 0
+│   │   ├── PortControllerDataRoleSwapFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerDetachCount
+│   │   │   └── 14
+│   │   ├── PortControllerDnSt
+│   │   │   └── 1
+│   │   ├── PortControllerElectionFailReason
+│   │   │   └── 0
+│   │   ├── PortControllerEvtBuffer
+│   │   │   └── {length = 120, bytes = 0x5f400148 5e015f5e 015e0106 03021a03 ... 021a033f 025ff800 }
+│   │   ├── PortControllerFetStatus
+│   │   │   └── 0
+│   │   ├── PortControllerFwVersion
+│   │   │   └── 3171072
+│   │   ├── PortControllerHardResetCount
+│   │   │   └── 0
+│   │   ├── PortControllerHvEnRecoveryCount
+│   │   │   └── 0
+│   │   ├── PortControllerI2cErrCount
+│   │   │   └── 0
+│   │   ├── PortControllerInpFetEnFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntAlert
+│   │   │   └── 66
+│   │   ├── PortControllerIrqCntAppLd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntConSrc
+│   │   │   └── 28
+│   │   ├── PortControllerIrqCntHrdRst
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntPdStsUpd
+│   │   │   └── 69
+│   │   ├── PortControllerIrqCntPlg
+│   │   │   └── 28
+│   │   ├── PortControllerIrqCntPwrStsUpd
+│   │   │   └── 55
+│   │   ├── PortControllerIrqCntRxIdSop
+│   │   │   └── 27
+│   │   ├── PortControllerIrqCntRxRdo
+│   │   │   └── 28
+│   │   ├── PortControllerIrqCntRxSnkCap
+│   │   │   └── 14
+│   │   ├── PortControllerIrqCntRxSrcCap
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntStsUpd
+│   │   │   └── 113
+│   │   ├── PortControllerIrqCntUsb2Plg
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUsb2Wak
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUvdmEnum
+│   │   │   └── 16
+│   │   ├── PortControllerIrqCntUvdmStsUpd
+│   │   │   └── 83
+│   │   ├── PortControllerIrqCntWakeAck
+│   │   │   └── 14246
+│   │   ├── PortControllerIrqCntldcm
+│   │   │   └── 0
+│   │   ├── PortControllerLoserReason
+│   │   │   └── 1
+│   │   ├── PortControllerMaxPower
+│   │   │   └── 0
+│   │   ├── PortControllerNEprPDOs
+│   │   │   └── 0
+│   │   ├── PortControllerNPDOs
+│   │   │   └── 0
+│   │   ├── PortControllerPDst
+│   │   │   └── 0
+│   │   ├── PortControllerPortMode
+│   │   │   └── 2
+│   │   ├── PortControllerPortPDO
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   └── 0
+│   │   ├── PortControllerPowerState
+│   │   │   └── 255
+│   │   ├── PortControllerPwrRoleSwapCount
+│   │   │   └── 0
+│   │   ├── PortControllerPwrRoleSwapFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerShortDetectCount
+│   │   │   └── 0
+│   │   ├── PortControllerSleepCmdFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerSlpWakDisCause
+│   │   │   └── 0
+│   │   ├── PortControllerSlpWakDisTime
+│   │   │   └── 0
+│   │   ├── PortControllerSlpWakIsSleepEnabled
+│   │   │   └── 1
+│   │   ├── PortControllerSrcTypes
+│   │   │   └── 0
+│   │   ├── PortControllerSrdoCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdoRejectCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdoRetryCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdyCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdyRejectCount
+│   │   │   └── 0
+│   │   ├── PortControllerStuckCmdCount
+│   │   │   └── 0
+│   │   ├── PortControllerSurpriseAckCount
+│   │   │   └── 0
+│   │   ├── PortControllerSurpriseNackCount
+│   │   │   └── 0
+│   │   ├── PortControllerUvdmStatus
+│   │   │   └── 0
+│   │   ├── PortControllerVdoFailCount
+│   │   │   └── 34
+│   │   ├── PortControllerWakeCmdFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerWakeFailCount
+│   │   │   └── 0
+│   │   └── PortControllerWakeTimeoutCount
+│   │       └── 0
+│   ├── .
+│   │   ├── PortControllerActiveContractRdo
+│   │   │   └── 0
+│   │   ├── PortControllerAttachCount
+│   │   │   └── 0
+│   │   ├── PortControllerBootFlags
+│   │   │   └── 0
+│   │   ├── PortControllerCapMismatch
+│   │   │   └── 0
+│   │   ├── PortControllerDataRoleSwapCount
+│   │   │   └── 0
+│   │   ├── PortControllerDataRoleSwapFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerDetachCount
+│   │   │   └── 0
+│   │   ├── PortControllerDnSt
+│   │   │   └── 0
+│   │   ├── PortControllerElectionFailReason
+│   │   │   └── 0
+│   │   ├── PortControllerEvtBuffer
+│   │   │   └── {length = 120, bytes = 0x00000000 00000000 00000000 00000000 ... 00000000 00000101 }
+│   │   ├── PortControllerFetStatus
+│   │   │   └── 0
+│   │   ├── PortControllerFwVersion
+│   │   │   └── 3171072
+│   │   ├── PortControllerHardResetCount
+│   │   │   └── 0
+│   │   ├── PortControllerHvEnRecoveryCount
+│   │   │   └── 0
+│   │   ├── PortControllerI2cErrCount
+│   │   │   └── 0
+│   │   ├── PortControllerInpFetEnFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntAlert
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntAppLd
+│   │   │   └── 1
+│   │   ├── PortControllerIrqCntConSrc
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntHrdRst
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntPdStsUpd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntPlg
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntPwrStsUpd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxIdSop
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxRdo
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxSnkCap
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxSrcCap
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntStsUpd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUsb2Plg
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUsb2Wak
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUvdmEnum
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUvdmStsUpd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntWakeAck
+│   │   │   └── 14242
+│   │   ├── PortControllerIrqCntldcm
+│   │   │   └── 0
+│   │   ├── PortControllerLoserReason
+│   │   │   └── 1
+│   │   ├── PortControllerMaxPower
+│   │   │   └── 0
+│   │   ├── PortControllerNEprPDOs
+│   │   │   └── 0
+│   │   ├── PortControllerNPDOs
+│   │   │   └── 0
+│   │   ├── PortControllerPDst
+│   │   │   └── 0
+│   │   ├── PortControllerPortMode
+│   │   │   └── 2
+│   │   ├── PortControllerPortPDO
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   └── 0
+│   │   ├── PortControllerPowerState
+│   │   │   └── 255
+│   │   ├── PortControllerPwrRoleSwapCount
+│   │   │   └── 0
+│   │   ├── PortControllerPwrRoleSwapFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerShortDetectCount
+│   │   │   └── 0
+│   │   ├── PortControllerSleepCmdFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerSlpWakDisCause
+│   │   │   └── 0
+│   │   ├── PortControllerSlpWakDisTime
+│   │   │   └── 0
+│   │   ├── PortControllerSlpWakIsSleepEnabled
+│   │   │   └── 1
+│   │   ├── PortControllerSrcTypes
+│   │   │   └── 0
+│   │   ├── PortControllerSrdoCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdoRejectCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdoRetryCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdyCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdyRejectCount
+│   │   │   └── 0
+│   │   ├── PortControllerStuckCmdCount
+│   │   │   └── 0
+│   │   ├── PortControllerSurpriseAckCount
+│   │   │   └── 0
+│   │   ├── PortControllerSurpriseNackCount
+│   │   │   └── 0
+│   │   ├── PortControllerUvdmStatus
+│   │   │   └── 0
+│   │   ├── PortControllerVdoFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerWakeCmdFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerWakeFailCount
+│   │   │   └── 0
+│   │   └── PortControllerWakeTimeoutCount
+│   │       └── 0
+│   ├── .
+│   │   ├── PortControllerActiveContractRdo
+│   │   │   └── 0
+│   │   ├── PortControllerAttachCount
+│   │   │   └── 0
+│   │   ├── PortControllerBootFlags
+│   │   │   └── 0
+│   │   ├── PortControllerCapMismatch
+│   │   │   └── 0
+│   │   ├── PortControllerDataRoleSwapCount
+│   │   │   └── 0
+│   │   ├── PortControllerDataRoleSwapFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerDetachCount
+│   │   │   └── 0
+│   │   ├── PortControllerDnSt
+│   │   │   └── 0
+│   │   ├── PortControllerElectionFailReason
+│   │   │   └── 0
+│   │   ├── PortControllerEvtBuffer
+│   │   │   └── {length = 120, bytes = 0x00000000 00000000 00000000 00000000 ... 00000000 00000000 }
+│   │   ├── PortControllerFetStatus
+│   │   │   └── 0
+│   │   ├── PortControllerFwVersion
+│   │   │   └── 3171072
+│   │   ├── PortControllerHardResetCount
+│   │   │   └── 0
+│   │   ├── PortControllerHvEnRecoveryCount
+│   │   │   └── 0
+│   │   ├── PortControllerI2cErrCount
+│   │   │   └── 0
+│   │   ├── PortControllerInpFetEnFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntAlert
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntAppLd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntConSrc
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntHrdRst
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntPdStsUpd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntPlg
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntPwrStsUpd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxIdSop
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxRdo
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxSnkCap
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntRxSrcCap
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntStsUpd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUsb2Plg
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUsb2Wak
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUvdmEnum
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntUvdmStsUpd
+│   │   │   └── 0
+│   │   ├── PortControllerIrqCntWakeAck
+│   │   │   └── 14246
+│   │   ├── PortControllerIrqCntldcm
+│   │   │   └── 0
+│   │   ├── PortControllerLoserReason
+│   │   │   └── 1
+│   │   ├── PortControllerMaxPower
+│   │   │   └── 0
+│   │   ├── PortControllerNEprPDOs
+│   │   │   └── 0
+│   │   ├── PortControllerNPDOs
+│   │   │   └── 0
+│   │   ├── PortControllerPDst
+│   │   │   └── 0
+│   │   ├── PortControllerPortMode
+│   │   │   └── 2
+│   │   ├── PortControllerPortPDO
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   ├── 0
+│   │   │   └── 0
+│   │   ├── PortControllerPowerState
+│   │   │   └── 255
+│   │   ├── PortControllerPwrRoleSwapCount
+│   │   │   └── 0
+│   │   ├── PortControllerPwrRoleSwapFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerShortDetectCount
+│   │   │   └── 0
+│   │   ├── PortControllerSleepCmdFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerSlpWakDisCause
+│   │   │   └── 0
+│   │   ├── PortControllerSlpWakDisTime
+│   │   │   └── 0
+│   │   ├── PortControllerSlpWakIsSleepEnabled
+│   │   │   └── 0
+│   │   ├── PortControllerSrcTypes
+│   │   │   └── 0
+│   │   ├── PortControllerSrdoCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdoRejectCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdoRetryCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdyCount
+│   │   │   └── 0
+│   │   ├── PortControllerSrdyRejectCount
+│   │   │   └── 0
+│   │   ├── PortControllerStuckCmdCount
+│   │   │   └── 0
+│   │   ├── PortControllerSurpriseAckCount
+│   │   │   └── 0
+│   │   ├── PortControllerSurpriseNackCount
+│   │   │   └── 0
+│   │   ├── PortControllerUvdmStatus
+│   │   │   └── 0
+│   │   ├── PortControllerVdoFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerWakeCmdFailCount
+│   │   │   └── 0
+│   │   ├── PortControllerWakeFailCount
+│   │   │   └── 0
+│   │   └── PortControllerWakeTimeoutCount
+│   │       └── 0
+│   └── .
+│       ├── PortControllerActiveContractRdo
+│       │   └── 1166364118
+│       ├── PortControllerAttachCount
+│       │   └── 3
+│       ├── PortControllerBootFlags
+│       │   └── 0
+│       ├── PortControllerCapMismatch
+│       │   └── 0
+│       ├── PortControllerDataRoleSwapCount
+│       │   └── 0
+│       ├── PortControllerDataRoleSwapFailCount
+│       │   └── 0
+│       ├── PortControllerDetachCount
+│       │   └── 2
+│       ├── PortControllerDnSt
+│       │   └── 81
+│       ├── PortControllerElectionFailReason
+│       │   └── 0
+│       ├── PortControllerEvtBuffer
+│       │   └── {length = 120, bytes = 0x1a304001 5ff01b48 5f5f5e01 5ff203f0 ... 01485f48 5f5e015f }
+│       ├── PortControllerFetStatus
+│       │   └── 140
+│       ├── PortControllerFwVersion
+│       │   └── 3171072
+│       ├── PortControllerHardResetCount
+│       │   └── 0
+│       ├── PortControllerHvEnRecoveryCount
+│       │   └── 0
+│       ├── PortControllerI2cErrCount
+│       │   └── 0
+│       ├── PortControllerInpFetEnFailCount
+│       │   └── 0
+│       ├── PortControllerIrqCntAlert
+│       │   └── 0
+│       ├── PortControllerIrqCntAppLd
+│       │   └── 0
+│       ├── PortControllerIrqCntConSrc
+│       │   └── 0
+│       ├── PortControllerIrqCntHrdRst
+│       │   └── 0
+│       ├── PortControllerIrqCntPdStsUpd
+│       │   └── 8
+│       ├── PortControllerIrqCntPlg
+│       │   └── 5
+│       ├── PortControllerIrqCntPwrStsUpd
+│       │   └── 8
+│       ├── PortControllerIrqCntRxIdSop
+│       │   └── 6
+│       ├── PortControllerIrqCntRxRdo
+│       │   └── 0
+│       ├── PortControllerIrqCntRxSnkCap
+│       │   └── 0
+│       ├── PortControllerIrqCntRxSrcCap
+│       │   └── 3
+│       ├── PortControllerIrqCntStsUpd
+│       │   └── 21
+│       ├── PortControllerIrqCntUsb2Plg
+│       │   └── 0
+│       ├── PortControllerIrqCntUsb2Wak
+│       │   └── 0
+│       ├── PortControllerIrqCntUvdmEnum
+│       │   └── 3
+│       ├── PortControllerIrqCntUvdmStsUpd
+│       │   └── 16
+│       ├── PortControllerIrqCntWakeAck
+│       │   └── 14246
+│       ├── PortControllerIrqCntldcm
+│       │   └── 0
+│       ├── PortControllerLoserReason
+│       │   └── 0
+│       ├── PortControllerMaxPower
+│       │   └── 67800
+│       ├── PortControllerNEprPDOs
+│       │   └── 0
+│       ├── PortControllerNPDOs
+│       │   └── 4
+│       ├── PortControllerPDst
+│       │   └── 5
+│       ├── PortControllerPortMode
+│       │   └── 2
+│       ├── PortControllerPortPDO
+│       │   ├── 134320424
+│       │   ├── 184618
+│       │   ├── 307499
+│       │   ├── 409939
+│       │   ├── 0
+│       │   ├── 0
+│       │   ├── 0
+│       │   ├── 0
+│       │   ├── 0
+│       │   ├── 0
+│       │   ├── 0
+│       │   ├── 0
+│       │   └── 0
+│       ├── PortControllerPowerState
+│       │   └── 255
+│       ├── PortControllerPwrRoleSwapCount
+│       │   └── 0
+│       ├── PortControllerPwrRoleSwapFailCount
+│       │   └── 0
+│       ├── PortControllerShortDetectCount
+│       │   └── 0
+│       ├── PortControllerSleepCmdFailCount
+│       │   └── 0
+│       ├── PortControllerSlpWakDisCause
+│       │   └── 0
+│       ├── PortControllerSlpWakDisTime
+│       │   └── 0
+│       ├── PortControllerSlpWakIsSleepEnabled
+│       │   └── 1
+│       ├── PortControllerSrcTypes
+│       │   └── 3
+│       ├── PortControllerSrdoCount
+│       │   └── 7
+│       ├── PortControllerSrdoRejectCount
+│       │   └── 0
+│       ├── PortControllerSrdoRetryCount
+│       │   └── 0
+│       ├── PortControllerSrdyCount
+│       │   └── 9
+│       ├── PortControllerSrdyRejectCount
+│       │   └── 2
+│       ├── PortControllerStuckCmdCount
+│       │   └── 0
+│       ├── PortControllerSurpriseAckCount
+│       │   └── 0
+│       ├── PortControllerSurpriseNackCount
+│       │   └── 0
+│       ├── PortControllerUvdmStatus
+│       │   └── 3
+│       ├── PortControllerVdoFailCount
+│       │   └── 0
+│       ├── PortControllerWakeCmdFailCount
+│       │   └── 0
+│       ├── PortControllerWakeFailCount
+│       │   └── 0
+│       └── PortControllerWakeTimeoutCount
+│           └── 0
+├── PostChargeWaitSeconds
+│   └── 120
+├── PostDischargeWaitSeconds
+│   └── 120
+├── PowerTelemetryData
+│   ├── AccumulatedAdapterEfficiencyLoss
+│   │   └── 2975312741713300
+│   ├── AccumulatedBatteryDischarge
+│   │   └── -67189492
+│   ├── AccumulatedBatteryPower
+│   │   └── 541185
+│   ├── AccumulatedSystemEnergyConsumed
+│   │   └── 3244589643241
+│   ├── AccumulatedSystemLoad
+│   │   └── 2574170398
+│   ├── AccumulatedSystemPowerIn
+│   │   └── 11680523599915
+│   ├── AccumulatedWallEnergyEstimate
+│   │   └── 613477501
+│   ├── AdapterEfficiencyLoss
+│   │   └── 193
+│   ├── AdapterEfficiencyLossAccumulatorCount
+│   │   └── 806486
+│   ├── BatteryDischargeAccumulatorCount
+│   │   └── 56117
+│   ├── BatteryPower
+│   │   └── 0
+│   ├── BatteryPowerAccumulatorCount
+│   │   └── 21
+│   ├── PowerTelemetryErrorCount
+│   │   └── 0
+│   ├── SystemCurrentIn
+│   │   └── 670
+│   ├── SystemEnergyConsumed
+│   │   └── 3793
+│   ├── SystemLoad
+│   │   └── 13655
+│   ├── SystemLoadAccumulatorCount
+│   │   └── 970510
+│   ├── SystemPowerIn
+│   │   └── 13655
+│   ├── SystemPowerInAccumulatorCount
+│   │   └── 809685
+│   ├── SystemVoltageIn
+│   │   └── 20378
+│   └── WallEnergyEstimate
+│       └── 3986
+├── Serial
+│   └── F8YHT1000Z20000VD5
+├── SkipperNEIgnoreAtCritical
+│   └── 0
+├── Temperature
+│   └── 3103
+├── TimeRemaining
+│   └── 65535
+├── UpdateTime
+│   └── 1785317977
+├── UserVisiblePathUpdated
+│   └── 1785317977
+├── VirtualTemperature
+│   └── 3709
+├── Voltage
+│   └── 12296
+└── built-in
+    └── 1
