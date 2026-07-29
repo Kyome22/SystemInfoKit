@@ -66,6 +66,30 @@ python3 MeasuredValues/normalize.py --matrix  # regenerate KeyMatrix.md
 
 The converter needs nothing but Python 3 from the standard macOS toolchain.
 
+**Please also note the Maximum Capacity percentage System Settings shows for the machine** (System Settings
+> General > About > More Info, or Battery > Battery Health), and put it in the pull request description.
+It cannot be recovered from the dump, and it is the only way to check what SystemInfoKit reports against
+what macOS reports.
+
+## System Settings comparison
+
+Two dumps have a System Settings reading recorded against them.
+
+| Dump | System Settings | `AppleRawMaxCapacity / DesignCapacity` | `NominalChargeCapacity / DesignCapacity` |
+| --- | --- | --- | --- |
+| `MacBook_Pro_M1_Pro_macOS_15_appleAdapter` | 91% | 93.89% (+2.9) | 96.36% (+5.4) |
+| `MacBook_Pro_M4_Pro_macOS_26_unknownAdapter` | 97% | 92.77% (−4.2) | 95.20% (−1.8) |
+
+Neither candidate works, and neither does anything else in the dumps. To produce those readings against
+`DesignCapacity` the numerator would have to be 5498-5559 and 6030-6093 respectively; no key holds a value
+in either range, and no ratio of any two keys lands on them. `NominalChargeCapacity` cannot rescue it —
+across all nine dumps with a battery it sits a near-constant +2.4 to +2.8 points above
+`AppleRawMaxCapacity`, so it only shifts a constant, while the error above flips sign.
+
+The likeliest explanation is that macOS displays a smoothed or cached figure rather than a live gauge
+reading. `BatteryRepository` keeps `AppleRawMaxCapacity / DesignCapacity`, which is what coconutBattery
+reports. Two readings are far too few to fit anything against, which is why the request above matters.
+
 ## What was removed
 
 The dumps were pruned once, when they were converted from tree output to JSON.
