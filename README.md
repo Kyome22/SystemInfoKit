@@ -116,6 +116,13 @@ Network: Ethernet
     Download:   1.7 kB/s
 ```
 
+`Max Capacity` is the battery's full charge capacity as a fraction of the capacity it was designed to hold,
+read straight from IOKit.
+**It is not the Maximum Capacity that System Settings shows**, which macOS appears to smooth or cache rather
+than read live — on the two machines measured so far the two figures differ by +2.9 and −4.2 points, in
+opposite directions, and no key in IOKit reproduces the System Settings number.
+`MeasuredValues/README.md` records the measurements.
+
 ## Supported languages
 
 - Chinese, Simplified

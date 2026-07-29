@@ -55,6 +55,67 @@ struct BatteryRepositoryTests {
     }
 
     @Test
+    func update_without_max_capacity_keys() async throws {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let sut = BatteryRepository(
+            .testDependencies(
+                ioKitClient: testDependency(of: IOKitClient.self) {
+                    $0.getMatchingService = { _, _ in 1 }
+                    $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
+                        let dict = NSMutableDictionary(dictionary: [
+                            "BatteryInstalled" : NSNumber(booleanLiteral: true),
+                            "CurrentCapacity" : NSNumber(value: 80.0),
+                            "MaxCapacity" : NSNumber(value: 100.0),
+                            "Temperature" : NSNumber(integerLiteral: 3019),
+                            "BatteryData" : NSDictionary(dictionary: [
+                                "CurrentCapacity" : NSNumber(value: 80.0),
+                                "Temperature" : NSNumber(integerLiteral: 3019),
+                            ]),
+                        ])
+                        pointer?.pointee = Unmanaged.passRetained(dict)
+                        return kIOReturnSuccess
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
+        await sut.update()
+        let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
+        #expect(actual.summary == "Battery:  80.0%")
+        #expect(actual.details[1] == "Max Capacity:  0.0%")
+    }
+
+    @Test
+    func update_with_zero_capacity() async throws {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let sut = BatteryRepository(
+            .testDependencies(
+                ioKitClient: testDependency(of: IOKitClient.self) {
+                    $0.getMatchingService = { _, _ in 1 }
+                    $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
+                        let dict = NSMutableDictionary(dictionary: [
+                            "BatteryInstalled" : NSNumber(booleanLiteral: true),
+                            "CurrentCapacity" : NSNumber(value: 0.0),
+                            "MaxCapacity" : NSNumber(value: 0.0),
+                            "DesignCapacity" : NSNumber(value: 0.0),
+                            "AppleRawMaxCapacity" : NSNumber(value: 0.0),
+                        ])
+                        pointer?.pointee = Unmanaged.passRetained(dict)
+                        return kIOReturnSuccess
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
+        await sut.update()
+        let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
+        #expect(actual.summary == "Battery:  0.0%")
+        #expect(actual.details[1] == "Max Capacity:  0.0%")
+    }
+
+    @Test
     func update_with_unidentified_adapter() async throws {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         let sut = BatteryRepository(

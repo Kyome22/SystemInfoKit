@@ -66,6 +66,43 @@ python3 MeasuredValues/normalize.py --matrix  # regenerate KeyMatrix.md
 
 The converter needs nothing but Python 3 from the standard macOS toolchain.
 
+**Please also note the Maximum Capacity percentage System Settings shows for the machine** (System Settings
+> General > About > More Info, or Battery > Battery Health), and put it in the pull request description.
+It cannot be recovered from the dump, and it is the only way to check what SystemInfoKit reports against
+what macOS reports.
+
+## System Settings comparison
+
+Three dumps have a System Settings reading recorded against them. `AppleRawMaxCapacity / DesignCapacity`
+is what `BatteryRepository` reports today; `NominalChargeCapacity / DesignCapacity` is the obvious
+alternative.
+
+| Dump | System Settings | Reported today | Nominal instead |
+| --- | --- | --- | --- |
+| `MacBook_Pro_M1_Pro_macOS_15_appleAdapter` | 91% | 93.89% (+2.9) | 96.36% (+5.4) |
+| `MacBook_Pro_M4_Pro_macOS_26_unknownAdapter` | 97% | 92.77% (−4.2) | 95.20% (−1.8) |
+| `MacBook_Air_M2_macOS_27_appleAdapter` | 100% | 97.02% (−3.0) | 99.80% (−0.2) |
+
+**Nothing reported today reproduces any of the three.** For the first two the numerator would have to land
+in 5498-5559 and 6030-6093; no key in either dump holds a value in range, and no ratio of any two keys does
+either. The third only bounds the answer from below — 100% means the numerator is at least 4540 — but
+`FullChargeCapacity` is 4427 and misses, while `NominalChargeCapacity` is 4554 and fits.
+
+So the nominal figure is ahead on this evidence: it reproduces one of three readings against zero, and is
+the closer of the two on two of three. It is not ahead by enough to act on. Both keys overshoot the M1 Pro
+badly (+2.9 and +5.4) and neither explains why, and `NominalChargeCapacity` sits a near-constant +2.4 to
++2.8 points above `AppleRawMaxCapacity` across all nine dumps with a battery — a constant shift, which
+cannot fix an error that changes sign. Switching this key has also drawn "the battery info is wrong"
+reports before, so it needs to be right, not merely better on three points.
+
+The likeliest explanation is that macOS displays a smoothed or cached figure rather than a live gauge
+reading.
+
+**The reading worth having next is `MacBook_Air_M3_macOS_27_unknownAdapter`.** Today's key puts it at
+90.88% and the nominal one at 93.67% — 2.8 points apart and nowhere near the 100% ceiling, so its System
+Settings figure would separate the two outright on macOS 27. The M2 Air reading above cannot, because it is
+pinned at the top of the scale.
+
 ## What was removed
 
 The dumps were pruned once, when they were converted from tree output to JSON.

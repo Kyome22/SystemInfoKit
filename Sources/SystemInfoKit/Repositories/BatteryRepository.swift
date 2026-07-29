@@ -58,9 +58,12 @@ struct BatteryRepository: SystemRepository {
         } else {
             if let currentCapacity = batteryDict["CurrentCapacity"] as? Double,
                let maxCapacity = batteryDict["MaxCapacity"] as? Double,
-               let rawMaxCapacity = batteryDict["AppleRawMaxCapacity"] as? Double,
-               let designCapacity = batteryDict["DesignCapacity"] as? Double {
+               maxCapacity > 0 {
                 result.percentage = .init(rawValue: min(currentCapacity / maxCapacity, 1), width: 5, language: language)
+            }
+            if let rawMaxCapacity = batteryDict["AppleRawMaxCapacity"] as? Double,
+               let designCapacity = batteryDict["DesignCapacity"] as? Double,
+               designCapacity > 0 {
                 result.maxCapacity = .init(rawValue: min(rawMaxCapacity / designCapacity, 1), width: 5, language: language)
             }
             if let temperature = batteryDict["Temperature"] as? Double {
