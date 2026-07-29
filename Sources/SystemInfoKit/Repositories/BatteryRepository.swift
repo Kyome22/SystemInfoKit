@@ -15,23 +15,18 @@ struct BatteryRepository: SystemRepository {
     }
 
     private func fetchIOServiceProperties(name: String) -> [String: AnyObject]? {
-        // Open Connection
         let service = ioKitClient.getMatchingService(kIOMainPortDefault, IOServiceNameMatching(name))
         guard service != IO_OBJECT_NULL else {
             return nil
         }
         defer {
-            _ = ioKitClient.close(service)
             _ = ioKitClient.release(service)
         }
-        // Read Dictionary Data
         var props: Unmanaged<CFMutableDictionary>? = nil
-        guard ioKitClient.registryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, .zero) == kIOReturnSuccess,
-              let dict = props?.takeUnretainedValue() as? [String: AnyObject] else {
+        guard ioKitClient.registryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, .zero) == kIOReturnSuccess else {
             return nil
         }
-        props?.release()
-        return dict
+        return props?.takeRetainedValue() as? [String: AnyObject]
     }
 
     func update() async {

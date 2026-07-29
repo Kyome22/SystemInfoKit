@@ -47,6 +47,35 @@ struct MemoryRepositoryTests {
     }
 
     @Test
+    func update_deallocates_every_host_port() async throws {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let acquiredCount = OSAllocatedUnfairLock<Int>(initialState: 0)
+        let deallocatedCount = OSAllocatedUnfairLock<Int>(initialState: 0)
+        let sut = MemoryRepository(
+            .testDependencies(
+                hostClient: testDependency(of: HostClient.self) {
+                    $0.hostSelf = {
+                        acquiredCount.withLock { count in count += 1 }
+                        return 1
+                    }
+                    $0.deallocatePort = { _ in
+                        deallocatedCount.withLock { count in count += 1 }
+                        return KERN_SUCCESS
+                    }
+                    $0.statistics64 = { _, _, _, _ in KERN_SUCCESS }
+                    $0.info = { _, _, _, _ in KERN_SUCCESS }
+                    $0.pageSize = { _, _ in KERN_SUCCESS }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
+        await sut.update()
+        #expect(acquiredCount.withLock(\.self) == 3)
+        #expect(deallocatedCount.withLock(\.self) == 3)
+    }
+
+    @Test
     func reset() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock { $0.bundle.memoryInfo = .zero }

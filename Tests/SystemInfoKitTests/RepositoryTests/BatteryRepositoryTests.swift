@@ -72,6 +72,41 @@ struct BatteryRepositoryTests {
     }
 
     @Test
+    func update_releases_every_io_service_exactly_once() async throws {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let matchedServices = OSAllocatedUnfairLock<[io_service_t]>(initialState: [])
+        let releasedObjects = OSAllocatedUnfairLock<[io_object_t]>(initialState: [])
+        let sut = BatteryRepository(
+            .testDependencies(
+                ioKitClient: testDependency(of: IOKitClient.self) {
+                    $0.getMatchingService = { _, _ in
+                        matchedServices.withLock { services in
+                            let service = io_service_t(services.count + 1)
+                            services.append(service)
+                            return service
+                        }
+                    }
+                    $0.release = { object in
+                        releasedObjects.withLock { objects in objects.append(object) }
+                        return kIOReturnSuccess
+                    }
+                    $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
+                        let dict = NSMutableDictionary(dictionary: [
+                            "BatteryInstalled" : NSNumber(booleanLiteral: true),
+                        ])
+                        pointer?.pointee = Unmanaged.passRetained(dict)
+                        return kIOReturnSuccess
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
+        await sut.update()
+        #expect(releasedObjects.withLock(\.self) == matchedServices.withLock(\.self))
+    }
+
+    @Test
     func reset() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
         state.withLock { $0.bundle.batteryInfo = .zero }
