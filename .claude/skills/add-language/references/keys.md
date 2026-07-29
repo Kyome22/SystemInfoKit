@@ -1,6 +1,6 @@
 # Localizable.xcstrings — Key Reference
 
-Source of truth: `Sources/SystemInfoKit/Resources/Localizable.xcstrings` (25 keys, `sourceLanguage: "en"`).
+Source of truth: `Sources/SystemInfoKit/Resources/Localizable.xcstrings` (26 keys, `sourceLanguage: "en"`).
 
 Every key below must be present under a new locale, with `state: "translated"`. Keep the format specifiers (`%@`, `%lld`) exactly as in the English source — reorder them within the sentence only if the target language requires it.
 
@@ -12,7 +12,8 @@ Every key below must be present under a new locale, with `state: "translated"`. 
 | `battery%@` | `Battery: %@` | `%@` = percentage like `"98.2%"` / `"98,2%"` |
 | `batteryIsNotInstalled` | `Battery: Not Installed` | — |
 | `batteryUnknown` | `Unknown` | — |
-| `batteryPowerSource%@` | `Power Source: %@` | `%@` = raw source name (usually English, do not localize the placeholder) |
+| `batteryAdapter%lld` | `%lldW Power Adapter` | `%lld` = watts negotiated with the adapter. Used only when IOKit cannot name the adapter. Match Apple's own wording for "power adapter" in the target locale |
+| `batteryPowerSource%@` | `Power Source: %@` | `%@` = the adapter's own name from IOKit (`"140W USB-C Power Adapter"`, left untranslated), or `batteryAdapter%lld` / `batteryUnknown` / `battery` already localized |
 | `batteryMaxCapacity%@` | `Max Capacity: %@` | `%@` = percentage |
 | `batteryCycle%lld` | `Cycle Count: %lld` | `%lld` = integer cycle count |
 | `batteryTemperature%@` | `Temperature: %@` | `%@` = temperature string, currently hard-coded `"30.2°C"` format |

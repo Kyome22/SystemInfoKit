@@ -21,6 +21,7 @@ struct BatteryRepositoryTests {
                             "CurrentCapacity" : NSNumber(value: 98.2),
                             "MaxCapacity" : NSNumber(value: 100.0),
                             "IsCharging" : NSNumber(booleanLiteral: true),
+                            "ExternalConnected" : NSNumber(booleanLiteral: true),
                             "AdapterDetails" : NSDictionary(dictionary: ["Name" : "SomeAdapter"]),
                             "CycleCount" : NSNumber(integerLiteral: 7),
                             "Temperature" : NSNumber(integerLiteral: 3019),
@@ -49,6 +50,87 @@ struct BatteryRepositoryTests {
             "Temperature: 30.2°C",
         ].joined(separator: "\n\t")
         #expect(actual.description == expect)
+    }
+
+    @Test
+    func update_with_unidentified_adapter() async throws {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let sut = BatteryRepository(
+            .testDependencies(
+                ioKitClient: testDependency(of: IOKitClient.self) {
+                    $0.getMatchingService = { _, _ in 1 }
+                    $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
+                        let dict = NSMutableDictionary(dictionary: [
+                            "BatteryInstalled" : NSNumber(booleanLiteral: true),
+                            "ExternalConnected" : NSNumber(booleanLiteral: true),
+                            "AdapterDetails" : NSDictionary(dictionary: [
+                                "Watts" : NSNumber(integerLiteral: 90),
+                            ]),
+                        ])
+                        pointer?.pointee = Unmanaged.passRetained(dict)
+                        return kIOReturnSuccess
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
+        await sut.update()
+        let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
+        #expect(actual.details.first == "Power Source: 90W Power Adapter")
+    }
+
+    @Test
+    func update_on_battery() async throws {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let sut = BatteryRepository(
+            .testDependencies(
+                ioKitClient: testDependency(of: IOKitClient.self) {
+                    $0.getMatchingService = { _, _ in 1 }
+                    $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
+                        let dict = NSMutableDictionary(dictionary: [
+                            "BatteryInstalled" : NSNumber(booleanLiteral: true),
+                            "ExternalConnected" : NSNumber(booleanLiteral: false),
+                            "AdapterDetails" : NSDictionary(dictionary: [
+                                "FamilyCode" : NSNumber(integerLiteral: 0),
+                            ]),
+                        ])
+                        pointer?.pointee = Unmanaged.passRetained(dict)
+                        return kIOReturnSuccess
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
+        await sut.update()
+        let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
+        #expect(actual.details.first == "Power Source: Battery")
+    }
+
+    @Test
+    func update_with_adapter_missing_details() async throws {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let sut = BatteryRepository(
+            .testDependencies(
+                ioKitClient: testDependency(of: IOKitClient.self) {
+                    $0.getMatchingService = { _, _ in 1 }
+                    $0.registryEntryCreateCFProperties = { _, pointer, _, _ in
+                        let dict = NSMutableDictionary(dictionary: [
+                            "BatteryInstalled" : NSNumber(booleanLiteral: true),
+                            "ExternalConnected" : NSNumber(booleanLiteral: true),
+                        ])
+                        pointer?.pointee = Unmanaged.passRetained(dict)
+                        return kIOReturnSuccess
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
+        await sut.update()
+        let actual = try #require({ state.withLock(\.bundle.batteryInfo) }())
+        #expect(actual.details.first == "Power Source: Unknown")
     }
 
     @Test

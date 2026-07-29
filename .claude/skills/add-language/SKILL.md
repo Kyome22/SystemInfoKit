@@ -68,7 +68,7 @@ case .japanese:
 
 ## Step 2 — Edit `Sources/SystemInfoKit/Resources/Localizable.xcstrings`
 
-For every one of the 25 keys, add a new localization block keyed by the identifier from Step 0. The reference table for all keys lives in `references/keys.md` — load it before generating translations.
+For every one of the 26 keys, add a new localization block keyed by the identifier from Step 0. The reference table for all keys lives in `references/keys.md` — load it before generating translations.
 
 Block shape (add alongside the existing `de` / `en` / … blocks; xcstrings does not require alphabetical ordering of locales, but match the existing style):
 
@@ -83,7 +83,7 @@ Block shape (add alongside the existing `de` / `en` / … blocks; xcstrings does
 
 Rules:
 
-- **All 25 keys must be filled.** Missing keys fall back to English silently.
+- **All 26 keys must be filled.** Missing keys fall back to English silently.
 - **`state` must be `"translated"`.** Not `"new"`, not `"needs_review"` — Xcode's String Catalog editor uses these, but the runtime only cares that the value exists; the state field is preserved so tools like the Xcode editor treat the entry as complete.
 - **Preserve every format specifier.** `%@` and `%lld` must appear in every translated value that had them in the English source. Only their position may move if grammar requires.
 - **Follow typographic conventions of the target language** — see `references/keys.md` "Translation policy" section for the observed per-language conventions (fr uses ` : `, ja uses `：`, most others `: `).
@@ -93,13 +93,13 @@ Generate translations in this order:
 1. Read `references/keys.md` for the 25 key list and format constraints.
 2. Look up the target-language terminology **Apple actually uses** in the shipping OS UI — Activity Monitor (`Etkinlik Monitörü`, `活动监视器`, `アクティビティモニタ`, …) for `cpu*` / `memory*` / `network*` / `storage*` keys, and System Settings → Battery for `battery*` keys. Apple's own translations are the authoritative reference for this project — align with them when they exist. (Concrete example from the Turkish trial: `Kablolu Bellek` for `memoryWired%@` matches Activity Monitor; `Şarj Döngüsü` / `Boşta` / `Yükleme` / `İndirme` / `Pil` all come straight from Apple's macOS/iOS Turkish UI.)
 3. Read a few existing entries from a linguistically similar language (e.g. for Italian, look at the existing `fr` and `es` blocks) to match punctuation conventions.
-4. Produce all 25 translations at once in a single message, formatted as `key → value` pairs, and ask the user to confirm before writing the file. Flag any keys where you fell back to a general-purpose translation because you could not find Apple's rendering — those are the ones most likely to get corrected.
+4. Produce all 26 translations at once in a single message, formatted as `key → value` pairs, and ask the user to confirm before writing the file. Flag any keys where you fell back to a general-purpose translation because you could not find Apple's rendering — those are the ones most likely to get corrected.
 5. Only after confirmation, edit the xcstrings file.
 
 Editing approach for the xcstrings file. Two viable paths:
 
-- **Many small `Edit` calls** — one per key. Safe for a small changeset, but 25 keys × one Edit each is a lot.
-- **A validated Python script** — read the file with `json.load`, add each new locale block preserving the existing block ordering, dump it back, then convert the JSON `": "` separator back to the Xcode `" : "` style, and round-trip with `json.load` to confirm the result parses and every 25 entries are present with `state: "translated"`. This is what the Turkish trial used; the diff came out to `+151 -1` (25 blocks × 6 lines + a trailing newline) with zero touched existing entries.
+- **Many small `Edit` calls** — one per key. Safe for a small changeset, but 26 keys × one Edit each is a lot.
+- **A validated Python script** — read the file with `json.load`, add each new locale block preserving the existing block ordering, dump it back, then convert the JSON `": "` separator back to the Xcode `" : "` style, and round-trip with `json.load` to confirm the result parses and every 26 entries are present with `state: "translated"`. This is what the Turkish trial used; the diff came out to `+151 -1` (25 blocks × 6 lines + a trailing newline; the key count has since grown to 26) with zero touched existing entries.
 
 Both approaches must preserve the Xcode `" : "` separator. Avoid `Write` on the whole file without validation — it will silently reformat existing entries and produce an unreviewable diff.
 
@@ -252,9 +252,9 @@ Do NOT run bare `swift test` and read anything into a Repository-suite failure �
 ## Done criteria (for the assistant to self-check before reporting completion)
 
 - [ ] `Language.swift` has exactly 2 new lines (one `case`, one `switch` arm).
-- [ ] `Localizable.xcstrings` has the new locale block on all 25 keys, `state: "translated"`.
+- [ ] `Localizable.xcstrings` has the new locale block on all 26 keys, `state: "translated"`.
 - [ ] `ByteDataTests.swift` and `PercentageTests.swift` each gained exactly one `.init(...)` row.
 - [ ] `README.md` "Supported languages" list gained exactly one bullet.
 - [ ] `swift build` clean; `xcodebuild test -scheme SystemInfoKit -destination 'platform=macOS'` all green (NOT `swift test` — see Step 6c).
 - [ ] `Package.swift` unchanged (verify with `git diff Package.swift`).
-- [ ] User has approved the 25 translations verbatim before the xcstrings edit.
+- [ ] User has approved the 26 translations verbatim before the xcstrings edit.

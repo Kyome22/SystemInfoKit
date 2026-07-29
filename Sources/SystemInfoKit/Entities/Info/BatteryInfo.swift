@@ -33,11 +33,7 @@ public struct BatteryInfo: LocalizableSystemInfo {
     }
 
     private var powerSource: String {
-        if isCharging {
-            adapterName ?? string(localized: "batteryUnknown")
-        } else {
-            string(localized: "battery")
-        }
+        adapterName ?? string(localized: "battery")
     }
 
     public var details: [String] {

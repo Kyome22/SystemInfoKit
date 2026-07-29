@@ -71,9 +71,15 @@ struct BatteryRepository: SystemRepository {
         if let isCharging = batteryDict["IsCharging"] as? Int {
             result.isCharging = isCharging == 1
         }
-        if let adapter = batteryDict["AdapterDetails"] as? [String: AnyObject],
-           let name = adapter["Name"] as? String {
-            result.adapterName = name
+        if (batteryDict["ExternalConnected"] as? Int) == 1 {
+            let adapter = batteryDict["AdapterDetails"] as? [String: AnyObject]
+            result.adapterName = if let name = adapter?["Name"] as? String {
+                name
+            } else if let watts = adapter?["Watts"] as? Int, watts > 0 {
+                string(localized: "batteryAdapter\(watts)")
+            } else {
+                string(localized: "batteryUnknown")
+            }
         }
         if let cycleCount = batteryDict["CycleCount"] as? Int {
             result.cycleCount = cycleCount
