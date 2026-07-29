@@ -16,8 +16,8 @@ name — see the state table in README.md — not the macOS version.
 4. `MacBook_Pro_M1_Pro_macOS_15_appleAdapter`
 5. `MacBook_Pro_M2_Max_macOS_15_onBattery`
 6. `MacBook_Pro_M2_Pro_macOS_26_appleAdapter`
-7. `MacBook_Pro_M4_Max_macOS_26_4_appleAdapter`
-8. `MacBook_Pro_M4_Max_macOS_26_5_onBattery`
+7. `MacBook_Pro_M4_Max_macOS_26_appleAdapter`
+8. `MacBook_Pro_M4_Max_macOS_26_onBattery`
 9. `MacBook_Pro_M4_Pro_macOS_15_onBattery`
 10. `MacBook_Pro_M4_Pro_macOS_26_unknownAdapter`
 11. `MacBook_Pro_M5_macOS_26_appleAdapter`
