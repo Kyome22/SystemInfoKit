@@ -106,7 +106,7 @@ Memory: 72.9%
 Storage: 58.7% used
     584.13 GB / 994.66 GB
 Battery:  98.2%
-    Power Source: SomeAdapter
+    Power Source: 140W USB-C Power Adapter
     Max Capacity:  95.7%
     Cycle Count: 7
     Temperature: 30.2°C
