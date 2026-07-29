@@ -41,12 +41,14 @@ struct BatteryRepository: SystemRepository {
         }
 
         if #available(macOS 27.0, *) {
-            if let batteryData = batteryDict["BatteryData"] as? [String: AnyObject],
-               let currentCapacity = batteryData["CurrentCapacity"] as? Double,
-               let maxCapacity = batteryData["MaxCapacity"] as? Double
-            {
-                result.percentage = .init(rawValue: currentCapacity / 100, width: 5, language: language)
-                result.maxCapacity = .init(rawValue: maxCapacity / 100, width: 5, language: language)
+            if let batteryData = batteryDict["BatteryData"] as? [String: AnyObject] {
+                if let currentCapacity = batteryData["CurrentCapacity"] as? Double {
+                    result.percentage = .init(rawValue: currentCapacity / 100, width: 5, language: language)
+                }
+                if let fullChargeCapacity = batteryData["FullChargeCapacity"] as? Double,
+                   let designCapacity = batteryData["DesignCapacity"] as? Double {
+                    result.maxCapacity = .init(rawValue: min(fullChargeCapacity / designCapacity, 1), width: 5, language: language)
+                }
             }
             if let batteryPackDict = fetchIOServiceProperties(name: "AppleSmartBatteryPack"),
                 let batteryData = batteryPackDict["BatteryData"] as? [String: AnyObject],

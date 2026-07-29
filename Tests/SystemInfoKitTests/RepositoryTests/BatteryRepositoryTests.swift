@@ -24,6 +24,12 @@ struct BatteryRepositoryTests {
                             "AdapterDetails" : NSDictionary(dictionary: ["Name" : "SomeAdapter"]),
                             "CycleCount" : NSNumber(integerLiteral: 7),
                             "Temperature" : NSNumber(integerLiteral: 3019),
+                            "BatteryData" : NSDictionary(dictionary: [
+                                "CurrentCapacity" : NSNumber(value: 98.2),
+                                "FullChargeCapacity" : NSNumber(integerLiteral: 5982),
+                                "DesignCapacity" : NSNumber(integerLiteral: 6249),
+                                "Temperature" : NSNumber(integerLiteral: 3019),
+                            ]),
                         ])
                         pointer?.pointee = Unmanaged.passRetained(dict)
                         return kIOReturnSuccess
