@@ -1,0 +1,159 @@
+.
+├── BankCount
+│   └── 3
+├── BatteryData
+│   ├── AbsoluteCapacity
+│   │   └── 0
+│   ├── Amperage
+│   │   └── 2037
+│   ├── AppleRawBatteryVoltage
+│   │   └── 11866
+│   ├── AppleRawCurrentCapacity
+│   │   └── 1594
+│   ├── AppleRawMaxCapacity
+│   │   └── 4427
+│   ├── BatteryCellDisconnectCount
+│   │   └── 0
+│   ├── BatteryHealthMetric
+│   │   └── 0
+│   ├── BatteryPfCommsFailure
+│   │   └── 0
+│   ├── BatteryPower
+│   │   └── 0
+│   ├── BatteryState
+│   │   └── {length = 17, bytes = 0x00000000000000000087e4400243030010}
+│   ├── ChargeAccum
+│   │   └── 0
+│   ├── ChemID
+│   │   └── 21353
+│   ├── CurrentCapacity
+│   │   └── 37
+│   ├── CycleCount
+│   │   └── 37
+│   ├── DailyMaxSoc
+│   │   └── 33
+│   ├── DailyMinSoc
+│   │   └── 26
+│   ├── DataFlashWriteCount
+│   │   └── 13197
+│   ├── DateOfFirstUse
+│   │   └── 0
+│   ├── DesignCapacity
+│   │   └── 4563
+│   ├── Dod0AtQualifiedQmax
+│   │   └── 0
+│   ├── FaultType
+│   │   └── 1
+│   ├── FccComp1
+│   │   └── 4427
+│   ├── FccComp2
+│   │   └── 4427
+│   ├── FilteredCurrent
+│   │   └── 0
+│   ├── Flags
+│   │   └── 16777216
+│   ├── FullyCharged
+│   │   └── 0
+│   ├── GasGaugeFirmwareVersion
+│   │   └── 2
+│   ├── GaugeFlagRaw
+│   │   └── 128
+│   ├── IPDBatteryDemand
+│   │   └── 21065
+│   ├── ISS
+│   │   └── 2016
+│   ├── ITMiscStatus
+│   │   └── 0
+│   ├── IdealCRate
+│   │   └── 1.2
+│   ├── InstantAmperage
+│   │   └── 2037
+│   ├── LifetimeData
+│   │   ├── AverageTemperature
+│   │   │   └── 268
+│   │   ├── CycleCountLastQmax
+│   │   │   └── 35
+│   │   ├── MaximumChargeCurrent
+│   │   │   └── 5071
+│   │   ├── MaximumDischargeCurrent
+│   │   │   └── -2915
+│   │   ├── MaximumPackVoltage
+│   │   │   └── 13310
+│   │   ├── MaximumTemperature
+│   │   │   └── 38
+│   │   ├── MinimumPackVoltage
+│   │   │   └── 9008
+│   │   ├── MinimumTemperature
+│   │   │   └── 13
+│   │   ├── RDISCnt
+│   │   │   └── 0
+│   │   ├── Raw
+│   │   │   └── {length = 64, bytes = 0x073be112 00003eb7 00000000 00000000 ... 010c0008 3b490022 }
+│   │   ├── TemperatureSamples
+│   │   │   └── 539465
+│   │   ├── TotalOperatingTime
+│   │   │   └── 33716
+│   │   └── UpdateTime
+│   │       └── 1785305085
+│   ├── ManufactureDate
+│   │   └── 56282177351731
+│   ├── MaxCapacity
+│   │   └── 100
+│   ├── MfgData
+│   │   └── {length = 32, bytes = 0x00000000 0b000100 f9140000 04323231 ... 4c002800 00000000 }
+│   ├── MiscStatus
+│   │   └── 64
+│   ├── NominalChargeCapacity
+│   │   └── 4554
+│   ├── PackCurrentAccumulator
+│   │   └── 1607032
+│   ├── PackCurrentAccumulatorCount
+│   │   └── 945
+│   ├── PackReserve
+│   │   └── 127
+│   ├── PassedCharge
+│   │   └── 720
+│   ├── PermanentFailureStatus
+│   │   └── 0
+│   ├── QmaxDisqualificationReason
+│   │   └── 0
+│   ├── Qstart
+│   │   └── 0
+│   ├── RSS
+│   │   └── 0
+│   ├── ResScale
+│   │   └── 0
+│   ├── Serial
+│   │   └── F8Y2275059S10X2AF
+│   ├── SimRate
+│   │   └── 0
+│   ├── Soc1Voltage
+│   │   └── 0
+│   ├── StateOfCharge
+│   │   └── 36
+│   ├── Temperature
+│   │   └── 3359
+│   ├── TrueRemainingCapacity
+│   │   └── 0
+│   ├── VacVoltageLimit
+│   │   └── 4435
+│   ├── VirtualTemperature
+│   │   └── 3359
+│   ├── VmaxNcc
+│   │   └── 4435
+│   ├── Voltage
+│   │   └── 11866
+│   └── iMaxAndSocSmoothTable
+│       └── {length = 32, bytes = 0x00000000 00000000 00000000 00000000 ... 00000000 00000000 }
+├── CarrierMode
+│   ├── CarrierModeHighVoltage
+│   │   └── 0
+│   ├── CarrierModeLowVoltage
+│   │   └── 0
+│   └── CarrierModeStatus
+│       └── 0
+├── ID
+│   └── 0
+├── KioskMode
+└── Serial
+    └── F8Y2275059S10X2AF
