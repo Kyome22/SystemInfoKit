@@ -3,7 +3,7 @@
 SystemInfoKit provides macOS/iOS system information.
 
 - CPU Usage
-- Memory Pressure
+- Memory Usage
 - Storage Capacity
 - Battery Status
 - Network Connectivity
@@ -100,8 +100,8 @@ CPU:  7.5%
     Idle: 92.5%
 Memory: 72.9%
     Pressure: 33.1%
-    App:  6.4 GB
-    Wired:  1.8 GB
+    App Memory:  6.4 GB
+    Wired Memory:  1.8 GB
     Compressed:  3.5 GB
 Storage: 58.7% used
     584.13 GB / 994.66 GB
