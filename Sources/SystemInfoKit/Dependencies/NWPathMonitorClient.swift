@@ -1,4 +1,5 @@
 import Network
+import os
 
 struct NWPathMonitorClient: DependencyClient {
     var start: @Sendable (DispatchQueue) -> Void
@@ -8,13 +9,19 @@ struct NWPathMonitorClient: DependencyClient {
     var currentAvailableInterfaceNames: @Sendable () -> [String]
 
     static let liveValue: Self = {
-        let monitor = NWPathMonitor()
+        let monitor = OSAllocatedUnfairLock(uncheckedState: NWPathMonitor())
         return Self(
-            start: { monitor.start(queue: $0) },
-            cancel: { monitor.cancel() },
-            currentStatus: { monitor.currentPath.status },
-            currentAvailableInterfaceTypes: { monitor.currentPath.availableInterfaces.map(\.type) },
-            currentAvailableInterfaceNames: { monitor.currentPath.availableInterfaces.map(\.name) }
+            start: { queue in
+                monitor.withLockUnchecked {
+                    $0.cancel()
+                    $0 = NWPathMonitor()
+                    $0.start(queue: queue)
+                }
+            },
+            cancel: { monitor.withLockUnchecked { $0.cancel() } },
+            currentStatus: { monitor.withLockUnchecked { $0.currentPath.status } },
+            currentAvailableInterfaceTypes: { monitor.withLockUnchecked { $0.currentPath.availableInterfaces.map(\.type) } },
+            currentAvailableInterfaceNames: { monitor.withLockUnchecked { $0.currentPath.availableInterfaces.map(\.name) } }
         )
     }()
 
