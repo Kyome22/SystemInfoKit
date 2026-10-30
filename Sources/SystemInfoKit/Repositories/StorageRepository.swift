@@ -11,6 +11,33 @@ struct StorageRepository: SystemRepository {
         self.language = language
     }
 
+    private func storageCapacitySnapshot(url: URL, currentAvailable: Int64) -> StorageCapacitySnapshot? {
+        let cachedSnapshot = stateClient.withLock { state -> StorageCapacitySnapshot? in
+            guard var snapshot = state.storageCapacitySnapshot, snapshot.remainingUpdates > .zero else {
+                return nil
+            }
+            snapshot.remainingUpdates -= 1
+            state.storageCapacitySnapshot = snapshot
+            return snapshot
+        }
+        if let cachedSnapshot {
+            return cachedSnapshot
+        }
+        guard let values = try? url.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]),
+              let availableForImportantUsage = urlResourceValuesClient.volumeAvailableCapacityForImportantUsage(values) else {
+            return nil
+        }
+        return stateClient.withLock { state in
+            let snapshot = StorageCapacitySnapshot(
+                availableForImportantUsage: availableForImportantUsage,
+                available: currentAvailable,
+                remainingUpdates: Int((60.0 / state.interval).rounded(.up)) - 1
+            )
+            state.storageCapacitySnapshot = snapshot
+            return snapshot
+        }
+    }
+
     func update() async {
         var result = StorageInfo(language: language)
         defer {
@@ -18,12 +45,15 @@ struct StorageRepository: SystemRepository {
         }
 
         let url = URL(filePath: "/")
-        let keys: Set<URLResourceKey> = [.volumeTotalCapacityKey, .volumeAvailableCapacityForImportantUsageKey]
+        let keys: Set<URLResourceKey> = [.volumeTotalCapacityKey, .volumeAvailableCapacityKey]
         guard let values = try? url.resourceValues(forKeys: keys),
               let total = urlResourceValuesClient.volumeTotalCapacity(values).map(Double.init),
-              let available = urlResourceValuesClient.volumeAvailableCapacityForImportantUsage(values).map(Double.init) else {
+              let currentAvailable = urlResourceValuesClient.volumeAvailableCapacity(values).map(Int64.init),
+              let snapshot = storageCapacitySnapshot(url: url, currentAvailable: currentAvailable) else {
             return
         }
+        let drift = currentAvailable - snapshot.available
+        let available = min(max(Double(snapshot.availableForImportantUsage + drift), .zero), total)
         let used = total - available
         result.percentage = .init(rawValue: min(used / total, 0.999), language: language)
         result.total = .init(byteCount: total, language: language)
@@ -40,6 +70,7 @@ struct StorageRepository: SystemRepository {
     func reset() {
         stateClient.withLock {
             $0.bundle.storageInfo = nil
+            $0.storageCapacitySnapshot = nil
         }
     }
 }
