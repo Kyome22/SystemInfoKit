@@ -107,6 +107,7 @@ Sources/SystemInfoKit/
 
 Tests/SystemInfoKitTests/
 ├── SystemInfoObserverTests.swift
+├── DependencyTests/                StateClient.
 ├── EntityTests/                    ByteData, Percentage.
 └── RepositoryTests/                One per repository.
 
