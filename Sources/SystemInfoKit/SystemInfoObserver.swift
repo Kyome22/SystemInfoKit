@@ -34,44 +34,44 @@ public final class SystemInfoObserver: Sendable {
     }
 
     public func startMonitoring(monitorInterval: Double = 5.0) {
-        guard monitoringTask.withLock({ $0 == nil }) else { return }
+        monitoringTask.withLock { monitoringTask in
+            guard monitoringTask == nil else { return }
 
-        let interval = max(monitorInterval, 1.0)
-        let pathMonitor = NWPathMonitor()
-        dependencies.stateClient.withLock {
-            $0.interval = interval
-            $0.pathMonitor = pathMonitor
-        }
-        let queue = DispatchQueue(label: "SystemInfoKit.NWPathMonitor", qos: .utility)
-        dependencies.nwPathMonitorClient.start(pathMonitor, queue)
+            let interval = max(monitorInterval, 1.0)
+            let pathMonitor = NWPathMonitor()
+            dependencies.stateClient.withLock {
+                $0.interval = interval
+                $0.pathMonitor = pathMonitor
+            }
+            let queue = DispatchQueue(label: "SystemInfoKit.NWPathMonitor", qos: .utility)
+            dependencies.nwPathMonitorClient.start(pathMonitor, queue)
 
-        let task = Task { [weak self] in
-            guard let self else { return }
-            await self.updateSystemInfo()
-            while !Task.isCancelled {
-                do {
-                    try await Task.sleep(for: .seconds(interval))
-                } catch {
-                    return
-                }
-                await self.updateSystemInfo()
+            monitoringTask = Task { [weak self] in
+                await self?.monitor(interval: interval)
             }
         }
+    }
 
-        monitoringTask.withLock {
-            $0?.cancel()
-            $0 = task
+    private func monitor(interval: Double) async {
+        await updateSystemInfo()
+        while !Task.isCancelled {
+            do {
+                try await Task.sleep(for: .seconds(interval))
+            } catch {
+                return
+            }
+            await updateSystemInfo()
         }
     }
 
     public func stopMonitoring() {
-        monitoringTask.withLock {
-            $0?.cancel()
-            $0 = nil
-        }
-        dependencies.stateClient.withLock { state in
-            if let pathMonitor = state.pathMonitor.take() {
-                dependencies.nwPathMonitorClient.cancel(pathMonitor)
+        monitoringTask.withLock { monitoringTask in
+            monitoringTask?.cancel()
+            monitoringTask = nil
+            dependencies.stateClient.withLock { state in
+                if let pathMonitor = state.pathMonitor.take() {
+                    dependencies.nwPathMonitorClient.cancel(pathMonitor)
+                }
             }
         }
     }
