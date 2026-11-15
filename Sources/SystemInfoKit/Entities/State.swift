@@ -1,4 +1,5 @@
 import Darwin
+import Network
 
 struct State: Sendable {
     var activationState = Dictionary(uniqueKeysWithValues: SystemInfoType.allCases.map({ ($0, true) }))
@@ -7,4 +8,5 @@ struct State: Sendable {
     var previousLoadInfo = host_cpu_load_info()
     var previousDataTraffic = DataTraffic.zero
     var storageCapacitySnapshot: StorageCapacitySnapshot?
+    var pathMonitor: NWPathMonitor?
 }

@@ -1,4 +1,5 @@
 import Foundation
+import Network
 import os
 
 public final class SystemInfoObserver: Sendable {
@@ -36,9 +37,13 @@ public final class SystemInfoObserver: Sendable {
         guard monitoringTask.withLock({ $0 == nil }) else { return }
 
         let interval = max(monitorInterval, 1.0)
-        dependencies.stateClient.withLock { $0.interval = interval }
+        let pathMonitor = NWPathMonitor()
+        dependencies.stateClient.withLock {
+            $0.interval = interval
+            $0.pathMonitor = pathMonitor
+        }
         let queue = DispatchQueue(label: "SystemInfoKit.NWPathMonitor", qos: .utility)
-        dependencies.nwPathMonitorClient.start(queue)
+        dependencies.nwPathMonitorClient.start(pathMonitor, queue)
 
         let task = Task { [weak self] in
             guard let self else { return }
@@ -64,7 +69,11 @@ public final class SystemInfoObserver: Sendable {
             $0?.cancel()
             $0 = nil
         }
-        dependencies.nwPathMonitorClient.cancel()
+        dependencies.stateClient.withLock { state in
+            if let pathMonitor = state.pathMonitor.take() {
+                dependencies.nwPathMonitorClient.cancel(pathMonitor)
+            }
+        }
     }
 
     public func toggleActivation(requests: [SystemInfoType: Bool]) {

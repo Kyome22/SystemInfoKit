@@ -1,4 +1,5 @@
 import Foundation
+import Network
 import os
 import Testing
 
@@ -21,6 +22,38 @@ struct SystemInfoObserverTests {
         observer.startMonitoring(monitorInterval: 3.0)
         await task.value
         observer.stopMonitoring()
+    }
+
+    @Test
+    func restartMonitoring_starts_fresh_path_monitor() {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let startedPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(uncheckedState: [])
+        let cancelledPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(uncheckedState: [])
+        let observer = SystemInfoObserver(
+            dependencies: .testDependencies(
+                nwPathMonitorClient: testDependency(of: NWPathMonitorClient.self) {
+                    $0.start = { pathMonitor, _ in
+                        startedPathMonitors.withLockUnchecked { $0.append(pathMonitor) }
+                    }
+                    $0.cancel = { pathMonitor in
+                        cancelledPathMonitors.withLockUnchecked { $0.append(pathMonitor) }
+                    }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
+        observer.startMonitoring()
+        observer.stopMonitoring()
+        #expect(state.withLock { $0.pathMonitor == nil })
+        observer.startMonitoring()
+        observer.stopMonitoring()
+        let started = startedPathMonitors.withLockUnchecked(\.self)
+        let cancelled = cancelledPathMonitors.withLockUnchecked(\.self)
+        #expect(started.count == 2)
+        #expect(started.first !== started.last)
+        #expect(cancelled.count == 2)
+        #expect(zip(started, cancelled).allSatisfy { $0 === $1 })
     }
 
     @Test
