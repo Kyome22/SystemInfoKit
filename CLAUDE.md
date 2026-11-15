@@ -1,19 +1,10 @@
 # SystemInfoKit — Repository Guide
 
-## What this is
-
-A Swift Package that streams macOS/iOS system telemetry (CPU, memory, storage, battery, network) as an `AsyncStream<SystemInfoBundle>`. Consumers subscribe via a singleton, then start/stop monitoring at their own cadence.
-
-- Public entry point: `Sources/SystemInfoKit/SystemInfoObserver.swift` (use `SystemInfoObserver.shared` — the initializer is intentionally `internal`).
-- Public bundle: `Sources/SystemInfoKit/Entities/SystemInfoBundle.swift`.
-- License: Apache-2.0.
+A Swift Package that streams macOS/iOS system telemetry (CPU, memory, storage, battery, network) as an `AsyncStream<SystemInfoBundle>`. Consumers go through `SystemInfoObserver.shared` and start/stop monitoring at their own cadence.
 
 ## Build & test
 
 ```bash
-swift build
-
-# Use xcodebuild — NOT `swift test` — for the full test suite.
 xcodebuild test \
   -scheme SystemInfoKit \
   -destination 'platform=macOS' \
@@ -21,101 +12,43 @@ xcodebuild test \
   -skipMacroValidation
 ```
 
-- Test framework is **swift-testing** (`import Testing`, `@Test`, `#expect`, `#require`) — not XCTest.
-- **Why `xcodebuild` and not `swift test`.** `swift build`/`swift test` from the CLI copies `Localizable.xcstrings` into the bundle but does not compile it into per-locale `.strings`. `Bundle.module` at test time therefore has no localized strings, and every `String(localized:)` call returns the key itself (e.g. `"batteryIsNotInstalled"` instead of `"Battery: Not Installed"`). All Repository suites fail as a result, on `main` too — it is an environmental issue, not a regression. Same rule applies to any Swift Package that ships `.xcstrings` or `.xcassets`. Fast pre-checks that only touch `MeasurementFormatter` / `%f` (e.g. `swift test --filter ByteDataTests`) still work under `swift test`.
-- For iOS-guarded code (`#if os(iOS)` in `BatteryRepository`, `UIDeviceClient`, etc.), swap the destination to `'platform=iOS Simulator,name=<simulator>'`.
-- There is no CI, lint config, formatter, or Makefile. Verification is entirely local.
+- **Use `xcodebuild`, not `swift test`.** The CLI does not compile `Localizable.xcstrings` into per-locale strings, so every `String(localized:)` returns its key and all Repository suites fail, on `main` too. `swift test --filter ByteDataTests` and other suites that never hit localized strings still work as quick checks.
+- For iOS-only code (`#if os(iOS)` in `UIDeviceClient`), build for `'generic/platform=iOS Simulator'` as well.
+- There is no CI, linter, or formatter. Verification is entirely local.
+- `ExistentialAny` is enabled on both targets — always write `any SystemRepository`, never a bare protocol type.
 
-## Platforms & Swift version
+## Architecture
 
-From `Package.swift`:
+1. **Repositories.** Each `SystemInfoType` case is served by one `SystemRepository` under `Sources/SystemInfoKit/Repositories/`; `CPURepository` is the canonical example. The idiom is `var result = XxxInfo(language: language)` plus `defer { stateClient.withLock { $0.bundle.xxxInfo = result } }`.
+2. **DI clients.** Every OS API is wrapped in a `struct XxxClient: DependencyClient` of `@Sendable` closures with `liveValue` / `testValue`, aggregated in `Dependencies`. Clients hold no state of their own: they take the object they operate on as an argument (`NWPathMonitor`, `URLResourceValues`, …).
+3. **Shared state.** All mutable state lives in `State` behind `StateClient`, whose `withLock` runs the body under the lock. Repositories read and mutate it only through `stateClient.withLock`. Bodies must not call `withLock` again — the unfair lock traps on reentry.
+4. **Localization.** Every repository and `*Info` conforms to `Localizable` and carries a `language: Language`.
 
-- Swift 6.2 (`// swift-tools-version: 6.2`)
-- `.macOS(.v14)`, `.iOS(.v17)`
-- `defaultLocalization: "en"`, `resources: [.process("Resources")]`
-- Upcoming feature `ExistentialAny` enabled on both target and testTarget — always write `any SystemRepository`, `any CVarArg`, never bare protocol types.
-
-## Architecture at a glance
-
-Four cooperating patterns:
-
-1. **Repository pattern.** Each `SystemInfoType` case is served by one `SystemRepository` conformer under `Sources/SystemInfoKit/Repositories/`. Protocol: `Sources/SystemInfoKit/Repositories/SystemRepository.swift`. Canonical example: `Sources/SystemInfoKit/Repositories/CPURepository.swift`. Standard idiom is `var result = XxxInfo(language: language)` + `defer { stateClient.withLock { $0.bundle.xxxInfo = result } }`.
-
-2. **DI Client pattern** (pointfree-style). Every OS API is wrapped as a `struct XxxClient: DependencyClient` holding `@Sendable` closures with `liveValue` / `testValue`. Aggregated in `Dependencies` (`Sources/SystemInfoKit/Dependencies/Dependencies.swift`). Tests override fields via `testDependency(of: XxxClient.self) { $0.someClosure = { … } }`.
-
-3. **Shared state.** All mutable state lives in `OSAllocatedUnfairLock<State>` behind `StateClient` (`Sources/SystemInfoKit/Dependencies/StateClient.swift`, `Sources/SystemInfoKit/Entities/State.swift`). Repositories read/mutate via `stateClient.withLock { ... }` — they never own state themselves.
-
-4. **Localization via `Localizable` protocol.** `Sources/SystemInfoKit/Localizable.swift` wraps `String(localized:bundle:)`. Every repository and `*Info` conforms and carries a `language: Language`.
-
-## Public vs internal surface
-
-**Public:** `SystemInfoObserver`, `SystemInfoBundle`, `SystemInfoType`, `SystemInfo`, the five `*Info` structs, `Percentage`, `ByteData`, `Temperature`, `NetworkInterface`, `DependencyClient` + `testDependency` helper. Mutable fields on models are `public internal(set) var` so consumers can read but only repositories can write.
-
-**Internal (intentionally):** everything under `Dependencies/`, `Repositories/`, `State`, `Language`, `Localizable`, and all `SystemInfoObserver` initializers except access through `.shared`.
+`Dependencies/`, `Repositories/`, `State`, `Language`, `Localizable`, and every `SystemInfoObserver` initializer are internal on purpose. Model fields are `public internal(set) var`.
 
 ## Testing conventions
 
-- `struct XxxTests { @Test func … }` — swift-testing.
-- Parameterized via `@Test(arguments: [...])` — see `Tests/SystemInfoKitTests/EntityTests/PercentageTests.swift`.
-- `@testable import SystemInfoKit` for internal access.
-- Fixture pattern: build `OSAllocatedUnfairLock<State>`, seed it via `withLock`, then construct the SUT with `.testDependencies(...)` + per-field overrides + `.testDependency(state)`.
-- Repository tests always use `language: .english` for deterministic string expectations.
-- `Tests/SystemInfoKitTests/RepositoryTests/NetworkRepositoryTests.swift` has an inline `NRMock` that fabricates raw `ifaddrs` C structs — the only place raw C pointer fixtures appear.
+- swift-testing (`@Test`, `#expect`, `#require`), not XCTest.
+- Fixture pattern: build an `OSAllocatedUnfairLock<State>`, seed it with `withLock`, and construct the SUT with `.testDependencies(...)`, per-field overrides, and `.testDependency(state)`.
+- Repository tests use `language: .english` for deterministic strings.
 
 ## Adding a language
 
-Follow `.claude/skills/add-language/SKILL.md` — 5 files change (`Language.swift`, `Localizable.xcstrings`, `ByteDataTests`, `PercentageTests`, `README.md`) and none other. The skill also generates translations and produces a verification checklist.
+Follow `.claude/skills/add-language/SKILL.md`.
 
 ## Non-obvious gotchas
 
-- **`SystemInfoObserver.init()` is `internal`.** Consumers must go through `SystemInfoObserver.shared`. The two-argument init is for tests only.
-- **`Language` is `internal`.** The public API always runs `.automatic` (system locale). Adding a language does NOT expose the case to consumers.
-- **`systemInfoStream()` is single-consumer** (`bufferingPolicy: .bufferingNewest(1)`). Multiple `for await` loops steal from each other. README documents the fix: wrap with `swift-async-algorithms`' `share()` on the consumer side; the package intentionally does not depend on it.
-- **`monitorInterval` is clamped to `max(interval, 1.0)`** in `SystemInfoObserver.startMonitoring`.
-- **Each `startMonitoring` creates a fresh `NWPathMonitor`.** A cancelled monitor never delivers another path, so reusing one froze network info after any stop and start (#40, runcat-dev/RunCatNeo#104). The monitor lives in `State.pathMonitor`, `stopMonitoring` cancels and clears it, and `NWPathMonitorClient` takes it as an argument like every other client — it holds no instance of its own. `startMonitoring` and `stopMonitoring` run entirely inside `monitoringTask.withLock`, so concurrent calls cannot start a second monitor or start one that a stop has already cancelled; the lock order is `monitoringTask` then state.
-- **Storage free space comes from `volumeAvailableCapacityForImportantUsageKey` on purpose** — it is the figure Finder and System Settings show. Do not swap it for `volumeAvailableCapacityKey`, which leaves out purgeable space (about 11 GB less on the Mac measured in PR #39). The key goes through CacheDelete and costs 10+ ms per read, so `StorageRepository` keeps it in `State.storageCapacitySnapshot` for `StorageCapacitySnapshot.lifetime` (60 s on `ContinuousClock`) and in between shifts it by how far the cheap `volumeAvailableCapacityKey` has moved. A purge mid-window reads high until the next refresh, clamped to `total`.
-- **`toggleActivation` re-emits immediately.** Newly enabled types get a zero-placeholder `*Info` right away; newly disabled types get `nil`; unchanged types are untouched.
-- **Two singletons.** `SystemInfoObserver.shared` and `StateClient.liveValue` are independent. A hand-built `SystemInfoObserver(dependencies: .init(), language: ...)` still shares state with `.shared` unless the test also overrides `stateClient`.
-- **Battery has a macOS 27+ / pre-27 split** in `Sources/SystemInfoKit/Repositories/BatteryRepository.swift` (`BatteryData` dict + `AppleSmartBatteryPack` on 27+, flat keys + `AppleRawMaxCapacity` before). `update_with_battery` feeds both key sets at once and picks values that yield the same `description` either way, so the suite passes whatever the host runs — but the branch not taken by the host is never exercised. `getMatchingService` also returns one dictionary regardless of the service name, so `AppleSmartBattery` and `AppleSmartBatteryPack` are not distinguished.
-- **Real-device dumps live in `MeasuredValues/`** — the evidence behind that split, contributed per machine and macOS version. `MeasuredValues/KeyMatrix.md` shows which key exists where; `MeasuredValues/README.md` explains the naming and the pruning. Consult them before assuming a key is available on every machine: `AdapterDetails.Name` in particular is missing both when unplugged and when the PMU cannot identify the charger.
-- **`adapterName` is a display string, not a raw IOKit value.** `BatteryRepository` gates it on `ExternalConnected` and falls back `AdapterDetails.Name` → `AdapterDetails.Watts` (as the localized `batteryAdapter%lld`) → `batteryUnknown`, so `adapterName == nil` means exactly "running on battery". `powerSource` no longer looks at `isCharging` — plugged in but not charging still shows the adapter, which is what 5 of the 11 dumps in `MeasuredValues/` are. Note `Watts` is the negotiated PD wattage, not the adapter's rating (a 96W adapter reports 94).
-- **No capacity key reproduces the System Settings figure.** `maxCapacity` is not the percentage macOS shows under Battery Health, and no value in `AppleSmartBattery` yields it: `AppleRawMaxCapacity` and `NominalChargeCapacity` were both checked against four machines with a recorded System Settings reading, and neither matches nor is meaningfully closer than the other. macOS is most likely displaying a smoothed or cached figure. Leave the key alone — switching it has drawn "the battery info is wrong" reports before and fixes nothing. `MeasuredValues/README.md` holds the measurements.
-- **The macOS 27+ `percentage` deliberately has no `min(…, 1)`** — `BatteryData.CurrentCapacity` is the system's own value there and cannot exceed 100, unlike the pre-27 ratio. The clamp on `maxCapacity` does earn its keep: a 5-cycle M5 reports `AppleRawMaxCapacity` above `DesignCapacity` (101.6%).
-- **Intel Macs are out of scope.** Every dump in `MeasuredValues/` is Apple Silicon and that is fine; do not add Intel-specific handling on speculation.
-- **`Temperature` is hard-coded to `°C`** — no Fahrenheit / locale awareness.
-- **`Percentage.width`** (default 4, batteries use 5) is a formatting concern threaded through the model; changing it shifts golden strings in README and repo tests.
-- **`_description` on `SystemInfo`** is intentionally accessible package-wide despite the underscore — `BatteryInfo` uses it to compose `description` conditionally on `isInstalled`.
-- **`String.separate()`** in `Sources/SystemInfoKit/Extensions/String+Extension.swift` uses `RegexBuilder` to split localized byte strings (`"1,5 Go"` / `"1.5 GB"`) for alignment — that's why comma-decimal locales work end-to-end.
-- **`.swiftpm/` is git-ignored but currently checked in** for the workspace stub. Don't rely on its contents.
-- **`PrivacyInfo.xcprivacy`** ships in resources — any change to which SPIs the package reads (IOKit properties, `getifaddrs`, etc.) should be reflected there.
-
-## Where things live
-
-```
-Sources/SystemInfoKit/
-├── SystemInfoObserver.swift        Public façade (singleton).
-├── Localizable.swift               Internal L10n protocol.
-├── Dependencies/                   DI container + typed clients (Host, IOKit, NWPathMonitor, POSIX, State, UIDevice, URLResourceValues).
-├── Entities/
-│   ├── SystemInfoBundle.swift      Public aggregate.
-│   ├── SystemInfoType.swift        Public enum + repositoryType map.
-│   ├── State.swift                 Internal mutable state.
-│   ├── Language.swift              Internal locale + bundle lookup.
-│   ├── Info/                       Public *Info structs (CPU/Memory/Storage/Battery/Network) + SystemInfo protocol.
-│   └── Values/                     Public value types (Percentage, ByteData, Temperature, DataTraffic, NetworkInterface).
-├── Extensions/String+Extension.swift  RegexBuilder split for "1.5 GB".
-├── Repositories/                   One per SystemInfoType.
-└── Resources/                      Localizable.xcstrings + PrivacyInfo.xcprivacy.
-
-Tests/SystemInfoKitTests/
-├── SystemInfoObserverTests.swift
-├── DependencyTests/                StateClient.
-├── EntityTests/                    ByteData, Percentage.
-└── RepositoryTests/                One per repository.
-
-MeasuredValues/                     Reference data only — not built, not bundled.
-├── AppleSmartBattery/              <Model>_macOS_<Major>_<State>.json per contributed machine.
-├── AppleSmartBatteryPack/          Same, for the pack service (macOS 27+ temperature).
-├── KeyMatrix.md                    Which key exists where — generated.
-└── normalize.py                    Tree dump -> JSON, and --matrix.
-```
+- **`Language` is internal.** The public API always runs `.automatic`, so adding a language never exposes a case to consumers.
+- **`systemInfoStream()` is single-consumer** (`.bufferingNewest(1)`). Multiple `for await` loops steal from each other. The README points consumers to `swift-async-algorithms`' `share()`; the package intentionally does not depend on it.
+- **`SystemInfoObserver.shared` and `StateClient.liveValue` are separate singletons.** A hand-built `SystemInfoObserver(dependencies: .init(), …)` still shares state with `.shared` unless the test overrides `stateClient`.
+- **Each `startMonitoring` creates a fresh `NWPathMonitor`**, kept in `State.pathMonitor`. A cancelled monitor never delivers another path, so it must not be reused. `startMonitoring` and `stopMonitoring` run entirely inside `monitoringTask.withLock`; take that lock before the state lock, never the other way round.
+- **Storage free space reads `volumeAvailableCapacityForImportantUsageKey` on purpose** — it is the figure Finder and System Settings show. Do not swap it for `volumeAvailableCapacityKey`, which leaves out purgeable space. The key costs 10+ ms per read, which is why `StorageRepository` caches it in `State.storageCapacitySnapshot`.
+- **Battery has a macOS 27+ / pre-27 split** in `BatteryRepository`. `update_with_battery` feeds both key sets at once, so the branch the host does not take is never exercised, and the `getMatchingService` stub does not tell `AppleSmartBattery` from `AppleSmartBatteryPack`.
+- **`MeasuredValues/` holds real-device IOKit dumps** — the evidence for every battery key choice. Check `MeasuredValues/KeyMatrix.md` before assuming a key exists on every machine.
+- **Leave the battery capacity key alone.** No key reproduces the Battery Health percentage in System Settings, and switching keys has drawn "the battery info is wrong" reports before. `MeasuredValues/README.md` has the measurements.
+- **The macOS 27+ `percentage` has no `min(…, 1)` on purpose**, because `BatteryData.CurrentCapacity` cannot exceed 100. The clamp on `maxCapacity` is needed: new batteries report above `DesignCapacity`.
+- **`adapterName == nil` means exactly "running on battery".** Plugged in but not charging still shows the adapter. `AdapterDetails.Watts` is the negotiated wattage, not the adapter's rating.
+- **Intel Macs are out of scope.** Do not add Intel-specific handling on speculation.
+- **`Percentage.width`** (default 4, batteries 5) feeds the golden strings in the README and the repository tests.
+- **`_description` on `SystemInfo`** is package-wide despite the underscore; `BatteryInfo` builds `description` from it.
+- **`PrivacyInfo.xcprivacy`** must be updated whenever the set of required-reason APIs the package reads changes.
