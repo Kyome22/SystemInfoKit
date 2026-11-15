@@ -68,10 +68,8 @@ public final class SystemInfoObserver: Sendable {
         monitoringTask.withLock { monitoringTask in
             monitoringTask?.cancel()
             monitoringTask = nil
-            dependencies.stateClient.withLock { state in
-                if let pathMonitor = state.pathMonitor.take() {
-                    dependencies.nwPathMonitorClient.cancel(pathMonitor)
-                }
+            if let pathMonitor = dependencies.stateClient.withLock({ $0.pathMonitor.take() }) {
+                dependencies.nwPathMonitorClient.cancel(pathMonitor)
             }
         }
     }
