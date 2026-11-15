@@ -27,16 +27,16 @@ struct SystemInfoObserverTests {
     @Test
     func restartMonitoring_starts_fresh_path_monitor() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
-        let startedPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(uncheckedState: [])
-        let cancelledPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(uncheckedState: [])
+        let startedPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(initialState: [])
+        let cancelledPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(initialState: [])
         let observer = SystemInfoObserver(
             dependencies: .testDependencies(
                 nwPathMonitorClient: testDependency(of: NWPathMonitorClient.self) {
                     $0.start = { pathMonitor, _ in
-                        startedPathMonitors.withLockUnchecked { $0.append(pathMonitor) }
+                        startedPathMonitors.withLock { $0.append(pathMonitor) }
                     }
                     $0.cancel = { pathMonitor in
-                        cancelledPathMonitors.withLockUnchecked { $0.append(pathMonitor) }
+                        cancelledPathMonitors.withLock { $0.append(pathMonitor) }
                     }
                 },
                 stateClient: .testDependency(state)
@@ -48,8 +48,8 @@ struct SystemInfoObserverTests {
         #expect(state.withLock { $0.pathMonitor == nil })
         observer.startMonitoring()
         observer.stopMonitoring()
-        let started = startedPathMonitors.withLockUnchecked(\.self)
-        let cancelled = cancelledPathMonitors.withLockUnchecked(\.self)
+        let started = startedPathMonitors.withLock(\.self)
+        let cancelled = cancelledPathMonitors.withLock(\.self)
         #expect(started.count == 2)
         #expect(started.first !== started.last)
         #expect(cancelled.count == 2)
@@ -59,16 +59,16 @@ struct SystemInfoObserverTests {
     @Test
     func concurrent_startMonitoring_starts_one_path_monitor() {
         let state = OSAllocatedUnfairLock<State>(initialState: .init())
-        let startedPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(uncheckedState: [])
-        let cancelledPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(uncheckedState: [])
+        let startedPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(initialState: [])
+        let cancelledPathMonitors = OSAllocatedUnfairLock<[NWPathMonitor]>(initialState: [])
         let observer = SystemInfoObserver(
             dependencies: .testDependencies(
                 nwPathMonitorClient: testDependency(of: NWPathMonitorClient.self) {
                     $0.start = { pathMonitor, _ in
-                        startedPathMonitors.withLockUnchecked { $0.append(pathMonitor) }
+                        startedPathMonitors.withLock { $0.append(pathMonitor) }
                     }
                     $0.cancel = { pathMonitor in
-                        cancelledPathMonitors.withLockUnchecked { $0.append(pathMonitor) }
+                        cancelledPathMonitors.withLock { $0.append(pathMonitor) }
                     }
                 },
                 stateClient: .testDependency(state)
@@ -79,8 +79,8 @@ struct SystemInfoObserverTests {
             observer.startMonitoring()
         }
         observer.stopMonitoring()
-        let started = startedPathMonitors.withLockUnchecked(\.self)
-        let cancelled = cancelledPathMonitors.withLockUnchecked(\.self)
+        let started = startedPathMonitors.withLock(\.self)
+        let cancelled = cancelledPathMonitors.withLock(\.self)
         #expect(started.count == 1)
         #expect(cancelled.count == 1)
         #expect(zip(started, cancelled).allSatisfy { $0 === $1 })

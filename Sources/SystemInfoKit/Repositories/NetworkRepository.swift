@@ -16,14 +16,8 @@ struct NetworkRepository: SystemRepository {
         self.language = language
     }
 
-    // WORKAROUND: NWPathMonitor is Sendable only from macOS 14 / iOS 17, so it cannot leave stateClient.withLock.
-    // Remove this and read withLock(\.pathMonitor) directly once the deployment target reaches them.
-    private func withPathMonitor<R: Sendable>(_ body: @Sendable (NWPathMonitor) -> R) -> R? {
-        stateClient.withLock { $0.pathMonitor.map(body) }
-    }
-
-    private func getPrimaryNetworkInterface() -> NetworkInterface {
-        switch withPathMonitor(nwPathMonitorClient.currentAvailableInterfaceTypes)?.first {
+    private func getPrimaryNetworkInterface(_ pathMonitor: NWPathMonitor) -> NetworkInterface {
+        switch nwPathMonitorClient.currentAvailableInterfaceTypes(pathMonitor).first {
         case .wifi: .wifi
         case .cellular: .cellular
         case .wiredEthernet: .ethernet
@@ -62,8 +56,8 @@ struct NetworkRepository: SystemRepository {
         return String(cString: ip, encoding: .utf8)
     }
 
-    private func getPrimaryIPAddress() -> String? {
-        guard let id = withPathMonitor(nwPathMonitorClient.currentAvailableInterfaceNames)?.first else {
+    private func getPrimaryIPAddress(_ pathMonitor: NWPathMonitor) -> String? {
+        guard let id = nwPathMonitorClient.currentAvailableInterfaceNames(pathMonitor).first else {
             return nil
         }
         return getValueFromIfaddrs(into: String?.none) { value, pointer in
@@ -108,12 +102,13 @@ struct NetworkRepository: SystemRepository {
             stateClient.withLock { [result] in $0.bundle.networkInfo = result }
         }
 
-        guard withPathMonitor(nwPathMonitorClient.currentStatus) == .satisfied else {
+        guard let pathMonitor = stateClient.withLock(\.pathMonitor),
+              nwPathMonitorClient.currentStatus(pathMonitor) == .satisfied else {
             return
         }
         result.hasConnection = true
-        result.networkInterface = getPrimaryNetworkInterface()
-        result.ipAddress = getPrimaryIPAddress()
+        result.networkInterface = getPrimaryNetworkInterface(pathMonitor)
+        result.ipAddress = getPrimaryIPAddress(pathMonitor)
 
         let transmissionSpeed = getTransmissionSpeed()
         result.upload = transmissionSpeed.upload

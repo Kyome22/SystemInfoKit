@@ -24,11 +24,7 @@ public enum SystemInfoType: Sendable, CaseIterable {
         case .storage: 
             "internaldrive"
         case .battery:
-            if #available(macOS 14.0, *) {
-                "battery.100percent"
-            } else {
-                "battery.100"
-            }
+            "battery.100percent"
         case .network: 
             "network"
         }
