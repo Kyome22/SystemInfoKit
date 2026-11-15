@@ -6,4 +6,5 @@ struct State: Sendable {
     var interval: Double = 1.0
     var previousLoadInfo = host_cpu_load_info()
     var previousDataTraffic = DataTraffic.zero
+    var storageCapacitySnapshot: StorageCapacitySnapshot?
 }
