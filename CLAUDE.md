@@ -31,7 +31,7 @@ xcodebuild test \
 From `Package.swift`:
 
 - Swift 6.2 (`// swift-tools-version: 6.2`)
-- `.macOS(.v13)`, `.iOS(.v16)`
+- `.macOS(.v14)`, `.iOS(.v17)`
 - `defaultLocalization: "en"`, `resources: [.process("Resources")]`
 - Upcoming feature `ExistentialAny` enabled on both target and testTarget — always write `any SystemRepository`, `any CVarArg`, never bare protocol types.
 

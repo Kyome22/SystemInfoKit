@@ -13,12 +13,11 @@ public struct BatteryInfo: LocalizableSystemInfo {
     var language: Language
 
     public var icon: String {
-        let suffix = if #available(macOS 14.0, *) { "percent" } else { "" }
-        return switch (isInstalled, isCharging) {
+        switch (isInstalled, isCharging) {
         case (true, true):
-            "battery.100\(suffix).bolt"
+            "battery.100percent.bolt"
         case (true, false):
-            "battery.\(percentage.batteryRoughValue)\(suffix)"
+            "battery.\(percentage.batteryRoughValue)percent"
         case (false, _):
             "powerplug"
         }
