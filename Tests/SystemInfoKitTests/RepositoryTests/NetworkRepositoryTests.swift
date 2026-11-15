@@ -12,15 +12,16 @@ struct NetworkRepositoryTests {
         state.withLock {
             $0.interval = 1.0
             $0.previousDataTraffic = .init(upload: 1000, download: 1000000)
+            $0.pathMonitor = NWPathMonitor()
         }
         let sut = NetworkRepository(
             .testDependencies(
                 nwPathMonitorClient: testDependency(of: NWPathMonitorClient.self) {
-                    $0.currentStatus = { .satisfied }
-                    $0.currentAvailableInterfaceTypes = {
+                    $0.currentStatus = { _ in .satisfied }
+                    $0.currentAvailableInterfaceTypes = { _ in
                         [NWInterface.InterfaceType.wiredEthernet]
                     }
-                    $0.currentAvailableInterfaceNames = {
+                    $0.currentAvailableInterfaceNames = { _ in
                         ["en0"]
                     }
                 },
@@ -44,6 +45,23 @@ struct NetworkRepositoryTests {
             "Download:  7.9 MB/s",
         ].joined(separator: "\n\t")
         #expect(actual.description == expect)
+    }
+
+    @Test
+    func update_without_path_monitor() async throws {
+        let state = OSAllocatedUnfairLock<State>(initialState: .init())
+        let sut = NetworkRepository(
+            .testDependencies(
+                nwPathMonitorClient: testDependency(of: NWPathMonitorClient.self) {
+                    $0.currentStatus = { _ in .satisfied }
+                },
+                stateClient: .testDependency(state)
+            ),
+            language: .english
+        )
+        await sut.update()
+        let actual = try #require({ state.withLock(\.bundle.networkInfo) }())
+        #expect(!actual.hasConnection)
     }
 
     @Test

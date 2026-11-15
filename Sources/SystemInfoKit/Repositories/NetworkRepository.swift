@@ -1,4 +1,5 @@
 import Foundation
+import Network
 
 struct NetworkRepository: SystemRepository {
     typealias TransmissionSpeed = (upload: ByteData, download: ByteData)
@@ -15,8 +16,14 @@ struct NetworkRepository: SystemRepository {
         self.language = language
     }
 
+    // WORKAROUND: NWPathMonitor is Sendable only from macOS 14 / iOS 17, so it cannot leave stateClient.withLock.
+    // Remove this and read withLock(\.pathMonitor) directly once the deployment target reaches them.
+    private func withPathMonitor<R: Sendable>(_ body: @Sendable (NWPathMonitor) -> R) -> R? {
+        stateClient.withLock { $0.pathMonitor.map(body) }
+    }
+
     private func getPrimaryNetworkInterface() -> NetworkInterface {
-        switch nwPathMonitorClient.currentAvailableInterfaceTypes().first {
+        switch withPathMonitor(nwPathMonitorClient.currentAvailableInterfaceTypes)?.first {
         case .wifi: .wifi
         case .cellular: .cellular
         case .wiredEthernet: .ethernet
@@ -56,7 +63,7 @@ struct NetworkRepository: SystemRepository {
     }
 
     private func getPrimaryIPAddress() -> String? {
-        guard let id = nwPathMonitorClient.currentAvailableInterfaceNames().first else {
+        guard let id = withPathMonitor(nwPathMonitorClient.currentAvailableInterfaceNames)?.first else {
             return nil
         }
         return getValueFromIfaddrs(into: String?.none) { value, pointer in
@@ -101,7 +108,7 @@ struct NetworkRepository: SystemRepository {
             stateClient.withLock { [result] in $0.bundle.networkInfo = result }
         }
 
-        guard nwPathMonitorClient.currentStatus() == .satisfied else {
+        guard withPathMonitor(nwPathMonitorClient.currentStatus) == .satisfied else {
             return
         }
         result.hasConnection = true
